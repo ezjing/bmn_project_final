@@ -50,7 +50,7 @@ public class BaeController {
     List<CommentJoinDTO> commentList = baeService.selectCommentList(ceoIdx);
 
 
-    // 문의 게시판(페이징 처리)
+    // 문의 게시판(페이징 처리)~
     PageInfo<QuestionDTO> questionList = new PageInfo<>(baeService.selectQuestionList(ceoIdx, pageNum), 5);
 
     // 문의 게시판(페이징 전)
