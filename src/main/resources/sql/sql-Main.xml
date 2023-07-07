@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitc.bmn_project.mapper.MainMapper">
+
+<!--  한식 sql   -->
+    <select id="selectKFood" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_store, ceo_menu_img1, ceo_main_menu  FROM ceo_tp
+        WHERE (ceo_main_menu LIKE '%찜%' OR ceo_main_menu LIKE '%국%' OR ceo_main_menu LIKE '%탕%' OR ceo_main_menu LIKE '%밥%')
+        ORDER BY RAND() LIMIT 0,20 ;
+    </select>
+
+    <!--  일식 sql   -->
+    <select id="selectJFoods" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_store, ceo_menu_img1, ceo_main_menu  FROM ceo_tp
+        WHERE (ceo_main_menu LIKE '%스시%' OR  ceo_main_menu LIKE '%회%' OR ceo_main_menu LIKE '%까%')
+        ORDER BY RAND() LIMIT 0,20 ;
+    </select>
+
+    <!--  중식 sql   -->
+    <select id="selectCFoods" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_store, ceo_menu_img1, ceo_main_menu  FROM ceo_tp
+        WHERE (ceo_main_menu LIKE '%중%' OR  ceo_main_menu LIKE '%짜%' OR ceo_main_menu LIKE '%짬%')
+        ORDER BY RAND() LIMIT 0,20 ;
+    </select>
+
+    <!--  양식 sql   -->
+    <select id="selectWFoods" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_store, ceo_menu_img1, ceo_main_menu  FROM ceo_tp
+        WHERE (ceo_main_menu LIKE '%디너%' OR  ceo_main_menu LIKE '%피자%')
+        ORDER BY RAND() LIMIT 0,20 ;
+    </select>
+
+    <!-- 평점 높은 순 -->
+    <select id="scorePlacingLists" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_menu_img1, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address FROM ceo_tp
+        ORDER BY ceo_score DESC LIMIT 0, 20;
+    </select>
+
+    <!-- 팔로우 높은 순 -->
+    <select id="followPlacingLists" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_menu_img1, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address FROM ceo_tp
+        ORDER BY ceo_follow_cnt DESC  LIMIT 0, 20;
+    </select>
+
+<!--  평점 순 검색결과 SELECT 문   -->
+    <select id="storeLists" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_menu_img1, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address FROM ceo_tp
+        WHERE (ceo_store LIKE CONCAT('%',#{keyWorld},'%') OR ceo_main_menu LIKE CONCAT('%',#{keyWorld},'%')  OR ceo_city_address LIKE CONCAT('%',#{keyWorld},'%') )
+        ORDER BY ceo_score DESC LIMIT 0, 9;
+    </select>
+    
+    <!-- 리뷰 순 검색결과 SELECT 문 -->
+    <select id="reviewCntLists" parameterType="com.bitc.bmn_project.DTO.ReviewCntDto">
+        SELECT A.ceo_idx, A.ceo_menu_img1, A.ceo_store, A.ceo_score, A.ceo_follow_cnt, A.ceo_main_menu, A.ceo_city_address, COUNT(B.ceo_idx) AS review_cnt FROM ceo_tp A JOIN review_tp B
+        ON A.ceo_idx = B.ceo_idx
+        WHERE (A.ceo_store LIKE CONCAT('%',#{keyWorld},'%') OR A.ceo_main_menu LIKE CONCAT('%',#{keyWorld},'%')  OR A.ceo_city_address LIKE CONCAT('%',#{keyWorld},'%') )
+        GROUP BY A.ceo_idx;
+    </select>
+
+    <!--  팔로우 수 검색결과 SELECT 문   -->
+    <select id="followLists" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_menu_img1, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address FROM ceo_tp
+        WHERE (ceo_store LIKE CONCAT('%',#{keyWorld},'%') OR ceo_main_menu LIKE CONCAT('%',#{keyWorld},'%')  OR ceo_city_address LIKE CONCAT('%',#{keyWorld},'%') )
+        ORDER BY ceo_follow_cnt DESC  LIMIT 0, 9;
+    </select>
+
+    <!-- 카테고리 필터 기능 추가 -->
+    <select id="filterCateGoryLists" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_menu_img1, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address,ceo_category FROM ceo_tp
+        WHERE (ceo_store LIKE CONCAT('%',#{keyWorld},'%') OR ceo_main_menu LIKE CONCAT('%',#{keyWorld},'%')  OR ceo_city_address LIKE CONCAT('%',#{keyWorld},'%') ) AND ceo_category = #{cateGory}
+        ORDER BY ceo_score DESC LIMIT 0, 9;
+    </select>
+    
+</mapper>
