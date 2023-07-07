@@ -41,54 +41,20 @@
                 const reservationDate = $("#reservationDate").val();
                 // 날짜 가져오기 (selTime)
 
-                // 모달에 데이터 집어넣기
-                $("#resvPeople").text(reservationPeople);
-                $("#resvContents").text(reservationContents);
-                $("#resvDate").text(reservationDate);
-                $("#resvTime").text(selTime);
 
-                // let table;
-                // $("#tbody").empty();
-                //
-                // if (reservationPeople == null || reservationContents == null || reservationDate == null || selTime == null) {
-                //     table = "<p>예약 정보를 모두 입력해주세요.</p>";
-                //
-                //     $("#tbody").append(table);
-                // }
-                // else {
-                //     // 모달에 데이터 집어넣기
-                //     $("#resvPeople").text(reservationPeople);
-                //     $("#resvContents").text(reservationContents);
-                //     $("#resvDate").text(reservationDate);
-                //     $("#resvTime").text(selTime);
-                //
-                //     table = "<tr>\n" +
-                //         "                            <th class=\"py-4 text-center\" style=\"background-color: #D7D8DAFF\">예약자</th>\n" +
-                //         "                            <td class=\"py-4 ps-2\" id=\"resvCustomerName\">이지원</td>\n" +
-                //         "                            <td></td>\n" +
-                //         "                            <td></td>\n" +
-                //         "                        </tr>\n" +
-                //         "                        <tr th:if=\"${reservationPeople}\">\n" +
-                //         "                            <th class=\"py-4 text-center\" style=\"background-color: #D7D8DAFF\">인원</th>\n" +
-                //         "                            <td class=\"py-4 ps-2\" id=\"resvPeople\">2</td>\n" +
-                //         "                            <td></td>\n" +
-                //         "                            <td></td>\n" +
-                //         "                        </tr>\n" +
-                //         "                        <tr>\n" +
-                //         "                            <th class=\"py-4 text-center\" style=\"background-color: #D7D8DAFF\">상세 내용</th>\n" +
-                //         "                            <td class=\"py-4 ps-2\" id=\"resvContents\">조용한 자리</td>\n" +
-                //         "                            <td></td>\n" +
-                //         "                            <td></td>\n" +
-                //         "                        </tr>\n" +
-                //         "                        <tr>\n" +
-                //         "                            <th class=\"py-4 text-center\" style=\"background-color: #D7D8DAFF\">예약 날짜</th>\n" +
-                //         "                            <td class=\"py-4 ps-2\" id=\"resvDate\">2023-07-04</td>\n" +
-                //         "                            <th class=\"py-4 text-center\" style=\"background-color: #D7D8DAFF\">예약 시간</th>\n" +
-                //         "                            <td class=\"py-4 ps-2\" id=\"resvTime\">12:00</td>\n" +
-                //         "                        </tr>";
-                //
-                //     $("#tbody").append(table);
-                // }
+                if (reservationPeople == "" || reservationDate == "" || selTime == "") {    // 상세내용만 생략 가능
+                    alert("예약 정보를 모두 입력하세요.")
+                }
+                else {
+                    // 모달에 데이터 집어넣기
+                    $("#resvPeople").text(reservationPeople);
+                    $("#resvContents").text(reservationContents);
+                    $("#resvDate").text(reservationDate);
+                    $("#resvTime").text(selTime);
+
+                    // 모달 호출
+                    $("#modal").modal("show");
+                }
             });
 
             $("#submit").on("click", function () {
@@ -100,8 +66,6 @@
 
                 form.action = "/bmn/reservationCus/ceoIdx=" + ceoIdx + "/customerIdx=" + customerIdx;
                 form.submit();
-
-                // exception 넣는법 찾아보자.
             });
 
             $("#reservationDate").on("change", function () {
@@ -270,14 +234,21 @@
 <header th:replace="~{layout/header :: header}"></header>
 
 <main class="container-sm" id="main">
-    <form action="" method="POST" id="form">   <!--  th:action=""  나중에 추가  -->
+    <form action="" method="POST" id="form">
         <div class="row">
             <div class="col-2">
                 <div class="border">
+                    <p class="text-center mt-2 mb-4"><b>예약 정보 입력</b></p>
                     <label for="reservationPeople" class="form-label">예약 인원</label>
-                    <input type="text" class="form-control" id="reservationPeople" name="reservationPeople">
-                    <label for="reservationContents" class="form-label">상세 내용</label>
-                    <input type="text" class="form-control" id="reservationContents" name="reservationContents">
+                    <select class="form-select" id="reservationPeople" name="reservationPeople">
+                        <option value="1" selected>1 명</option>
+                        <option value="2">2 명</option>
+                        <option value="3">3 명</option>
+                        <option value="4">4 명</option>
+                        <option value="5">단체 문의</option>
+                    </select>
+                    <label for="reservationContents" class="form-label mt-5">상세 내용</label>
+                    <input type="text" class="form-control" id="reservationContents" name="reservationContents" placeholder="상세 내용">
                 </div>
             </div>
             <div class="col-10">
@@ -338,10 +309,11 @@
                 <div class="row">
                     <div class="d-flex justify-content-center">
                         <input type="hidden" id="customerIdx" name="customerIdx" value="2">   <!--  나중에 수정해야함, th:value  -->
-                        <input type="hidden" id="ceoIdx" name="ceoIdx" value="2">   <!--  나중에 수정해야함  -->
                         <input type="hidden" id="customerName" name="customerName" value="테스터2">
+                        <input type="hidden" id="ceoIdx" name="ceoIdx" value="2">   <!--  나중에 수정해야함  -->
+                        <input type="hidden" id="ceoStore" name="ceoStore" value="테스트가게">
                         <button class="btn btn-secondary mx-5" type="button" style="width: 6em; height: 3em;" id="cancel">취소</button>
-                        <button class="btn btn-primary mx-5" type="button" style="width: 6em; height: 3em;" id="check" data-bs-toggle="modal" data-bs-target="#modal">확인</button>
+                        <button class="btn btn-primary mx-5" type="button" style="width: 6em; height: 3em;" id="check">확인</button>
                     </div>
                 </div>
             </div>
@@ -373,7 +345,7 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr th:if="${reservationPeople}">
+                        <tr>
                             <th class="py-4 text-center" style="background-color: #D7D8DAFF">인원</th>
                             <td class="py-4 ps-2" id="resvPeople">2</td>
                             <td></td>
