@@ -6,6 +6,7 @@ import lombok.Data;
 public class QuestionDTO {
     private int questionIdx;
     private int customerIdx;
+    private String customerNick;
     private int ceoIdx;
     private String questionComplete;
     private String questionTitle;

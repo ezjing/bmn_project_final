@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상세보기 페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+          crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=92vw1jqd4q"></script>
+  <style>
+    #map1 {
+      width: 100%;
+      height: 200px;
+    }
+    
+    #map2 {
+      width: 1100px;
+      height: 600px;
+    }
+    
+    #left-remote {
+      position: fixed;
+      top: 30px;
+      width: 220px;
+    }
+    
+    #right-remote {
+      position: fixed;
+      top: 30px;
+      right: 15%;
+      width: 220px;
+      
+    }
+  </style>
+  
+  <script>
+    // $(document).ready(function () {
+    //   pagination(1);
+    // });
+    //
+    // function pagination(num) {
+    //   const ceoIdx = $("#ceoIdx").val();
+    //
+    //   $.ajax({
+    //     url: "/bmn/viewDetail/" + ceoIdx,
+    //     type: "POST",
+    //     data: {pageNum: num},
+    //     success: function (data) {
+    //       console.log(data);
+    //       const qList = $("#q-list");
+    //       qList.empty();
+    //
+    //       let html = "";
+    //
+    //       for (let i = 0; data.list.length; i++) {
+    //         const questionIdx = data.list[i].questionIdx;
+    //         const questionComplete = data.list[i].questionComplete;
+    //         const questionTitle = data.list[i].questionTitle;
+    //         const customerNick = data.list[i].customerNick;
+    //         const questionDate = data.list[i].questionDate;
+    //         const questionContents = data.list[i].questionContents;
+    //         const answerContents = data.list[i].answerContents;
+    //         const answerDate = data.list[i].answerDate;
+    //
+    //         // if (true) {
+    //         //   html = "<div class=\"row text-center border border-top-0\">\n" +
+    //         //     "                <div class=\"col-sm-1\">\n" +
+    //         //     "                  <p class=\"mt-3\">" + questionIdx + "</p>\n" +
+    //         //     "                </div>\n" +
+    //         //     "                <div class=\"col-sm-2\">\n" +
+    //         //     "                  <p class=\"mt-3\">" + questionComplete + "</p>\n" +
+    //         //     "                </div>\n" +
+    //         //     "                <div class=\"col-sm-5 d-flex align-items-center\">\n" +
+    //         //     "                  <a href=\"#question-detail\"" + i + "\n" +
+    //         //     "                     class=\"text-decoration-none text-black\" data-bs-toggle=\"collapse\"\n" +
+    //         //     "                     >" + questionTitle + "</a>\n" +
+    //         //     "                </div>\n" +
+    //         //     "                <div class=\"col-sm-2\">\n" +
+    //         //     "                  <p class=\"mt-3\">" + customerNick + "</p>\n" +
+    //         //     "                </div>\n" +
+    //         //     "                <div class=\"col-sm-2\">\n" +
+    //         //     "                  <p class=\"mt-3\" th:text=\"${item.questionDate}\">" + questionDate + "</p>\n" +
+    //         //     "                </div>\n" +
+    //         //     "              </div>\n" +
+    //         //     "              <div class=\"collapse\" id=\"question-detail\"" + i + ">\n" +
+    //         //     "                <div class=\"row border border-top-0\">\n" +
+    //         //     "                  <div class=\"col-sm-2\">\n" +
+    //         //     "                    <p class=\"m-3\">[문의내용]</p>\n" +
+    //         //     "                  </div>\n" +
+    //         //     "                  <div class=\"col-sm-10\">\n" +
+    //         //     "                    <p class=\"m-3\" th:text=\"${item.questionContents}\">" + questionContents + "</p>\n" +
+    //         //     "                  </div>\n" +
+    //         //     "                </div>" +
+    //         //     "<div class=\"row border border-top-0\">\n" +
+    //         //     "                  <div class=\"col-sm-2\">\n" +
+    //         //     "                    <p class=\"m-3\">[답변내용]</p>\n" +
+    //         //     "                  </div>\n" +
+    //         //     "                  <div class=\"col-sm-8\">\n" +
+    //         //     "                    <p class=\"m-3\">" + answerContents + "</p>\n" +
+    //         //     "                  </div>\n" +
+    //         //     "                  <div class=\"col-sm-2\">\n" +
+    //         //     "                    <p class=\"m-3\">" + answerDate + "</p>\n" +
+    //         //     "                  </div>\n" +
+    //         //     "                </div>\n" +
+    //         //     "                <form method=\"post\" class=\"row border border-top-0\" th:unless=\"${item.answerContents != null}\">\n" +
+    //         //     "                  <div class=\"col-sm-2\">\n" +
+    //         //     "                    <p class=\"m-3\">[답변내용]</p>\n" +
+    //         //     "                  </div>\n" +
+    //         //     "                  <div class=\"col-sm-9 d-flex align-items-center\">\n" +
+    //         //     "                    <input type=\"text\" class=\"form-control answerContents\" name=\"answerContents\">\n" +
+    //         //     "                  </div>\n" +
+    //         //     "                  <div class=\"col-sm-1\">\n" +
+    //         //     "                    <button type=\"button\" class=\"btn btn-question-answer\">\n" +
+    //         //     "                      <i class=\"bi bi-pencil-square\" style=\"font-size:2rem\"></i>\n" +
+    //         //     "                    </button>\n" +
+    //         //     "                  </div>\n" +
+    //         //     "                  <input type=\"hidden\" class=\"questionIdx\" name=\"questionIdx\" value='" +
+    //         //     questionIdx + "'>\n" +
+    //         //     "                  <!--                  <input type=\"hidden\" class=\"method\" name=\"_method\">-->\n" +
+    //         //     "                </form>\n" +
+    //         //     "              </div>";
+    //         //   qList.append(html);
+    //         // }
+    //       //
+    //       //
+    //       //
+    //       //
+    //       //   // const divRow = $("<div class=\"row text-center border border-top-0\"></div>");
+    //       //   //
+    //       //   // const divCol11 = $("<div class=\"col-sm-1\">");
+    //       //   // const pQuestionIdx = $("<p class=\"mt-3\">" + data.list[i].questionIdx + "</p>");
+    //       //   //
+    //       //   // const divCol21 = $("<div class=\"col-sm-2\"></div>");
+    //       //   // const pQuestionComplete = $("<p class=\"mt-3\">" + data.list[i].questionComplete +"</p>");
+    //       //   //
+    //       //   // pQuestionComplete.val() == '답변완료' ? pQuestionComplete.addClass("text-muted") :
+    //       //   //   pQuestionComplete.addClass("fw-bold");
+    //       //   //
+    //       //   // const divCol5 = $("<div class=\"col-sm-5 d-flex align-items-center\"></div>");
+    //       //   // const aQuestionTitle = $("<a href=\"#question-detail" + i +
+    //       //   //   "\" class=\"text-decoration-none text-black\" data-bs-toggle=\"collapse\">" +
+    //       //   //   data.list[i].questionTitle + "</a>");
+    //       //   //
+    //       //   // const divCol22 = $("<div class=\"col-sm-2\"></div>");
+    //       //   // const pCustomerNick = $("<p class=\"mt-3\">" + data.list[i].customerNick + "</p>");
+    //       //   //
+    //       //   // const divCol23 = $("<div class=\"col-sm-2\"></div>");
+    //       //   // const pQuestionDate = $("<p class=\"mt-3\">" + data.list[i].questionDate + "</p>");
+    //       //   //
+    //       //   //
+    //       //   // const divCollapse = $("<div class='collapse' id='question-detail'" + i + "></div>");
+    //       //   //
+    //       //   // const divRow2 = $("<div class=\"row border border-top-0\"></div>");
+    //       //   // const divCol24 = $("<div class=\"col-sm-2\"></div>");
+    //       //   // const pQuestion = $("<p class=\"m-3\">[문의내용]</p>");
+    //       //   // const divCol10 = $("<div class=\"col-sm-10\"></div>");
+    //       //   // const pQuestionContents = $("<p class=\"m-3\">" + data.list[i].questionContents + "</p>");
+    //       //   //
+    //       //   // // 답변 유무에 따른 if문
+    //       //   // // 답변 있을 때 구현될 태그
+    //       //   // const divRow3 = $("<div class=\"row border border-top-0\"></div>");
+    //       //   // const divCol25 = $("<div class=\"col-sm-2\"></div>");
+    //       //   // const pAnswer = $("<p class=\"m-3\">[답변내용]</p>");
+    //       //   //
+    //       //   // const divCol8 = $("<div class=\"col-sm-8\"></div>");
+    //       //   // const pAnswerContents = $("<p class=\"m-3\">" + data.list[i].answerContents + "</p>");
+    //       //   //
+    //       //   // const divCol26 = $("<div class=\"col-sm-2\"></div>");
+    //       //   // const pAnswerDate = $("<p class=\"m-3\">" + data.list[i].answerDate + "</p>");
+    //       //   //
+    //       //   // // 답변 없을 때 구현될 태그
+    //       //   // const form = $("<form method=\"post\" class=\"row border border-top-0\"></form>");
+    //       //   //
+    //       //   // const divCol2 = $("<div class=\"col-sm-2\"></div>");
+    //       //   // const pAnswer2 = $("<p class=\"m-3\">[답변내용]</p>");
+    //       //   //
+    //       //   // const divCol9 = $("<div class=\"col-sm-9 d-flex align-items-center\"></div>");
+    //       //   // const input = $("<input type=\"text\" class=\"form-control answerContents\" name=\"answerContents\">");
+    //       //   //
+    //       //   // const divCol12 = $("<div class=\"col-sm-1\"></div>");
+    //       //   // const button = $("<button type=\"button\" class=\"btn btn-question-answer\"></button>");
+    //       //   // const icon = $("<i class=\"bi bi-pencil-square\" style=\"font-size:2rem\"></i>");
+    //       //   // const inputHidden = $("<input type=\"hidden\" class=\"questionIdx\" name=\"questionIdx\"" +
+    //       //   //   "value='" + data.list[i].questionIdx + "'>");
+    //       //   //
+    //       //   // qList.append(divRow);
+    //       //   //
+    //       //   // divRow.append(divCol11);
+    //       //   // divRow.append(divCol21);
+    //       //   // divRow.append(divCol5);
+    //       //   // divRow.append(divCol22);
+    //       //   // divRow.append(divCol23);
+    //       //   //
+    //       //   // divCol11.append(pQuestionIdx);
+    //       //   // divCol21.append(pQuestionComplete);
+    //       //   // divCol5.append(aQuestionTitle);
+    //
+    //       }
+    //
+    //
+    //       // 페이징 버튼 구현
+    //       const paginationAjax = $("#paginationAjax");
+    //
+    //       paginationAjax.empty();
+    //
+    //       const paginationPrev = $("<li class=\"page-item\"></li>");
+    //       data.prePage == 0 ? paginationPrev.addClass("disabled") : paginationPrev.removeClass("disabled");
+    //
+    //       const paginationPrevLink = $("<a class=\"page-link\" onclick='pagination(" + data.prePage + ")'>&laquo;</a>");
+    //       paginationPrev.append(paginationPrevLink);
+    //       paginationAjax.append(paginationPrev);
+    //
+    //       for (let i = 0; i < data.navigatepageNums.length; i++) {
+    //         const paginationBtnNum = $("<li class=\"page-item\"></li>");
+    //
+    //         data.pageNum == data.navigatepageNums[i] ? paginationBtnNum.addClass("active") :
+    //           paginationBtnNum.removeClass("active");
+    //
+    //         const paginationBtnNumLink = $("<a class='page-link' onclick='pagination(" +
+    //           data.navigatepageNums[i] + ")'></a>");
+    //         paginationBtnNumLink.append(data.navigatepageNums[i]);
+    //         paginationBtnNum.append(paginationBtnNumLink);
+    //         paginationAjax.append(paginationBtnNum);
+    //       }
+    //
+    //       const paginationNext = $("<li class=\"page-item\"></li>");
+    //       data.nextPage == 0 ? paginationNext.addClass("disabled") : paginationNext.removeClass("disabled");
+    //
+    //       const paginationNextLink =
+    //         $("<a class=\"page-link\" onclick=\"pagination(" + data.nextPage + ")\">&raquo;</a>");
+    //       paginationNext.append(paginationNextLink);
+    //       paginationAjax.append(paginationNext);
+    //
+    //     },
+    //     error: function () {
+    //       alert("ajax 통신 오류");
+    //     }
+    //   });
+    // }
+    
+    
+    $(document).ready(function () {
+      const lat = $("#ceo-lat").val();
+      const lon = $("#ceo-lon").val();
+      
+      var mapOptions = {
+        center: new naver.maps.LatLng(lat, lon),
+        zoom: 15
+      }
+      
+      var map1 = new naver.maps.Map('map1', mapOptions);
+      
+      var marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(lat, lon),
+        map: map1
+      });
+      
+      // var mapOptions2 = {
+      //   center: new naver.maps.LatLng(37.3595704, 127.105399),
+      //   zoom: 20
+      // }
+      // var map2 = naver.maps.Map('map2', mapOptions2);
+      //
+      // var marker2 = new naver.maps.Marker({
+      //   position: new naver.maps.LatLng(37.3595704, 127.105399),
+      //   map: map2
+      // });
+      
+      // 식당 팔로우 수 조회
+      $("#btn-follow").on('click', function () {
+        const ceoStore = $("#ceoStore").val();
+        const customerIdx = $("#customerIdx").val();
+        
+        $.ajax({
+          url: "/bmn/updateFollow",
+          type: "PUT",
+          data: {ceoStore: ceoStore, customerIdx: customerIdx},
+          success: function (data) {
+            if (data != null) {
+              $("#follow-cnt").html("<span>" + data + "</span>");
+            }
+          },
+          error: function () {
+            alert("ajax 통신 중 오류 발생");
+          }
+        });
+      });
+      
+      
+      // id값으로 하게되면 반복되는 리스트 형태로, id가 겹치는 문제 발생하기 때문에 class타입 선택자 사용
+      $(".btn-question-answer").on('click', function () {
+        // $(this)로 반복되는 버튼 중에 클릭한 버튼을 가져옴
+        // parent() : 부모 태그 가져옴
+        // childern("클래스명")
+        const frm = $(this).parent().parent();
+        const questionIdx = frm.children(".questionIdx").val();
+        const answerContents = frm.find(".answerContents").val();
+        
+        $.ajax({
+          url: "/bmn/updateAnswer",
+          type: "PUT",
+          data: {questionIdx: questionIdx, answerContents: answerContents},
+          success: function (data) {
+            // alert(data);
+            location.reload(); // location.reload() 하게 되면 페이지 다시 불러옴
+          },
+          error: function () {
+            alert("오류발생");
+          }
+        });
+      });
+
+    //   $(".btn-question-page-num").on('click', function () {
+    //     const ceoIdx = $("#ceoIdx").val();
+    //     const pageNum = $(this).val();
+    //     let scrollY = $(document).scrollTop();
+    //
+    //     // console.log(ceoIdx);
+    //     // console.log(scrollY);
+    //     // console.log(pageNum);
+    //
+    //     sessionStorage.setItem("scrollY", scrollY);
+    //
+    //     location.href = "/bmn/pageControl/" + ceoIdx + "?pageNum=" + pageNum;
+    //     // window.scrollTo(scrollY);
+    //   });
+  
+      // 식당 문의게시판 페이지 이동
+      // $(".btn-question-page-num").on('click', function () {
+      //   const ceoIdx = $("#ceoIdx").val();
+      //   const pageNum = $(this).val();
+      //
+      //   $.ajax({
+      //     url: "/bmn/viewDetail/" + ceoIdx,
+      //     type: "POST",
+      //     data: {pageNum: pageNum},
+      //     success: function (data) {
+      //       alert(data); // ajax로 데이터 받아와서 자바스크립트로 페이징버튼 하고 리스트 코드 작성해야함
+      //     },
+      //     error: function () {
+      //       alert("ajax 통신 실패");
+      //     }
+      //   })
+      // });
+      
+      // 관리자 리뷰 삭제 버튼
+      $(".btn-review-delete").on('click', function () {
+        if (!confirm("해당 리뷰를 정말 삭제하시겠습니까?")) {
+          location.reload();
+        }
+        else {
+          const reviewIdx = $(this).val();
+  
+          $.ajax({
+            url: "/bmn/reviewDelete",
+            type: "DELETE",
+            data: {reviewIdx: reviewIdx},
+            success: function (data) {
+              location.reload();
+            },
+            error: function () {
+              alert("ajax 통신 실패");
+            }
+          });
+        }
+      });
+      
+      // 리뷰에 댓글 달기
+      $(".btn-review-comment").on('click', function () {
+        const frm = $(this).parent().parent();
+        const reviewIdx = frm.children(".review-idx").val();
+        const customerIdx = frm.children(".customer-idx").val();
+        const commentContents = frm.find(".commentContents").val();
+        const ceoIdx = $("#ceoIdx").val();
+        
+        $.ajax({
+          url: "/bmn/commentInsert",
+          type: "POST",
+          data: {reviewIdx: reviewIdx, customerIdx: customerIdx, commentContents: commentContents, ceoIdx: ceoIdx},
+          success: function (data) {
+            location.reload();
+          },
+          error: function () {
+            alert("ajax 통신 실패");
+          }
+        });
+      });
+      
+    });
+  
+  </script>
+</head>
+<body>
+<header></header>
+
+<main>
+  <div class="container" id="container">
+    <div class="row">
+      <!--        왼쪽 리모컨-->
+      <div class="col-sm-2 d-grid" id="left-remote">
+        <!--          지도-->
+        <div class="border my-2" data-bs-toggle="modal" data-bs-target="#map-modal" id="map1"></div>
+        <input type="hidden" id="ceo-lat" th:value="${ceoDto.ceoLat}">
+        <input type="hidden" id="ceo-lon" th:value="${ceoDto.ceoLon}">
+        <a href="#" class="btn btn-secondary my-2">식당 예약하기</a>
+<!--        <div class="border rounded-2 p-2">예약정보 구역</div>-->
+      </div>
+      <div class="col-sm-8"></div>
+      <!--        오른쪽 리모컨-->
+      <div class="col-sm-2" id="right-remote">
+        <div class="border rounded-2 text-center d-flex flex-column my-2">
+          <a href="#" class="my-2"><i class="bi bi-arrow-up-circle-fill" style="font-size: 20px; color: tomato"></i></a>
+          <a href="#" class="mb-2"><i class="bi bi-arrow-down-circle-fill"
+                                      style="font-size: 20px; color: tomato"></i></a>
+          <a class="btn mb-2">로그인</a>
+          <div></div>
+          <a class="btn mb-2">로그아웃</a>
+          <a class="btn mb-2">리뷰 쓰기</a>
+        </div>
+      </div>
+    </div>
+    
+    <!--      가게 정보-->
+    <div class="row my-4">
+      <div class="col-sm-8 mx-auto">
+        <div class="border rounded-2 p-3">
+          <p th:text="${ceoDto.ceoStore}" class="fw-bold fs-2 d-inline">가게 이름</p>
+          <button class="btn btn-outline-primary d-inline mb-3" id="btn-follow">#팔로우
+            <span th:text="${followCnt}" id="follow-cnt">3</span>
+          </button>
+          <input type="hidden" id="ceoStore" th:value="${ceoDto.ceoStore}">
+          <input type="hidden" id="ceoIdx" th:value="${ceoDto.ceoIdx}">
+          <input type="hidden" id="customerIdx" th:value="${session.customerIdx}">
+          <br><br>
+          <span th:text="${ceoDto.ceoCategory}" class="rounded-5 border border-primary p-3 me-3">카테고리</span>
+          <span th:text="|평점 : ${ceoDto.ceoScore}점|" class="rounded-5 border border-primary p-3"
+                style="width: 100px"></span>
+          <div class="card mt-5" style="width: 40rem;">
+            <img th:src="${ceoDto.ceoMenuImg1}" class="card-img-top" alt="등록된 이미지가 없습니다.">
+            <div class="card-body">
+              <h5 class="card-title" th:text="${ceoDto.ceoMainMenu}">Card title</h5>
+            </div>
+          </div>
+        </div>
+        <div class="border rounded-2 my-3 p-2">
+          <p th:text="|가게명 : ${ceoDto.ceoStore}|">가게이름</p>
+          <p th:text="|시군구 : ${ceoDto.ceoCityAddress}|"></p>
+          <p th:text="|주소 : ${ceoDto.ceoFullAddress}|">주소</p>
+          <p th:text="|대표메뉴 : ${ceoDto.ceoMainMenu}|">대표메뉴</p>
+          <p th:text="|상세메뉴 : ${ceoDto.ceoDetailMenu1}|" class="mt-3">상세메뉴</p>
+          <p th:text="|식당 소개글 : ${ceoDto.ceoContents}|">매장소개</p>
+          <p th:text="|영업시간 : ${ceoDto.getCeoOpenTime}|">영업시간</p>
+          <p th:text="|연락처 : ${ceoDto.ceoCallNumber}|">전화번호</p>
+        </div>
+        
+        <!--          방문자 리뷰-->
+        <div class="my-5">
+          <h4 class="fw-bold">#방문자 리뷰</h4>
+          <div class="border rounded-5 pt-3 px-3">
+            <p th:text="|총 ${reviewCnt}개의 소중한 리뷰정보가 있습니다.|" class="fw-semibold"></p>
+            <div class="row">
+              <div class="col-sm d-flex align-items-center">
+                <p style="margin-bottom: 0px">식당 평점 : <span th:text="${ceoDto.ceoScore}" class="fw-semibold"></span></p>
+              </div>
+              <div class="col-sm d-flex justify-content-end">
+                <button class="btn btn-outline-info m-3">#리뷰작성</button>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="border rounded-3 my-3 p-3" th:if="${#lists.size(reviewList)} > 0" th:each="item : ${reviewList}">
+            <div class="mx-3">
+<!--              관리자 리뷰 삭제 버튼-->
+              <div class="d-flex justify-content-between">
+                <span>@
+                <span th:text="|${item.customerNick}|" class="fw-bold" style="align-content: center"></span>
+                </span>
+                <button type="button" class="btn btn-secondary mb-2 btn-review-delete" th:value="${item.reviewIdx}">
+                  <i class="bi bi-trash3" style="font-size: 16px"></i>
+                </button>
+<!--                <input type="hidden" id="review-idx" th:value="${item.reviewIdx}">-->
+              </div>
+              <div class="row">
+                <div class="col-sm">
+                  <p>리뷰 평점 : <span th:text="${item.reviewScore}" class="bg-info fw-bold rounded p-1"></span></p>
+                </div>
+                <div class="col-sm d-flex justify-content-end">
+                  <p th:text="|${item.reviewDate} 작성|"></p>
+                </div>
+              </div>
+
+              </div>
+              <div class="d-flex ms-3">
+                <div th:if="${item.reviewTag1} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">맛</button>
+                </div>
+                <div th:unless="${item.reviewTag1} == Y">
+                </div>
+  
+                <div th:if="${item.reviewTag2} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">만족도</button>
+                </div>
+                <div th:unless="${item.reviewTag2} == Y">
+                </div>
+  
+                <div th:if="${item.reviewTag3} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">서비스</button>
+                </div>
+                <div th:unless="${item.reviewTag3} == Y">
+                </div>
+  
+                <div th:if="${item.reviewTag4} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">음식량</button>
+                </div>
+                <div th:unless="${item.reviewTag4} == Y">
+                </div>
+  
+                <div th:if="${item.reviewTag5} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">대기시간</button>
+                </div>
+                <div th:unless="${item.reviewTag5} == Y">
+                </div>
+  
+                <div th:if="${item.reviewTag6} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">청결도</button>
+                </div>
+                <div th:unless="${item.reviewTag6} == Y">
+                </div>
+  
+                <div th:if="${item.reviewTag7} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">목적</button>
+                </div>
+                <div th:unless="${item.reviewTag7} == Y">
+                </div>
+  
+                <div th:if="${item.reviewTag8} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">가격</button>
+                </div>
+                <div th:unless="${item.reviewTag8} == Y">
+                </div>
+              </div>
+            <div class="m-3 border rounded-3 p-2">
+              <p th:text="${item.reviewTitle}" class="fw-semibold"></p>
+              <p th:text="${item.reviewContents}"></p>
+              <div>
+                <img th:src="${item.reviewImg}" alt="이미지를 불러올 수 없습니다." style="width: 300px; height: 200px;">
+              </div>
+            </div>
+            <button class="btn btn-outline-primary ms-4" data-bs-toggle="collapse" data-bs-target="#commentCollapse"
+               th:attrappend="data-bs-target=${itemStat.index}">
+              <i class="bi bi-chat-left-dots-fill" style="font-size: 20px"></i>
+              <span>댓글 보기</span>
+            </button>
+            
+            <hr class="mt-3">
+            
+            <div class="collapse" id="commentCollapse" th:attrappend="id=${itemStat.index}">
+              <div class="m-3 rounded-3 p-2" th:each="comment : ${commentList}" th:if="${comment.reviewIdx == item.reviewIdx}" >
+                <span th:text="|${comment.customerNick}님|" class="fw-bold"></span>
+                <span th:text="|[${comment.commentDate}]|" style="font-size: 14px"></span>
+                <input type="text" class="form-control comment-write" th:value="${comment.commentContents}">
+              </div>
+              <hr>
+              <form method="post" class="row mx-3">
+                <div class="col-sm-11 d-flex align-items-center">
+                  <input type="text" class="form-control commentContents" name="commentContents">
+                </div>
+                <div class="col-sm-1">
+                  <button type="button" class="btn btn-review-comment">
+                    <i class="bi bi-pencil-square" style="font-size:2rem"></i>
+                  </button>
+                </div>
+                <input type="hidden" class="review-idx" name="reviewIdx" th:value="${item.reviewIdx}">
+                <input type="hidden" class="customer-idx" name="customerIdx" th:value="${session.customerIdx}">
+              </form>
+            </div>
+
+
+          </div>
+          <div class="border rounded-3 my-3" th:unless="${#lists.size(reviewList)} > 0">
+            <p class="pt-3 ms-3 text-center">#등록된 리뷰가 없습니다.</p>
+          </div>
+        </div>
+        
+        <!--          식당 문의-->
+        <div class="my-5">
+          <h4 class="fw-bold" id="question-focus">#식당 문의</h4>
+          <hr>
+          <div class="">
+            <!--              문의게시판 테이블 헤더부분-->
+            <div class="row text-center border">
+              <div class="col-sm-1">
+                <p class="fw-bold mt-3">번호</p>
+              </div>
+              <div class="col-sm-2">
+                <p class="fw-bold mt-3">답변여부</p>
+              </div>
+              <div class="col-sm-5">
+                <p class="fw-bold mt-3">제목</p>
+              </div>
+              <div class="col-sm-2">
+                <p class="fw-bold mt-3">작성자</p>
+              </div>
+              <div class="col-sm-2">
+                <p class="fw-bold mt-3">등록일자</p>
+              </div>
+            </div>
+          </div>
+          <div id="q-list">
+            <div th:if="${#lists.size(questionList.getList())}>0" th:each="item : ${questionList.getList()}">
+              <div class="row text-center border border-top-0">
+                <div class="col-sm-1">
+                  <p class="mt-3" th:text="${item.questionIdx}"></p>
+                </div>
+                <div class="col-sm-2">
+                  <p class="mt-3" th:text="${item.questionComplete}"
+                     th:attrappend="class=${item.questionComplete == '답변완료' ? ' text-muted' : ' fw-bold'}"></p>
+                </div>
+                <div class="col-sm-5 d-flex align-items-center">
+                  <a href="#question-detail" th:attrappend="href=${itemStat.index}"
+                     class="text-decoration-none text-black" data-bs-toggle="collapse"
+                     th:text="${item.questionTitle}"></a>
+                </div>
+                <div class="col-sm-2">
+                  <p class="mt-3" th:text="${item.customerNick}"></p>
+                </div>
+                <div class="col-sm-2">
+                  <p class="mt-3" th:text="${item.questionDate}"></p>
+                </div>
+              </div>
+              <div class="collapse" id="question-detail" th:attrappend="id=${itemStat.index}">
+                <div class="row border border-top-0">
+                  <div class="col-sm-2">
+                    <p class="m-3">[문의내용]</p>
+                  </div>
+                  <div class="col-sm-10">
+                    <p class="m-3" th:text="${item.questionContents}"></p>
+                  </div>
+                </div>
+                <div class="row border border-top-0" th:if="${item.answerContents != null}">
+                  <div class="col-sm-2">
+                    <p class="m-3">[답변내용]</p>
+                  </div>
+                  <div class="col-sm-8">
+                    <p class="m-3" th:text="${item.answerContents}"></p>
+                  </div>
+                  <div class="col-sm-2">
+                    <p class="m-3" th:text="${item.answerDate}"></p>
+                  </div>
+                </div>
+                <form method="post" class="row border border-top-0" th:unless="${item.answerContents != null}">
+                  <div class="col-sm-2">
+                    <p class="m-3">[답변내용]</p>
+                  </div>
+                  <div class="col-sm-9 d-flex align-items-center">
+                    <input type="text" class="form-control answerContents" name="answerContents">
+                  </div>
+                  <div class="col-sm-1">
+                    <button type="button" class="btn btn-question-answer">
+                      <i class="bi bi-pencil-square" style="font-size:2rem"></i>
+                    </button>
+                  </div>
+                  <input type="hidden" class="questionIdx" name="questionIdx" th:value="${item.questionIdx}">
+                  <!--                  <input type="hidden" class="method" name="_method">-->
+                </form>
+              </div>
+            </div>
+            <div th:unless="${#lists.size(questionList.getList())}>0" class="border rounded-3 my-3">
+              <p class="text-center pt-3">등록된 문의 글이 없습니다.</p>
+            </div>
+
+<!--                      a태그 페이징 (페이징 후 맨 위로 감)-->
+  
+            <div class="my-3">
+              <ul class="pagination d-flex justify-content-end">
+      
+                <!--                이전 페이지 버튼-->
+                <li class="page-item" th:classappend="${questionList.getPrePage() == 0} ? 'disabled'">
+                  <a href="/bmn/viewDetail/" th:attrappend="href=|${ceoDto.ceoIdx}?pageNum=${questionList.getPrePage()}|"
+                     class="page-link">
+                    &laquo;</a>
+                </li>
+      
+                <!--                네비게이션 버튼-->
+                <li class="page-item"
+                    th:each="page : ${#numbers.sequence(questionList.getNavigateFirstPage(), questionList.getNavigateLastPage())}"
+                    th:classappend="${page == questionList.getPageNum()} ? 'active'">
+                  <a href="/bmn/viewDetail/" th:classappend="page-link" th:text="${page}"
+                     th:attrappend="href=|${ceoDto.ceoIdx}?pageNum=${page}|"></a>
+                </li>
+      
+                <!--                다음 페이지 버튼 -->
+                <li class="page-item" th:classappend="${questionList.getNextPage() == 0} ? 'disabled'">
+                  <a href="/bmn/viewDetail/" th:attrappend="href=|${ceoDto.ceoIdx}?pageNum=${questionList.getNextPage()}|"
+                     class="page-link">
+                    &raquo;</a>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+  
+          <!--          버튼 태그 페이징 (q-list 아이디의 div 안에 넣어야함!)-->
+          <!--          <div class="my-3">-->
+          <!--            <ul class="pagination d-flex justify-content-end">-->
+          <!--              -->
+          <!--              &lt;!&ndash;                이전 페이지 버튼&ndash;&gt;-->
+          <!--              <li class="page-item" th:classappend="${questionList.getPrePage() == 0} ? 'disabled'">-->
+          <!--                <button type="button" class="page-link" id="btn-question-prev">&laquo;</button>-->
+          <!--                <input type="hidden" id="prev-page-num" th:value="${questionList.getPrePage()}">-->
+          <!--              </li>-->
+          <!--              -->
+          <!--              &lt;!&ndash;                네비게이션 버튼&ndash;&gt;-->
+          <!--              <li class="page-item"-->
+          <!--                  th:each="page : ${#numbers.sequence(questionList.getNavigateFirstPage(), questionList.getNavigateLastPage())}"-->
+          <!--                  th:classappend="${page == questionList.getPageNum()} ? 'active'">-->
+          <!--                <button type="button" class="page-link btn-question-page-num" th:text="${page}" th:value="${page}"></button>-->
+          <!--                <input type="hidden" id="page-num" th:value="${page}">-->
+          <!--              </li>-->
+          <!--              -->
+          <!--              &lt;!&ndash;                다음 페이지 버튼&ndash;&gt;-->
+          <!--              <li class="page-item" th:classappend="${questionList.getNextPage() == 0} ? 'disabled'">-->
+          <!--                <button type="button" class="page-link" id="btn-question-next">&raquo;</button>-->
+          <!--                <input type="hidden" id="next-page-num" th:value="${questionList.getNextPage()}">-->
+          <!--              </li>-->
+          <!--            </ul>-->
+          <!--          </div>-->
+  
+  
+          
+          
+
+
+<!--          ajax 이용한 페이지 처리 버튼-->
+<!--          <div class="my-3">-->
+<!--            <ul class="pagination d-flex justify-content-end" id="paginationAjax">-->
+<!--      -->
+<!--              &lt;!&ndash;                이전 페이지 버튼&ndash;&gt;-->
+<!--              <li class="page-item disabled">-->
+<!--                <a href="#" class="page-link">&laquo;</a>-->
+<!--              </li>-->
+<!--      -->
+<!--              &lt;!&ndash;                네비게이션 버튼&ndash;&gt;-->
+<!--              <li class="page-item">-->
+<!--                <a href="#" class="page-link">1</a>-->
+<!--              </li>-->
+<!--      -->
+<!--              &lt;!&ndash;                다음 페이지 버튼 &ndash;&gt;-->
+<!--              <li class="page-item">-->
+<!--                <a href="#" class="page-link">&raquo;</a>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+          
+          
+          <br>
+          <form action="/bmn/insertQuestion" method="post">
+            <div class="my-2">
+              <h4 class="fw-bold">#문의글 작성</h4>
+              <hr>
+            </div>
+            <div class="input-group mb-1">
+              <span class="input-group-text">글제목</span>
+              <input type="text" class="form-control" name="questionTitle" placeholder="문의 글 제목을 입력해주세요">
+            </div>
+            <div class="input-group">
+              <span class="input-group-text">글내용</span>
+              <textarea class="form-control" rows="5" name="questionContents" placeholder="문의 하실 내용을 입력해주세요"></textarea>
+            </div>
+            <!--              히든 데이터 영역-->
+            <input type="hidden" name="customerIdx" th:value="${session.customerIdx}">
+            <input type="hidden" name="customerNick" th:value="${session.customerNick}">
+            <input type="hidden" name="ceoIdx" th:value="${ceoDto.ceoIdx}">
+            
+            <div class="d-flex justify-content-end my-2">
+              <button class="btn btn-outline-secondary">사장님께 문의하기<i class="bi bi-pencil-square ms-2"
+                                                                    style="color: black"></i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!--          모달 팝업 지도창-->
+  <div class="modal" id="map-modal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" th:text="${ceoDto.ceoStore}">지도 확대하기</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="map2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+  const lat = $("#ceo-lat").val();
+  const lon = $("#ceo-lon").val();
+  
+  var mapOptions2 = {
+    center: new naver.maps.LatLng(lat, lon),
+    zoom: 15
+  };
+  
+  var map2 = new naver.maps.Map('map2', mapOptions2);
+
+  var marker = new naver.maps.Marker({
+    position: new naver.maps.LatLng(lat, lon),
+    map: map2
+  });
+  
+</script>
+
+<footer></footer>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</body>
+</html>
