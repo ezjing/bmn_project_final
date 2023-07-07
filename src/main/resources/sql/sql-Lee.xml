@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitc.bmn_project.mapper.LeeMapper">
+    <insert id="insertReservation" parameterType="com.bitc.bmn_project.DTO.ReservationDTO">
+        INSERT INTO java505_team3_db.reservation_tp (customer_idx, ceo_idx, customer_name, reservation_stat, reservation_people, reservation_contents, reservation_date, reservation_time)
+        VALUES (#{customerIdx}, #{ceoIdx}, #{customerName}, 1, #{reservationPeople}, #{reservationContents}, #{reservationDate}, #{reservationTime})
+<!--        VALUES (1, 1, 1, #{reservationPeople}, #{reservationContents}, #{reservationDate}, #{reservationTime})-->
+    </insert>
+    <select id="selectReservation" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReservationDTO">
+        SELECT *
+        FROM java505_team3_db.reservation_tp
+        WHERE ceo_idx = #{ceoIdx}
+    </select>
+    <select id="getReservationInfo" parameterType="com.bitc.bmn_project.DTO.ReservationDTO" resultType="com.bitc.bmn_project.DTO.ReservationDTO">
+        SELECT *
+        FROM java505_team3_db.reservation_tp
+        WHERE customer_idx = #{customerIdx}
+        AND ceo_idx = #{ceoIdx}
+        AND reservation_date = #{reservationDate}
+        AND reservation_time = #{reservationTime}
+    </select>
+</mapper>
+
