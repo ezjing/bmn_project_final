@@ -11,178 +11,244 @@
             crossorigin="anonymous"></script>
 
     <style>
-        input:disabled {    /* 왜안되지 */
-            background: #198754;
-        }
+
     </style>
     <script>
+        let selTime = "";
+
+        function events() {
+            $(".time-label").on("click", function() {   // label에 임의 클래스 문구 넣고 클릭이벤트, 날짜 선택했을때 클릭이벤트가 발생하지 않음
+                // alert('클릭이벤트');
+                const reservationDate = $("#reservationDate").val();
+                const ceoIdx = $("#ceoIdx").val();
+                selTime = $(this).attr("for");   // .attr : 해당 속성값 가져오기, this 는 클릭 이벤트가 일어나는 주체라고 생각하면 쉽다.
+                // console.log(selTime);   // 날짜 선택했을때 else로 안넘어감 클릭 이벤트가 발생하지 않음
+
+                if (reservationDate == "") {
+                    alert("날짜를 선택하세요.")
+                }
+                else {
+                    // alert("통신 good");
+                    $.ajax({
+                        url: "/bmn/reservationCeo/reservationCeoTimeInfo",
+                        type: "POST",
+                        data: {reservationDate: reservationDate, ceoIdx: ceoIdx, reservationTime: selTime},
+                        success: function (data) {
+                            // alert("ajax 통신 성공.");
+                            const reservationPeople = data.reservationPeople;
+                            const reservationContents = data.reservationContents;
+
+                            $("#reservationPeople").val(reservationPeople);
+                            $("#reservationContents").val(reservationContents);
+
+                        },
+                        error: function () {
+                            alert("ajax 통신 시 오류가 발생했습니다.");
+                        }
+                    });
+                }
+            });
+        }
+
         $(document).ready(function () {
-            $("#cancel").on("click", function () {
-                alert("클릭 이벤트");
-                // history.back();
+            $("#refuse").on("click", function () {
+                $("#modalRefuse").modal("show");
+            })
+            $("#lastRefuse").on("click", function () {
+                $("#modalRefuse").modal("hide");
+                const reservationDate = $("#reservationDate").val();
+                const ceoIdx = $("#ceoIdx").val();
+
+                $.ajax({
+                    url: "/bmn/reservationCeo/reservationRefuse",
+                    type: "POST",
+                    data: {reservationDate: reservationDate, ceoIdx: ceoIdx, reservationTime: selTime},
+                    success: function (data) {  // 클릭한 버튼 val
+                        let inputList = $("#replace").find("input");
+
+                        for(let i = 0; i < inputList.length; i++) {
+                            const tag2 = inputList[i];  // input 태그가 0번부터 출력됨....
+                            const reservationTime = $(tag2).val();  // input 태그의 val값 가져옴
+
+
+                            // const pTag = $(tag2).children();    // input 태그의 자식인 p 태그 지정
+                            // console.log(pTag);
+                            // const text = $(pTag).val();  // p 태그의 val값
+                            // console.log(text);
+
+                            if (data == reservationTime) {    // 버튼이 가진 값과 클릭한 버튼을 조회해야함(시간값으로 맞춰 가져옴).
+                                if (tag2.nextElementSibling.textContent.length == 5) {
+                                    alert("예약 일정이 있는 시간을 선택해주세요.");
+                                }
+                                else {
+                                    alert("예약 취소가 완료되었습니다.");
+
+                                    console.log(tag2.nextElementSibling);   // nextElementSibling : 지정한 요소(태그)의 바로 다음 요소(태그)를 가져옴
+                                    console.log(tag2.nextElementSibling.textContent);   // textContent : 해당 태그의 택스트를 가져옴(value가 아님)
+                                    tag2.nextElementSibling.textContent = $(tag2).val() + ":00";
+                                    // $(tag2).removeAttr("checked")    // 라디오라서 그런지 채크해제가 안먹음
+
+                                    $("#reservationPeople").val("");
+                                    $("#reservationContents").val("");
+                                }
+                            }
+                        }
+                    },
+                    error: function () {
+                        alert("예약 일정이 있는 시간을 선택해주세요.");
+                    }
+                });
             });
-            // $("#submit").on("click", function () {
-            //
-            // });
-            $("#home").on("click", function () {
-                location.href("#"); // 나중에 홈으로 가는 주소 넣을 것
-            });
+
+            $("#confirm").on("click", function () {
+                $("#modalConfirm").modal("show");
+            })
+
+            $("#lastConfirm ").on("click", function () {
+                $("#modalConfirm").modal("hide");
+                const reservationDate = $("#reservationDate").val();
+                const ceoIdx = $("#ceoIdx").val();
+
+                $.ajax({
+                    url: "/bmn/reservationCeo/reservationConfirm",
+                    type: "PUT",
+                    data: {reservationDate: reservationDate, ceoIdx: ceoIdx, reservationTime: selTime},
+                    success: function (data) {  // PUT 타입이기떄문에 data값이 없음 그럼 가져와야지. PUT을 reservationTime으로 들고옴
+                        let inputList = $("#replace").find("input");
+
+                        for(let i = 0; i < inputList.length; i++) {
+                            const tag2 = inputList[i];  // input 태그가 0번부터 출력됨....
+                            const reservationTime = $(tag2).val();  // input 태그의 val값 가져옴
+                            if (data == reservationTime) {    // 버튼이 가진 값과 예약완료된 버튼을 조회해야함(시간값으로 맞춰 가져옴).
+                                if (tag2.nextElementSibling.textContent.length == 5) {  // if문을 생각할땐 구분해야 하는 조건의 차이점을 신중히 생각하면 된다
+                                    alert("예약 일정이 있는 시간을 선택해주세요.");
+                                }
+                                else {
+                                    alert("승인이 완료되었습니다.");
+                                    $(tag2).attr("disabled", 'true');
+                                }
+                            }
+                        }
+                    },
+                    error: function () {    // 빈 버튼 클릭하면
+                        alert("예약 일정이 있는 시간을 선택해주세요.");
+                    }
+                });
+
+
+            })
             $("#reservationDate").on("change", function () {
-                // alert("변경 이벤트 발생");  // 변경시 정상 인식 ㅇㅇ
+                // alert("변경 이벤트 발생");
                 const reservationDate = $("#reservationDate").val();    // 문자열로 제대로 들고옴
                 const ceoIdx = $("#ceoIdx").val();
 
                 $.ajax({
-                    url: "/bmn/reservationCeo/ceoIdx=" + ceoIdx,    // 주소 수정!!!!!!!!!!  (로그인 구현 후 타임리프로 히든태그 값 주기)
+                    url: "/bmn/reservationCeo/reservationCeoDateInfo",    // 주소 수정!!!!!!!!!!  (로그인 구현 후 타임리프로 히든태그 값 주기)
                     type: "POST",
                     data: {reservationDate: reservationDate, ceoIdx: ceoIdx},
-                    success: function (data) {
-                        // alert("ajax 통신 성공.");   // 통신 성공 ㅇㅇ
+                    success: function (data) {  // data = dateList
+                        // alert("ajax 통신 성공.");
 
-                        $("#btnCheck").empty(); // 자손태그 삭제, 본인 남김
-                        let contents = "<div class=\"row border mb-3\">\n" +
-                            "                    <h3>오전</h3>\n" +
-                            "                    <div class=\"row mb-2\">\n" +
-                            "                        <div class=\"d-flex\">\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"11\" value=\"11\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"11\"  style=\"width: 10em; height: 5em;\" id=\"lab11\">11:00</label>\n" +
-                            "                            <button class=\"btn btn-success opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
-                            "                            <button class=\"btn btn-success opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
-                            "                            <button class=\"btn btn-success opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                        // 버튼 내용들 지웠다가 다시 쓰기
+                        $("#replace").empty();
+                        let contents =
+                            "<div class=\"row border mb-3\">\n" +
+                            "                        <h3>오전</h3>\n" +
+                            "                        <div class=\"row mb-2\">\n" +
+                            "                            <div class=\"d-flex\">\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"11\" value=\"11\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"11\"  style=\"width: 10em; height: 5em;\" id=\"lab11\">11:00<br></label>\n" +
+                            "                                <button class=\"btn btn-success me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                                <button class=\"btn btn-success me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                                <button class=\"btn btn-success me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                            </div>\n" +
                             "                        </div>\n" +
-                            "                    </div>\n" +
                             "\n" +
-                            "                    <h3>오후</h3>\n" +
-                            "                    <div class=\"row mb-2\">\n" +
-                            "                        <div class=\"d-flex\">\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"12\" value=\"12\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"12\"  style=\"width: 10em; height: 5em;\" id=\"lab12\">12:00</label>\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"01\" value=\"01\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"01\"  style=\"width: 10em; height: 5em;\" id=\"lab01\">01:00</label>\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"02\" value=\"02\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"02\"  style=\"width: 10em; height: 5em;\" id=\"lab02\">02:00</label>\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"03\" value=\"03\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"03\"  style=\"width: 10em; height: 5em;\" id=\"lab03\">03:00</label>\n" +
+                            "                        <h3>오후</h3>\n" +
+                            "                        <div class=\"row mb-2\">\n" +
+                            "                            <div class=\"d-flex\">\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"12\" value=\"12\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"12\"  style=\"width: 10em; height: 5em;\" id=\"lab12\">12:00<br></label>\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"01\" value=\"01\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"01\"  style=\"width: 10em; height: 5em;\" id=\"lab01\">01:00<br></label>\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"02\" value=\"02\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"02\"  style=\"width: 10em; height: 5em;\" id=\"lab02\">02:00<br></label>\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"03\" value=\"03\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"03\"  style=\"width: 10em; height: 5em;\" id=\"lab03\">03:00<br></label>\n" +
+                            "                            </div>\n" +
                             "                        </div>\n" +
-                            "                    </div>\n" +
-                            "                    <div class=\"row mb-2\">\n" +
-                            "                        <div class=\"d-flex\">\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"04\" value=\"04\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"04\"  style=\"width: 10em; height: 5em;\" id=\"lab04\">04:00</label>\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"05\" value=\"05\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"05\"  style=\"width: 10em; height: 5em;\" id=\"lab05\">05:00</label>\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"06\" value=\"06\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"06\"  style=\"width: 10em; height: 5em;\" id=\"lab06\">06:00</label>\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"07\" value=\"07\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"07\"  style=\"width: 10em; height: 5em;\" id=\"lab07\">07:00</label>\n" +
+                            "                        <div class=\"row mb-2\">\n" +
+                            "                            <div class=\"d-flex\">\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"04\" value=\"04\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"04\"  style=\"width: 10em; height: 5em;\" id=\"lab04\">04:00<br></label>\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"05\" value=\"05\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"05\"  style=\"width: 10em; height: 5em;\" id=\"lab05\">05:00<br></label>\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"06\" value=\"06\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"06\"  style=\"width: 10em; height: 5em;\" id=\"lab06\">06:00<br></label>\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"07\" value=\"07\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"07\"  style=\"width: 10em; height: 5em;\" id=\"lab07\">07:00<br></label>\n" +
+                        "                            </div>\n" +
                             "                        </div>\n" +
-                            "                    </div>\n" +
-                            "                    <div class=\"row mb-2\">\n" +
-                            "                        <div class=\"d-flex\">\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"08\" value=\"08\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"08\"  style=\"width: 10em; height: 5em;\" id=\"lab08\">08:00</label>\n" +
-                            "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"09\" value=\"09\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center\" for=\"09\"  style=\"width: 10em; height: 5em;\" id=\"lab09\">09:00</label>\n" +
-                            "                            <button class=\"btn btn-success opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
-                            "                            <button class=\"btn btn-success opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                        <div class=\"row mb-2\">\n" +
+                            "                            <div class=\"d-flex\">\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"08\" value=\"08\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"08\"  style=\"width: 10em; height: 5em;\" id=\"lab08\">08:00<br></label>\n" +
+                            "                                <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"09\" value=\"09\">\n" +
+                            "                                <label class=\"btn btn-success me-2 d-flex justify-content-center align-items-center time-label\" for=\"09\"  style=\"width: 10em; height: 5em;\" id=\"lab09\">09:00<br></label>\n" +
+                            "                                <button class=\"btn btn-success me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                                <button class=\"btn btn-success me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                            </div>\n" +
                             "                        </div>\n" +
-                            "                    </div>\n" +
-                            "                </div>";
-                        $("#btnCheck").append(contents);
+                            "                    </div>";
+                        $("#replace").append(contents)
 
-                        // 서버에서 전송된 내용
-                        for (let i = 0; i < data.length; i++) {
-                            // console.log(data[i]);
+                        let inputList = $("#replace").find("input");    // replace div 자손 input 태그들 리스트로 반환
+                        let labelList = $("#replace").find("label");    // replace div 자손 label 태그들 리스트로 반환
 
-                            const btn11 = $("#11").val();
-                            const btn12 = $("#12").val();
-                            const btn01 = $("#01").val();
-                            const btn02 = $("#02").val();
-                            const btn03 = $("#03").val();
-                            const btn04 = $("#04").val();
-                            const btn05 = $("#05").val();
-                            const btn06 = $("#06").val();
-                            const btn07 = $("#07").val();
-                            const btn08 = $("#08").val();
-                            const btn09 = $("#09").val();
+                        for (let i = 0; i < data.length; i++) {    // 에러 발생 지점1 : labelList 길이만큼 반복 -> data 길이만큼 반복
+                            let customerName = data[i]?.customerName;   // Uncaught TypeError: Cannot read properties of undefined 에러 발생 시 . 앞에 ? 붙이기
+                            let reservationPeople = data[i]?.reservationPeople;
+                            let reservationTime = data[i]?.reservationTime;
+                            let reservationStat = data[i]?.reservationStat;
 
-                            const rad11 = "<input type='radio' class='btn-check' name='reservationTime' id='11' value='11' disabled>"
-                            const lab11 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='11'  style='width: 10em; height: 5em;'>11:00</label>"
-                            const rad12 = "<input type='radio' class='btn-check' name='reservationTime' id='12' value='12' disabled>"
-                            const lab12 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='12'  style='width: 10em; height: 5em;'>12:00</label>"
-                            const rad01 = "<input type='radio' class='btn-check' name='reservationTime' id='01' value='01' disabled>"
-                            const lab01 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='01'  style='width: 10em; height: 5em;'>01:00</label>"
-                            const rad02 = "<input type='radio' class='btn-check' name='reservationTime' id='02' value='02' disabled>"
-                            const lab02 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='02'  style='width: 10em; height: 5em;'>02:00</label>"
-                            const rad03 = "<input type='radio' class='btn-check' name='reservationTime' id='03' value='03' disabled>"
-                            const lab03 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='03'  style='width: 10em; height: 5em;'>03:00</label>"
-                            const rad04 = "<input type='radio' class='btn-check' name='reservationTime' id='04' value='04' disabled>"
-                            const lab04 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='04'  style='width: 10em; height: 5em;'>04:00</label>"
-                            const rad05 = "<input type='radio' class='btn-check' name='reservationTime' id='05' value='05' disabled>"
-                            const lab05 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='05'  style='width: 10em; height: 5em;'>05:00</label>"
-                            const rad06 = "<input type='radio' class='btn-check' name='reservationTime' id='06' value='06' disabled>"
-                            const lab06 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='06'  style='width: 10em; height: 5em;'>06:00</label>"
-                            const rad07 = "<input type='radio' class='btn-check' name='reservationTime' id='07' value='07' disabled>"
-                            const lab07 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='07'  style='width: 10em; height: 5em;'>07:00</label>"
-                            const rad08 = "<input type='radio' class='btn-check' name='reservationTime' id='08' value='08' disabled>"
-                            const lab08 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='08'  style='width: 10em; height: 5em;'>08:00</label>"
-                            const rad09 = "<input type='radio' class='btn-check' name='reservationTime' id='09' value='09' disabled>"
-                            const lab09 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='09'  style='width: 10em; height: 5em;'>09:00</label>"
+                            // console.log(customerName);
+                            // console.log(reservationPeople);
+
+                            // let tempHtml = `\n${customerName}${reservationPeople}명`;
+                            if (customerName != undefined && reservationPeople != undefined) {  // 둘 다 언디파인드가 아닌 경우에만 출력하게끔
+                                // console.log(labelList.length);
+                                for (let j = 0; j < labelList.length; j++) {    // 에러 발생 지점2 : 향상된 for문 -> 일반 for문으로 수정
+                                    const tag = labelList[j];   // tag 가 순수 js 문법으로 구성됨
+                                    // console.log(tag.getAttribute("for"));    // js로 html 코드 가져오기
+                                    // console.log($(tag).attr("for"));    // $()는 js 를 jquery 문법으로 만들도록 한번 감싸주는것 그래서 제이쿼리로 변경 시키고 제이쿼리 문법인 attr을 써야 제대로 출력 됨, jquery로 js 가져오기
+                                    const tag2 = inputList[j];
+                                    // console.log(tag2)
+
+                                    const lab = $(tag).attr("for");
 
 
-                            if (btn11 == data[i]) { // data[i]의 값과 버튼의 value가 같으면 실행
-                                $("#11").replaceWith(rad11);
-                                $("#lab11").replaceWith(lab11);
-                                // alert("데이터 조회 성공."); //ㅇㅇ
-                            }
-                            else if (btn12 == data[i]) {
-                                $("#12").replaceWith(rad12);
-                                $("#lab12").replaceWith(lab12);
-                            }
-                            else if (btn01 == data[i]) {
-                                $("#01").replaceWith(rad01);
-                                $("#lab01").replaceWith(lab01);
-                            }
-                            else if (btn02 == data[i]) {
-                                $("#02").replaceWith(rad02);
-                                $("#lab02").replaceWith(lab02);
-                            }
-                            else if (btn03 == data[i]) {
-                                $("#03").replaceWith(rad03);
-                                $("#lab03").replaceWith(lab03);
-                            }
-                            else if (btn04 == data[i]) {
-                                $("#04").replaceWith(rad04);
-                                $("#lab04").replaceWith(lab04);
-                            }
-                            else if (btn05 == data[i]) {
-                                $("#05").replaceWith(rad05);
-                                $("#lab05").replaceWith(lab05);
-                            }
-                            else if (btn06 == data[i]) {
-                                $("#06").replaceWith(rad06);
-                                $("#lab06").replaceWith(lab06);
-                            }
-                            else if (btn07 == data[i]) {
-                                $("#07").replaceWith(rad07);
-                                $("#lab07").replaceWith(lab07);
-                            }
-                            else if (btn08 == data[i]) {
-                                $("#08").replaceWith(rad08);
-                                $("#lab08").replaceWith(lab08);
-                            }
-                            else if (btn09 == data[i]) {
-                                $("#09").replaceWith(rad09);
-                                $("#lab09").replaceWith(lab09);
+                                    if (reservationTime == lab) {   // 받아온 reservationTime과 라디오의 val이 일치하는 radio에 넣어야함
+                                        const tempHtml = customerName + '\n' + reservationPeople + "명";
+
+                                        labelList[j].append(tempHtml);  // 라벨리스트에 해당 내용 입력.(이러면 모든 라벨 리스트에 입력됨)
+                                        if (reservationStat == 2) {
+                                            $(tag2).attr("disabled", 'true')
+                                            // console.log(tag2)
+                                        }
+                                    }
+                                }
                             }
                         }
-                        // 콘솔 내용을 비우면 되려나
+
+                        events();
                     },
                     error: function () {
                         alert("ajax 통신 시 오류가 발생했습니다.");
                     }
                 });
             });
+
+            events();
         });
     </script>
 
@@ -191,30 +257,30 @@
 <header th:replace="~{layout/header :: header}"></header>
 
 <main class="container-sm" id="main">
-    <form action="/bmn/reservationCeo/ceoIdx=2/customerIdx=2" method="post">   <!--  th:action=""  나중에 추가  -->
+    <form action="" method="post" id="form">
         <div class="row">
             <div class="col-2">
                 <div class="border">
                     <label for="reservationPeople" class="form-label">예약 인원</label>
-                    <input type="text" class="form-control" id="reservationPeople" name="reservationPeople">
+                    <input type="text" class="form-control" id="reservationPeople" name="reservationPeople" readonly>
                     <label for="reservationContents" class="form-label">상세 내용</label>
-                    <input type="text" class="form-control" id="reservationContents" name="reservationContents">
+                    <input type="text" class="form-control" id="reservationContents" name="reservationContents" readonly>
                 </div>
             </div>
             <div class="col-10">
                 <div class="row">
                     <input type="date" name="reservationDate" id="reservationDate">
                 </div>
-                <div id="btnCheck">
+                <div id="replace">
                     <div class="row border mb-3">
                         <h3>오전</h3>
                         <div class="row mb-2">
                             <div class="d-flex">
                                 <input type="radio" class="btn-check" name="reservationTime" id="11" value="11">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="11"  style="width: 10em; height: 5em;" id="lab11">11:00</label>
-                                <button class="btn btn-success opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
-                                <button class="btn btn-success opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
-                                <button class="btn btn-success opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="11"  style="width: 10em; height: 5em;" id="lab11">11:00<br></label>
+                                <button class="btn btn-success me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
+                                <button class="btn btn-success me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
+                                <button class="btn btn-success me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
                             </div>
                         </div>
 
@@ -222,52 +288,89 @@
                         <div class="row mb-2">
                             <div class="d-flex">
                                 <input type="radio" class="btn-check" name="reservationTime" id="12" value="12">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="12"  style="width: 10em; height: 5em;" id="lab12">12:00</label>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="12"  style="width: 10em; height: 5em;" id="lab12">12:00<br></label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="01" value="01">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="01"  style="width: 10em; height: 5em;" id="lab01">01:00</label>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="01"  style="width: 10em; height: 5em;" id="lab01">01:00<br></label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="02" value="02">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="02"  style="width: 10em; height: 5em;" id="lab02">02:00</label>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="02"  style="width: 10em; height: 5em;" id="lab02">02:00<br></label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="03" value="03">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="03"  style="width: 10em; height: 5em;" id="lab03">03:00</label>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="03"  style="width: 10em; height: 5em;" id="lab03">03:00<br></label>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="d-flex">
                                 <input type="radio" class="btn-check" name="reservationTime" id="04" value="04">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="04"  style="width: 10em; height: 5em;" id="lab04">04:00</label>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="04"  style="width: 10em; height: 5em;" id="lab04">04:00<br></label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="05" value="05">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="05"  style="width: 10em; height: 5em;" id="lab05">05:00</label>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="05"  style="width: 10em; height: 5em;" id="lab05">05:00<br></label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="06" value="06">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="06"  style="width: 10em; height: 5em;" id="lab06">06:00</label>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="06"  style="width: 10em; height: 5em;" id="lab06">06:00<br></label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="07" value="07">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="07"  style="width: 10em; height: 5em;" id="lab07">07:00</label>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="07"  style="width: 10em; height: 5em;" id="lab07">07:00<br></label>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="d-flex">
                                 <input type="radio" class="btn-check" name="reservationTime" id="08" value="08">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="08"  style="width: 10em; height: 5em;" id="lab08">08:00</label>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="08"  style="width: 10em; height: 5em;" id="lab08">08:00<br></label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="09" value="09">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="09"  style="width: 10em; height: 5em;" id="lab09">09:00</label>
-                                <button class="btn btn-success opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
-                                <button class="btn btn-success opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
+                                <label class="btn btn-success me-2 d-flex justify-content-center align-items-center time-label" for="09"  style="width: 10em; height: 5em;" id="lab09">09:00<br></label>
+                                <button class="btn btn-success me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
+                                <button class="btn btn-success me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="d-flex justify-content-center">
                         <input type="hidden" id="customerIdx" name="customerIdx" value="2">   <!--  나중에 수정해야함, th:value  -->
                         <input type="hidden" id="ceoIdx" name="ceoIdx" value="2">
                         <input type="hidden" id="customerName" name="customerName" value="테스터2">
-                        <button class="btn btn-secondary mx-5" type="button" style="width: 6em; height: 3em;" id="cancel">취소</button>
-                        <button class="btn btn-primary mx-5" type="submit" style="width: 6em; height: 3em;" id="submit" data-bs-toggle="modal" data-bs-target="#modal">신청</button>
+                        <button class="btn btn-secondary mx-5" type="button" style="width: 6em; height: 3em;" id="refuse">거절</button>
+                        <button class="btn btn-primary mx-5" type="button" style="width: 6em; height: 3em;" id="confirm">승인</button>
                     </div>
                 </div>
             </div>
         </div>
+        <!--  REST 방식 사용 시 form 태그의 데이터 전송 방식을 변경하기 위한 태그  -->
+        <input type="hidden" id="method" name="_method">
     </form>
+
+    <div class="modal fade" id="modalRefuse" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">밥뭇나</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>거절하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="lastRefuse">거절</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalConfirm" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">밥뭇나</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>승인하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="lastConfirm">승인</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>

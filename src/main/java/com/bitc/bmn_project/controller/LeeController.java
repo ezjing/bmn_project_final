@@ -28,9 +28,9 @@ public class LeeController {
         return "index";
     }
 
-    // 받기 전에 상세 페이지에서 get으로 가게 테이블 정보가 제공되어야함, mv.addObject(가게정보 dto) 이런식
+    // 받기 전에 상세 페이지에서 get으로 가게 테이블 정보(ceoIdx, ceoName)가 제공되어야함 제공된거 타임리프로 input hidden에 꼭 넣어야함, mv.addObject(가게정보 dto) 이런식
     // 고객 정보가 입력된 view 제공
-    @RequestMapping(value = "/reservationCus/ceoIdx={ceoIdx}", method = RequestMethod.GET)
+    @RequestMapping(value = "/reservationCus/ceoIdx={ceoIdx}", method = RequestMethod.GET)  // ceoIdx 통합할때 지워버리기
     public ModelAndView reservationCusView(@PathVariable int ceoIdx, HttpServletRequest req, HttpServletResponse resp) throws Exception {
 //        CustomerDTO customer = new CustomerDTO(); // 로그인 정보 쓸때 주석 해제
 //        HttpSession session = req.getSession();   // 로그인 정보 쓸때 주석 해제
@@ -63,16 +63,16 @@ public class LeeController {
     public Object reservationCusAjax(@RequestParam("reservationDate") String reservationDate, @PathVariable int ceoIdx) throws Exception {    // 날짜정보 제대로 넘어옴!
         List<ReservationDTO> reservationList = new ArrayList<>();   // 전체 정보
         reservationList = leeService.selectReservation(ceoIdx);
-        List<Integer> dateList = new ArrayList<>();  // time만
+        List<Integer> dayTimeList = new ArrayList<>();  // time만
 
         for (ReservationDTO reservation : reservationList) {
             if (reservationDate.equals(reservation.getReservationDate())) {
                 int time = reservation.getReservationTime();   // 날짜 하나 들고오기
 
-                dateList.add(time);
+                dayTimeList.add(time);
             }
         }
-        return dateList; // 제대로 넘어감
+        return dayTimeList; // 제대로 넘어감
     }
 
     // 고객의 예약 정보 입력 process 및 view 제공(get 방식으로 view만 먼저 구현하는 방법도 생각해보기)
@@ -103,35 +103,101 @@ public class LeeController {
         return "redirect:/";  // 리다이렉트는 A에 있었을때 A에서 볼일 끝내고 B로 넘어갈때 쓰는 느낌, 나중에 홈으로 가는 페이지 넣기
     }
 
+
+
+
+
+    /////////////////////////////// 여기서부터 사장 /////////////////////////////////
+
+
+
+
+    // 마찬가지로 이전 페이지에서 ceoIdx 보내줘야함. 뷰 파일에서 타임리프로 쓸 수 있게끔.(그렇게 되면 데이터 타입 String -> ModelAndView)
     @RequestMapping(value = "/reservationCeo/ceoIdx={ceoIdx}", method = RequestMethod.GET)
-    public ModelAndView reservationCeoView(@PathVariable int ceoIdx, HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        CeoDTO ceo = new CeoDTO(); // 로그인 정보 쓸때 주석 해제
-        HttpSession session = req.getSession();   // 로그인 정보 쓸때 주석 해제
+    public String reservationCeoView(@PathVariable int ceoIdx, HttpServletRequest req) throws Exception { // 고객 페이지 View 타입 String 으로 수정할 것, resp 삭제(수정 시 주석 삭제)
+//        CeoDTO ceo = new CeoDTO(); // 로그인 정보 쓸때 주석 해제
+//        HttpSession session = req.getSession();   // 로그인 정보 쓸때 주석 해제
 
-        ceo.setCeoIdx((Integer) session.getAttribute("ceoIdx"));
-        ceo.setCeoId((String) session.getAttribute("ceoId"));
-        ceo.setCeoPw((String) session.getAttribute("ceoPw"));
-        ceo.setCeoName((String) session.getAttribute("ceoName"));
+//        ceo.setCeoIdx((Integer) session.getAttribute("ceoIdx"));
+//        ceo.setCeoId((String) session.getAttribute("ceoId"));
+//        ceo.setCeoPw((String) session.getAttribute("ceoPw"));
+//        ceo.setCeoName((String) session.getAttribute("ceoName"));
+        
+        return "reservation/reservationCeo";
+    }
 
-//        customer.setCustomerIdx((Integer) session.getAttribute("customerIdx"));
-//        customer.setCustomerId((String) session.getAttribute("customerId"));
-//        customer.setCustomerPw((String) session.getAttribute("customerPw"));
-//        customer.setCustomerName((String) session.getAttribute("customerName"));
-//        customer.setCustomerNick((String) session.getAttribute("customerNick"));    //사용할 정보만 주석 해제 닉
-//        customer.setCustomerGender((String) session.getAttribute("customerGender"));
-//        customer.setCustomerAge((Integer) session.getAttribute("customerAge"));
-//        customer.setCustomerFollow((String) session.getAttribute("customerFollow"));
-//        customer.setCustomerGrade((Integer) session.getAttribute("customerGrade")); //사용할 정보만 주석 해제 등급
-//        customer.setCustomerBan((String) session.getAttribute("customerBan"));
+    // 날짜에 따른 데이터 ajax 통신
+    @ResponseBody
+    @RequestMapping(value = "/reservationCeo/reservationCeoDateInfo", method = RequestMethod.POST)
+    public Object reservationCeoDateInfo(@RequestParam("reservationDate") String reservationDate, @RequestParam int ceoIdx) throws Exception {    // 날짜정보 제대로 넘어옴!
+        List<ReservationDTO> dateList = leeService.selectDateReservation(ceoIdx, reservationDate);    // 해당날짜 예약 정보 가져오기
+
+        return dateList; // 예약 시간 전송
+    }
+
+    // 날짜 + 시간에 따른 데이터 ajax 통신
+    @ResponseBody
+    @RequestMapping(value = "/reservationCeo/reservationCeoTimeInfo", method = RequestMethod.POST)
+    public Object reservationCeoTimeInfo(@RequestParam String reservationDate, @RequestParam int ceoIdx, @RequestParam int reservationTime) throws Exception {
+        ReservationDTO reservation = leeService.selectTimeReservation(reservationDate, ceoIdx, reservationTime);
+
+        return reservation;
+    }
+
+    // 승인
+    @ResponseBody
+    @RequestMapping(value = "/reservationCeo/reservationConfirm", method = RequestMethod.PUT)
+    public Object reservationConfirm(@RequestParam String reservationDate, @RequestParam int ceoIdx, @RequestParam int reservationTime) throws Exception {
+        int time = leeService.reservationConfirm(reservationDate, ceoIdx, reservationTime);
+
+        return time;
+    }
+
+    // 거절
+    @ResponseBody
+    @RequestMapping(value = "/reservationCeo/reservationRefuse", method = RequestMethod.POST)
+    public Object reservationRefuse(@RequestParam String reservationDate, @RequestParam int ceoIdx, @RequestParam int reservationTime) throws Exception {
+        int time = leeService.reservationRefuse(reservationDate, ceoIdx, reservationTime);
+
+        return time;
+    }
 
 
-        ModelAndView mv = new ModelAndView("reservation/reservationCus");
 
-        List<ReservationDTO> reservationList = leeService.selectReservation(ceoIdx);  // 가게 전체 예약 정보 들고오기(reservationStat만 들고와도 괜찮)
 
-        mv.addObject("reservationList", reservationList);
-//        mv.addObject("customer", customer);    // 실제 예약한 고객의 정보 가져오기, 세션에서 정보(닉, 등급) 가져오기
+    /////////////////////////////// 마이페이지 /////////////////////////////////
 
-        return mv;
+
+
+
+
+
+    @RequestMapping(value = "/myPageCus")
+    public String myPageView() throws Exception {
+
+        return "myPage/myPageCus";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/myPageCus/reservation", method = RequestMethod.POST)
+    public Object myPageCusReservation(@RequestParam int customerIdx) throws Exception {
+        List<ReservationDTO> reservation = leeService.myPageReservation(customerIdx);
+
+        return reservation;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/myPageCus/follow", method = RequestMethod.POST)
+    public Object myPageCusFollow(@RequestParam int customerIdx) throws Exception {
+
+        return null;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/myPageCus/review", method = RequestMethod.POST)
+    public Object myPageCusView(@RequestParam int customerIdx) throws Exception {
+        List<ReservationDTO> reservation = leeService.myPageReview(customerIdx);
+
+        return reservation;
     }
 }

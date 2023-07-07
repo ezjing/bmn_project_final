@@ -4,9 +4,8 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bitc.bmn_project.mapper.LeeMapper">
     <insert id="insertReservation" parameterType="com.bitc.bmn_project.DTO.ReservationDTO">
-        INSERT INTO java505_team3_db.reservation_tp (customer_idx, ceo_idx, customer_name, reservation_stat, reservation_people, reservation_contents, reservation_date, reservation_time)
-        VALUES (#{customerIdx}, #{ceoIdx}, #{customerName}, 1, #{reservationPeople}, #{reservationContents}, #{reservationDate}, #{reservationTime})
-<!--        VALUES (1, 1, 1, #{reservationPeople}, #{reservationContents}, #{reservationDate}, #{reservationTime})-->
+        INSERT INTO java505_team3_db.reservation_tp (customer_idx, customer_name, ceo_idx, ceo_store, reservation_stat, reservation_people, reservation_contents, reservation_date, reservation_time)
+        VALUES (#{customerIdx}, #{customerName}, #{ceoIdx}, #{ceoStore}, 1, #{reservationPeople}, #{reservationContents}, #{reservationDate}, #{reservationTime})
     </insert>
     <select id="selectReservation" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReservationDTO">
         SELECT *
@@ -20,6 +19,51 @@
         AND ceo_idx = #{ceoIdx}
         AND reservation_date = #{reservationDate}
         AND reservation_time = #{reservationTime}
+    </select>
+    <select id="selectDateReservation" parameterType="map" resultType="com.bitc.bmn_project.DTO.ReservationDTO">
+        SELECT *
+        FROM java505_team3_db.reservation_tp
+        WHERE ceo_idx = #{ceoIdx}
+        AND reservation_date = #{reservationDate}
+    </select>
+    <select id="selectTimeReservation" parameterType="com.bitc.bmn_project.DTO.ReservationDTO" resultType="com.bitc.bmn_project.DTO.ReservationDTO">
+        SELECT *
+        FROM java505_team3_db.reservation_tp
+        WHERE ceo_idx = #{ceoIdx}
+        AND reservation_date = #{reservationDate}
+        AND reservation_time = #{reservationTime}
+    </select>
+    <update id="reservationConfirm" parameterType="com.bitc.bmn_project.DTO.ReservationDTO">
+        UPDATE java505_team3_db.reservation_tp
+        SET reservation_stat = 2
+        WHERE ceo_idx = #{ceoIdx}
+        AND reservation_date = #{reservationDate}
+        AND reservation_time = #{reservationTime}
+    </update>
+    <delete id="reservationRefuse" parameterType="com.bitc.bmn_project.DTO.ReservationDTO">
+        DELETE FROM java505_team3_db.reservation_tp
+        WHERE ceo_idx = #{ceoIdx}
+        AND reservation_date = #{reservationDate}
+        AND reservation_time = #{reservationTime}
+    </delete>
+
+    <select id="myPageReservation" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReservationDTO">
+        SELECT R.ceo_store, reservation_date, reservation_time, reservation_stat
+        FROM java505_team3_db.customer_tp U
+        JOIN java505_team3_db.reservation_tp R
+        ON U.customer_idx = R.customer_idx
+        WHERE U.customer_idx = #{customerIdx}
+        AND (R.reservation_stat = 1 OR R.reservation_stat = 2)
+        ORDER BY reservation_date DESC, reservation_time DESC
+    </select>
+
+    <select id="myPageReview" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReservationDTO">
+        SELECT ceo_store, review_contents, review_score, review_date
+        FROM java505_team3_db.customer_tp U
+        JOIN java505_team3_db.review_tp V
+        ON U.customer_idx = V.customer_idx
+        WHERE U.customer_idx = #{customerIdx}
+        ORDER BY review_date DESC
     </select>
 </mapper>
 
