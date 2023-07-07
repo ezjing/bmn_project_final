@@ -8,6 +8,7 @@ public class ReviewDTO {
     private int customerIdx;
     private String customerNick;
     private int ceoIdx;
+    private String ceoStore;
     private String reviewTitle;
     private String reviewContents;
     private String reviewImg;

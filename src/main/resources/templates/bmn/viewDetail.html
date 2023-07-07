@@ -245,6 +245,12 @@
     
     
     $(document).ready(function () {
+
+      const html = "<span th:text=\"${followCnt}\" id=\"follow-cnt\"></span>";
+
+      $("#btn-follow").append(html);
+
+
       const lat = $("#ceo-lat").val();
       const lon = $("#ceo-lon").val();
       
@@ -407,7 +413,8 @@
         <div class="border my-2" data-bs-toggle="modal" data-bs-target="#map-modal" id="map1"></div>
         <input type="hidden" id="ceo-lat" th:value="${ceoDto.ceoLat}">
         <input type="hidden" id="ceo-lon" th:value="${ceoDto.ceoLon}">
-        <a href="#" class="btn btn-secondary my-2">식당 예약하기</a>
+        <a th:href="@{/bmn/reservationCus(ceoIdx=${ceoDto.ceoIdx}, ceoStore=${ceoDto.ceoStore})}" class="btn btn-secondary my-2">식당 예약하기</a>
+        <a th:href="@{/bmn/reservationCeo(ceoIdx=${ceoDto.ceoIdx}, ceoStore=${ceoDto.ceoStore})}" class="btn btn-secondary my-2">예약 확인</a>
 <!--        <div class="border rounded-2 p-2">예약정보 구역</div>-->
       </div>
       <div class="col-sm-8"></div>
@@ -420,7 +427,7 @@
           <a class="btn mb-2">로그인</a>
           <div></div>
           <a class="btn mb-2">로그아웃</a>
-          <a class="btn mb-2">리뷰 쓰기</a>
+          <a href="/bmn/review/ceoIdx=" th:attrappend="href=${ceoDto.ceoIdx}" class="btn mb-2">리뷰 쓰기</a>
         </div>
       </div>
     </div>
@@ -437,6 +444,8 @@
           <input type="hidden" id="ceoIdx" th:value="${ceoDto.ceoIdx}">
           <input type="hidden" id="customerIdx" th:value="${session.customerIdx}">
           <br><br>
+
+<!--          1,2,3,4 한일중양 표현-->
           <span th:text="${ceoDto.ceoCategory}" class="rounded-5 border border-primary p-3 me-3">카테고리</span>
           <span th:text="|평점 : ${ceoDto.ceoScore}점|" class="rounded-5 border border-primary p-3"
                 style="width: 100px"></span>
@@ -468,7 +477,7 @@
                 <p style="margin-bottom: 0px">식당 평점 : <span th:text="${ceoDto.ceoScore}" class="fw-semibold"></span></p>
               </div>
               <div class="col-sm d-flex justify-content-end">
-                <button class="btn btn-outline-info m-3">#리뷰작성</button>
+                <a href="/bmn/review/ceoIdx=" th:attrappend="href=${ceoDto.ceoIdx}" class="btn btn-outline-info m-3">#리뷰작성</a>
               </div>
             </div>
           </div>
@@ -548,7 +557,8 @@
               <p th:text="${item.reviewTitle}" class="fw-semibold"></p>
               <p th:text="${item.reviewContents}"></p>
               <div>
-                <img th:src="${item.reviewImg}" alt="이미지를 불러올 수 없습니다." style="width: 300px; height: 200px;">
+                <img src="888665391094000.jpg" alt="이미지를 불러올 수 없습니다." style="width: 300px; height: 200px;"> <!--  경로 이미지 구현 할것  -->
+                <p th:text="${item.reviewImg}"></p>
               </div>
             </div>
             <button class="btn btn-outline-primary ms-4" data-bs-toggle="collapse" data-bs-target="#commentCollapse"
@@ -779,7 +789,7 @@
             
             <div class="d-flex justify-content-end my-2">
               <button class="btn btn-outline-secondary">사장님께 문의하기<i class="bi bi-pencil-square ms-2"
-                                                                    style="color: black"></i></button>
+                                                                    style="color: black"></i></button>  <!--  제목, 내용 null 시 알람 출력 + 사장님 로그인 시 문의하기칸 안보이게 + 문의 답변은 자기 가게에만 + 사장님만 문의 답변 가능  -->
             </div>
           </form>
         </div>

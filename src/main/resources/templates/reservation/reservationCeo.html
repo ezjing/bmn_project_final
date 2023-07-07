@@ -323,11 +323,10 @@
                 </div>
                 <div class="row">
                     <div class="d-flex justify-content-center">
-                        <input type="hidden" id="customerIdx" name="customerIdx" value="2">   <!--  나중에 수정해야함, th:value  -->
-                        <input type="hidden" id="ceoIdx" name="ceoIdx" value="2">
-                        <input type="hidden" id="customerName" name="customerName" value="테스터2">
                         <button class="btn btn-secondary mx-5" type="button" style="width: 6em; height: 3em;" id="refuse">거절</button>
                         <button class="btn btn-primary mx-5" type="button" style="width: 6em; height: 3em;" id="confirm">승인</button>
+                        <!--  내가게로가기 버튼 만들기!!!!!!!!!!!!!!!!!!!!!  -->
+                        <input type="hidden" id="ceoIdx" name="ceoIdx" value="2" th:value="${session.user.ceoIdx}">
                     </div>
                 </div>
             </div>

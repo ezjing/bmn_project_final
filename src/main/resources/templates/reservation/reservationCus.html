@@ -50,7 +50,7 @@
                     $("#resvPeople").text(reservationPeople);
                     $("#resvContents").text(reservationContents);
                     $("#resvDate").text(reservationDate);
-                    $("#resvTime").text(selTime);
+                    $("#resvTime").text(selTime + ":00");
 
                     // 모달 호출
                     $("#modal").modal("show");
@@ -217,7 +217,6 @@
                                 $("#lab09").replaceWith(lab09);
                             }
                         }
-                        // 콘솔 내용을 비우면 되려나
 
                         events();
                     },
@@ -308,12 +307,12 @@
 
                 <div class="row">
                     <div class="d-flex justify-content-center">
-                        <input type="hidden" id="customerIdx" name="customerIdx" value="2">   <!--  나중에 수정해야함, th:value  -->
-                        <input type="hidden" id="customerName" name="customerName" value="테스터2">
-                        <input type="hidden" id="ceoIdx" name="ceoIdx" value="2">   <!--  나중에 수정해야함  -->
-                        <input type="hidden" id="ceoStore" name="ceoStore" value="테스트가게">
                         <button class="btn btn-secondary mx-5" type="button" style="width: 6em; height: 3em;" id="cancel">취소</button>
                         <button class="btn btn-primary mx-5" type="button" style="width: 6em; height: 3em;" id="check">확인</button>
+                        <input type="hidden" id="customerIdx" name="customerIdx" value="2" th:value="${session.user.customerIdx}">
+                        <input type="hidden" id="customerName" name="customerName" value="테스터2" th:value="|${session.user.customerName}|">
+                        <input type="hidden" id="ceoIdx" name="ceoIdx" value="2" th:value="${ceoIdx}">
+                        <input type="hidden" id="ceoStore" name="ceoStore" value="테스트가게" th:value="${ceoStore}">
                     </div>
                 </div>
             </div>
@@ -341,7 +340,7 @@
                         <tbody id="tbody">
                         <tr>
                             <th class="py-4 text-center" style="background-color: #D7D8DAFF">예약자</th>
-                            <td class="py-4 ps-2" id="resvCustomerName">이지원</td>
+                            <td class="py-4 ps-2" id="resvCustomerName" th:text="|${session.user.customerName}|">이지원</td>
                             <td></td>
                             <td></td>
                         </tr>

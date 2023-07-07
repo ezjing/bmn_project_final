@@ -131,7 +131,7 @@
 <body>
 <div class="container-sm my-4">
     <div class="col-sm-10 mx-auto">
-        <form name="form" id="form" action="ceoStore/addStore" method="post" class="form-control" enctype="multipart/form-data" novalidate>
+        <form name="form" id="form" action="/bmn/ceoStore/addStore" method="post" class="form-control" enctype="multipart/form-data" novalidate>
             <h2 class="text-center my-4">가게 등록</h2>
             <div>
                 <!-- 정보 입력 -->
@@ -389,6 +389,7 @@
                 </div>
             </div>
             <button id="submit-btn" type="submit" class="btn btn-primary">확인 버튼</button>
+            <input type="hidden" name="ceoIdx" th:value="${session.user.ceoIdx}">
         </form>
     </div>
 </div>

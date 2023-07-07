@@ -97,8 +97,7 @@
         ceo_main_img = #{ceoMainImg},
         ceo_lat = #{ceoLat},
         ceo_lon = #{ceoLon}
-        WHERE ceo_idx = 1
-        <!--        #{ceoIdx}-->
+        WHERE ceo_idx = #{ceoIdx}
     </update>
 
     <!-- 리뷰 작성 페이지 - 가게이름 가져오기 -->
@@ -110,11 +109,12 @@
 
     <!-- 리뷰 작성 -->
     <insert id="reviewWrite" parameterType="com.bitc.bmn_project.DTO.ReviewDTO">
-        INSERT INTO review_tp(customer_idx, customer_nick, ceo_idx, review_title, review_contents, review_img,
+        INSERT INTO review_tp(customer_idx, customer_nick, ceo_idx, ceo_store, review_title, review_contents, review_img,
         review_date, review_score)
         VALUES(#{customerIdx},
         #{customerNick},
-        #{cedIdx},
+        #{ceoIdx},
+        #{ceoStore},
         #{reviewTitle},
         #{reviewContents},
         #{reviewImg},
@@ -126,7 +126,7 @@
         SELECT max(review_idx) as review_idx FROM review_tp
     </select>
     <!-- 리뷰 작성 태그 -->
-    <insert id="reviewWriteTag">
+    <insert id="reviewWriteTag" parameterType="com.bitc.bmn_project.DTO.ReviewTagDTO">
         INSERT INTO review_tag_tp(review_idx, review_tag2, review_tag3, review_tag4, review_tag5, review_tag6, review_tag7, review_tag8)
         VALUES(#{reviewIdx}, #{review_tag2}, #{review_tag3}, #{review_tag4}, #{review_tag5}, #{review_tag6}, #{review_tag7}, #{review_tag8})
     </insert>

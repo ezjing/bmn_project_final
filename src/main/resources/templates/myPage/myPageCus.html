@@ -167,8 +167,8 @@
             <div class="d-flex justify-content-between">
                 <div>
                     <p>우수회원</p>
-                    <h1>이지원</h1>
-                    <p>안녕하세요. 이지원 입니다.</p>
+                    <h1 th:text="${session.user.customerName}">이지원</h1>
+                    <p th:text="|안녕하세요. ${session.user.customerName}입니다.|">안녕하세요. 이지원 입니다.</p>
                 </div>
 
                 <div class="d-flex justify-content-end align-items-center">
@@ -184,12 +184,12 @@
                         <div class="col-sm-8 mx-auto">
                             <form action="/bmn/signUp/customer/signUp" class="form-control p-4 mb-5" method="post">
                                 <div class="form-floating my-4">
-                                    <input type="text" class="form-control" id="user-nick" name="customerNick">
+                                    <input type="text" class="form-control" id="user-nick" name="customerNick" th:value="${session.user.customerNick}">
                                     <label for="user-nick">닉네임</label>
                                     <p id="nick-write" class="text-danger"></p>
                                 </div>
                                 <div class="form-floating my-4">
-                                    <input type="text" class="form-control" id="user-name" name="customerName">
+                                    <input type="text" class="form-control" id="user-name" name="customerName"th:value="${session.user.customerName}">
                                     <label for="user-name">이름</label>
                                     <p id="name-write" class="text-danger"></p>
                                 </div>
@@ -276,7 +276,7 @@
         </div>
     </div>
 
-    <input type="hidden" id="customerIdx" name="customerIdx" value="2"> <!--  세션에서 자동으로 받아오도록 수정  -->
+    <input type="hidden" id="customerIdx" name="customerIdx" value="2" th:value="${session.user.customerIdx}"> <!--  세션에서 자동으로 받아오도록 수정  -->
 </main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>

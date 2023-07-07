@@ -80,7 +80,7 @@
 <!--	리뷰 리스트 가져오기-->
 	<select id="selectReviewList" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReviewJoinDTO">
 		SELECT
-			R.review_idx, R.customer_idx, R.customer_nick, R.ceo_idx, R.review_title, R.review_contents, R.review_img,
+			R.review_idx, R.customer_idx, R.customer_nick, R.ceo_idx, R.ceo_Store, R.review_title, R.review_contents, R.review_img,
 			R.review_date, R.review_score, R.review_delete, RT.review_tag_idx, RT.review_tag1, RT.review_tag2, RT.review_tag3, RT.review_tag4, RT.review_tag5, RT.review_tag6, RT.review_tag7, RT.review_tag8
 		FROM
 			review_tp R JOIN review_tag_tp RT ON(R.review_idx = RT.review_idx)

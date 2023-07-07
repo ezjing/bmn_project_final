@@ -1,8 +1,12 @@
 package com.bitc.bmn_project.controller;
 
 import com.bitc.bmn_project.DTO.CeoDTO;
+import com.bitc.bmn_project.DTO.CustomerDTO;
 import com.bitc.bmn_project.DTO.ReviewCntDto;
 import com.bitc.bmn_project.service.MainService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +23,7 @@ public class ParkController {
     @Autowired
     private MainService mainService;
     @RequestMapping(value = "/bmnMain", method = RequestMethod.GET)
-    public ModelAndView bmnMainGet() throws Exception{
+    public ModelAndView bmnMainGet(HttpServletRequest req) throws Exception{
         ModelAndView mv = new ModelAndView("main/bmnMain");
         List<CeoDTO> coeDtoList = mainService.selectKFood();
         List<CeoDTO> selectJFood = mainService.selectJFoods();
@@ -28,6 +32,12 @@ public class ParkController {
         List<CeoDTO> scorePlacingList = mainService.scorePlacingLists();
         List<CeoDTO> followPlacingList = mainService.followPlacingLists();
 
+        CustomerDTO customer = new CustomerDTO();
+        CeoDTO ceo = new CeoDTO();
+        HttpSession session = req.getSession();
+
+        customer.setCustomerNick((String) session.getAttribute("customerNick"));
+        ceo.setCeoStore((String) session.getAttribute("ceoStore"));
 
         // 평점순 List
         mv.addObject("scorePlacingList",scorePlacingList);
@@ -41,10 +51,11 @@ public class ParkController {
         mv.addObject("selectCFood",selectCFood);
         // 양식 List
         mv.addObject("selectWFood",selectWFood);
+        mv.addObject("ceo", ceo);
         return mv;
     }
 
-    @RequestMapping(value="/bmnSearchList", method = RequestMethod.GET)
+    @RequestMapping(value="/bmn/bmnSearchList", method = RequestMethod.GET)
     public ModelAndView searchListGet(
             @Param("keyWorld") String keyWorld,
             @Param("categoryFood") String categoryFood) throws Exception{
@@ -65,7 +76,7 @@ public class ParkController {
         return mv;
     }
 
-    @RequestMapping(value="/bmnSearchList", method = RequestMethod.POST)
+    @RequestMapping(value="/bmn/bmnSearchList", method = RequestMethod.POST)
     public void searchListPost() throws Exception{
 
     }

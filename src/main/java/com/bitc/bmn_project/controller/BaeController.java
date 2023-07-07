@@ -15,13 +15,13 @@ import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
-@RequestMapping("/bmn")
+//@RequestMapping("/bmn1")
 public class BaeController {
   @Autowired
   private BaeService baeService;
 
 
-  @RequestMapping(value = "/viewDetail/{ceoIdx}", method = RequestMethod.GET)
+  @RequestMapping(value = "/bmn/viewDetail/{ceoIdx}", method = RequestMethod.GET)
   public ModelAndView viewDetail(@PathVariable("ceoIdx") int ceoIdx, HttpServletRequest req, @RequestParam(required = false, defaultValue = "1") int pageNum) throws Exception {
     ModelAndView mv = new ModelAndView("bmn/viewDetail");
 
@@ -125,7 +125,7 @@ public class BaeController {
 
   // 리뷰에 댓글 달기
   @ResponseBody
-  @RequestMapping(value = "/commentInsert", method = RequestMethod.POST)
+  @RequestMapping(value = "/bmn/commentInsert", method = RequestMethod.POST)
   public Object commentInsert(CommentJoinDTO commentJoinDTO) throws Exception {
     baeService.commentInsert(commentJoinDTO);
     return "success";
@@ -135,7 +135,7 @@ public class BaeController {
 
   // 관리자 리뷰 삭제
   @ResponseBody
-  @RequestMapping(value = "/reviewDelete", method = RequestMethod.DELETE)
+  @RequestMapping(value = "/bmn/reviewDelete", method = RequestMethod.DELETE)
   public Object reviewDelete(@RequestParam("reviewIdx") int reviewIdx) throws Exception {
     baeService.reviewDelete(reviewIdx);
 
@@ -145,7 +145,7 @@ public class BaeController {
   
   // 팔로우 추가/삭제
   @ResponseBody
-  @RequestMapping(value = "/updateFollow", method = RequestMethod.PUT)
+  @RequestMapping(value = "/bmn/updateFollow", method = RequestMethod.PUT)
   public Object updateFollow(@RequestParam("ceoStore") String ceoStore, @RequestParam("customerIdx") int customerIdx) throws Exception {
     int result = 0;
 
@@ -163,7 +163,7 @@ public class BaeController {
   }
 
   // 사장님에게 문의하기
-  @RequestMapping(value = "/insertQuestion", method = RequestMethod.POST)
+  @RequestMapping(value = "/bmn/insertQuestion", method = RequestMethod.POST)
   public String insertQuestion(QuestionDTO questionDTO) throws Exception {
     baeService.insertQuestion(questionDTO);
 
@@ -173,7 +173,7 @@ public class BaeController {
 
   // 문의하기에 대한 사장님 답변
   @ResponseBody
-  @RequestMapping(value = "/updateAnswer", method = RequestMethod.PUT)
+  @RequestMapping(value = "/bmn/updateAnswer", method = RequestMethod.PUT)
   public String answerQuestion(QuestionDTO questionDTO) throws Exception {
     baeService.answerQuestion(questionDTO);
 

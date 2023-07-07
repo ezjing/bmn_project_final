@@ -28,6 +28,7 @@ public class CeoDTO {
     private String ceoClosingTime;
     private String ceoCityAddress;
     private String ceoFullAddress;
+    private String ceoCallNumber;
     private String ceoContents;
     private String ceoCategory;
     private String ceoThumbnailImg;
@@ -37,9 +38,4 @@ public class CeoDTO {
     private double ceoLon;
     private int ceoGrade;
     private int ceoFollowCnt;
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/swbranch
 }

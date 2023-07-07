@@ -7,6 +7,7 @@ import com.bitc.bmn_project.DTO.ReviewTagDTO;
 import com.bitc.bmn_project.common.FileUtils;
 import com.bitc.bmn_project.service.SimService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
-@RequestMapping("/bmn")
+//@RequestMapping("/bmn4")
 public class SimController {
 
     @Autowired
@@ -33,14 +35,22 @@ public class SimController {
         return "index";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String doLoginView() throws Exception {
+    @RequestMapping(value = "/bmn/login", method = RequestMethod.GET)
+    public String doLoginView(HttpServletResponse resp) throws Exception {  // 로그인 완료 시 이전 페이지로 이동하게끔 구현 필요(returnUrl를 어떻게 쓰는지 모르겠음)
+//        resp.setContentType("text/html;characters=UTF-8z");
+//        PrintWriter writer = resp.getWriter();
+//
+//        String script = "<script>";
+//        script += "history.back();";
+//        script += "</script>";
+//
+//        writer.print(script);
 
-        return "login";
+        return "redirect:/bmn/bmnMain";
     }
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/bmn/login", method = RequestMethod.POST)
     public String doLoginProcess(@RequestParam String userId,
                                  @RequestParam String userPw,
                                  HttpServletRequest req) throws Exception {
@@ -58,7 +68,7 @@ public class SimController {
         int isUser = simService.isUser(userId);
 
         HttpSession session = req.getSession();
-        session.setMaxInactiveInterval(60); // 세션 시간 1분으로 설정
+        session.setMaxInactiveInterval(3600); // 세션 시간 1분으로 설정
         CustomerDTO customer;
         CeoDTO ceo;
 
@@ -111,11 +121,10 @@ public class SimController {
             session.setMaxInactiveInterval(1);
         }
         return "redirect:" + returnUrl;
-
     }
 
 
-    @RequestMapping("/logOut")
+    @RequestMapping("/bmn/logOut")
     public String doLogOut(HttpServletRequest req) throws Exception {
 
 
@@ -126,40 +135,40 @@ public class SimController {
         return "redirect:/bmn/login";
     }
 
-    @RequestMapping("/signUp/customer")
+    @RequestMapping("/bmn/signUp/customer")
     public String doSignUpCustomerView() throws Exception {
 
 
         return "signUpCustomer";
     }
 
-    @RequestMapping(value = "/signUp/customer/signUp", method = RequestMethod.POST)
+    @RequestMapping(value = "/bmn/signUp/customer/signUp", method = RequestMethod.POST)
     public String doSignUpCustomerProcess(CustomerDTO customer) throws Exception {
 
         System.out.println(customer);
         simService.signUpCustomer(customer);
 
 // 나중에 메인페이지
-        return "redirect:/bmn/";
+        return "redirect:/bmn/bmnMain";
     }
 
-    @RequestMapping("/signUp/ceo")
+    @RequestMapping("/bmn/signUp/ceo")
     public String doSignUpCeoView() throws Exception {
 
         return "signUpCeo";
     }
 
-    @RequestMapping(value = "/signUp/ceo/signUp", method = RequestMethod.POST)
+    @RequestMapping(value = "/bmn/signUp/ceo/signUp", method = RequestMethod.POST)
     public String doSignUpCeoProcess(CeoDTO ceo) throws Exception {
 
         simService.signUpCeo(ceo);
 
 // 나중에 메인페이지
-        return "redirect:/bmn/";
+        return "redirect:/bmn/bmnMain";
     }
 
     @ResponseBody
-    @RequestMapping(value = "/signUp/idCheck", method = RequestMethod.POST)
+    @RequestMapping(value = "/bmn/signUp/idCheck", method = RequestMethod.POST)
     public String doIdCheck(@RequestParam("userId") String userId) throws Exception {
 
         int result1 = simService.idCheckCustomer(userId);
@@ -174,19 +183,19 @@ public class SimController {
         }
     }
 
-    @RequestMapping("/ceoStore")
+    @RequestMapping("/bmn/ceoStore")
     public String doCeoStore() throws Exception {
 
         return "ceoStore";
     }
 
 
-    @RequestMapping(value = "/ceoStore/popup", method = RequestMethod.GET)
+    @RequestMapping(value = "/bmn/ceoStore/popup", method = RequestMethod.GET)
     public String doPopup() throws Exception {
         return "addrPopup";
     }
 
-    @RequestMapping(value = "/ceoStore", method = RequestMethod.POST)
+    @RequestMapping(value = "/bmn/ceoStore", method = RequestMethod.POST)
     public ModelAndView doPopupCallback(
             @RequestParam("inputYn") String inputYn,
             @RequestParam("roadFullAddr") String roadFullAddr,
@@ -251,7 +260,7 @@ public class SimController {
         return mv;
     }
 
-    @RequestMapping(value = "/ceoStore/addStore", method = RequestMethod.POST)
+    @RequestMapping(value = "/bmn/ceoStore/addStore", method = RequestMethod.POST)
     public String doAddStore(CeoDTO store,
                              @RequestParam("ceoMainImgFile") MultipartFile mainImage,
                              @RequestParam("ceoThumbnailImgFile") MultipartFile thumbnail,
@@ -263,12 +272,12 @@ public class SimController {
         System.out.println(files);
 
         simService.addStore(store, mainImage, thumbnail, files);
-        return "redirect:/bmn/";
+        return "redirect:/bmn/bmnMain";
     }
 
-    @RequestMapping(value = "/review", method = RequestMethod.GET)
+    @RequestMapping(value = "/bmn/review/ceoIdx={ceoIdx}", method = RequestMethod.GET)
     public ModelAndView doReview(
-            @RequestParam("ceoIdx") int ceoIdx
+            @PathVariable("ceoIdx") int ceoIdx
     ) throws Exception {
 
         ModelAndView mv = new ModelAndView("review");
@@ -280,7 +289,7 @@ public class SimController {
         return mv;
     }
 
-    @RequestMapping(value = "/review/write", method = RequestMethod.POST)
+    @RequestMapping(value = "/bmn/review/write", method = RequestMethod.POST)
     public String doReviewWrite(
             ReviewDTO review,
             ReviewTagDTO reviewTag,
@@ -307,6 +316,6 @@ public class SimController {
 
 
         // 상세뷰로 보내야함
-        return "redirect:/bmn/";
+        return "redirect:/bmn/viewDetail/" + review.getCeoIdx();
     }
 }

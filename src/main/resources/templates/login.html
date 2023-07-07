@@ -13,79 +13,33 @@
 
     <script>
 
+        // 사용 완료 !!!
         $(document).ready(function () {
-            let msg = document.getElementById("sessionMsg");
-            if (msg.textContent.length > 0) {
-                alert(msg.textContent);
-            }
-
-            const btn = document.getElementById("submit-btn");
-            const frm = document.getElementById("form");
-            btn.addEventListener("click", function () {
-                let userId = document.getElementById("user-id").value;
-                let userPw = document.getElementById("user-pw").value;
-                if (userId === "" || userId == null) {
-                    // 아이디를 미입력시
-                    alert('아이디를 입력해주세요');
-                } else if (userId !== "" && userPw === "") {
-                    // 아이디만 입력시
-                    alert('비밀번호를 입력해주세요');
-                } else {
-                    // 서브밋
-                    frm.submit();
-                }
-            });
+            // let msg = document.getElementById("sessionMsg");
+            // if (msg.textContent.length > 0) {
+            //     alert(msg.textContent);
+            // }
+            //
+            // const btn = document.getElementById("submit-btn");
+            // const frm = document.getElementById("form");
+            // btn.addEventListener("click", function () {
+            //     let userId = document.getElementById("user-id").value;
+            //     let userPw = document.getElementById("user-pw").value;
+            //     if (userId === "" || userId == null) {
+            //         // 아이디를 미입력시
+            //         alert('아이디를 입력해주세요');
+            //     } else if (userId !== "" && userPw === "") {
+            //         // 아이디만 입력시
+            //         alert('비밀번호를 입력해주세요');
+            //     } else {
+            //         // 서브밋
+            //         frm.submit();
+            //     }
+            // });
         });
     </script>
 </head>
 <body>
-<p th:text="${session.failMsg}" hidden="hidden" id="sessionMsg"></p>
 
-<!-- 트리거 -->
-<div th:if="${not #strings.isEmpty(session.user)}">
-    세션 있는 상태
-    <a href="/bmn/logOut" id="logout-btn" class="btn btn-dark">로그아웃</a>
-    <p th:text="${session.user}"></p>
-</div>
-<div th:unless="${not #strings.isEmpty(session.user)}">
-    세션 없는 상태
-    <button type="button" id="login-btn" class="btn btn-dark" data-bs-toggle="modal"
-            data-bs-target="#modal-login">로그인
-    </button>
-</div>
-<!-- 사용할 세션 값 -->
-<p th:text="${session.user}"></p>
-
-<!-- 모달창 본문 -->
-<div class="modal fade" id="modal-login">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <h2 class="modal-title text-center my-4">로그인</h2>
-
-                <form action="/bmn/login" class="form-control" method="post" id="form">
-                    <div class="my-3 p-2">
-                        <label for="user-id" class="form-label">아이디</label>
-                        <input type="text" class="form-control" id="user-id" name="userId">
-                    </div>
-                    <div class="my-3 p-2">
-                        <label for="user-pw" class="form-label">비밀번호</label>
-                        <input type="password" class="form-control" id="user-pw" name="userPw">
-                    </div>
-                    <div class="my-4 d-grid gap-3">
-                        <button type="button" class="btn btn-primary" id="submit-btn">로그인</button>
-                        <div class="my-2 d-flex">
-                            <a href="/bmn/signUp/customer" class="btn btn-secondary flex-fill mx-1">손님 회원가입</a>
-                            <a href="/bmn/signUp/ceo" class="btn btn-secondary flex-fill mx-1">사장님 회원가입</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>
