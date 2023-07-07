@@ -31,8 +31,8 @@ public class LoginCheck implements HandlerInterceptor {
             System.out.println("비 로그인 상태");
             System.out.println((String) session.getAttribute("userId"));
 
-            // 로그인 페이지로 리다이렉트
-            resp.sendRedirect("/login/login.do");
+            // 메인 페이지로 리다이렉트
+            resp.sendRedirect("/bmn/login");
             // 인터셉터를 통과하지 못했으므로 false를 리턴, 원하는 컨트롤러에 접근 불가능
             return false;
         }

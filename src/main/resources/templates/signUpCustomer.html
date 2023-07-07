@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+
+    </style>
+
+    <script>
+
+        $(document).ready(function () {
+            const idCheckBtn = $("#id-check-btn");
+            const userNick = $("#user-nick");
+            const userName = $("#user-name");
+            let submitBtn = $("#submit-btn");
+            let check1 = false;
+            let check2 = false;
+            let check3 = false;
+            let check4 = false;
+            let check5 = false;
+
+            function check(check1, check2, check3, check4, check5) {
+                if (check1 && check2 && check3 && check4 && check5) {
+                    submitBtn.removeAttr("disabled");
+                } else {
+                    submitBtn.attr("disabled", 'disabled');
+                }
+            }
+
+            // ajax 통신으로 id 중복 확인
+            idCheckBtn.click(function () {
+                const idCheck = $("#id-check").val();
+                if (idCheck === "") {
+                    alert("아이디를 입력해주세요");
+                } else {
+                    $.ajax({
+                        url: "/bmn/signUp/idCheck",
+                        type: "POST",
+                        data: {userId: idCheck},
+                        dataType: "text",
+                        success: function (data) {
+                            if (data === "true") {
+                                alert('이미 존재하는 아이디입니다.');
+                                check1 = false;
+                                $("#id-check").focus();
+                            } else {
+                                alert('사용 가능한 아이디입니다.');
+                                check1 = true;
+                                userNick.focus();
+                            }
+                        },
+                        error: function () {
+                            alert("잘못된 접근입니다.");
+                        }
+                    });
+                }
+                check(check1, check2, check3, check4, check5);
+            });
+
+            userNick.on("keyup", function () {
+                if (userNick.val() === "") {
+                    $("#nick-write").text("닉네임을 입력해주세요");
+                } else {
+                    $("#nick-write").text("");
+                    check3 = true;
+                }
+                check(check1, check2, check3, check4, check5);
+            });
+
+            userName.on("keyup", function () {
+                if (userName.val() === "") {
+                    $("#name-write").text("이름을 입력해주세요");
+                } else {
+                    $("#name-write").text("");
+                    check4 = true;
+                }
+                check(check1, check2, check3, check4, check5);
+            });
+
+
+            $("#user-age").on("change", function () {
+                let userAge = $("#user-age").val();
+                if (userAge > 0) {
+                    pw.focus();
+                    check5 = true;
+                } else {
+                    check5 = false
+                }
+                check(check1, check2, check3, check4, check5);
+            });
+
+
+            const missMatch = $("#match-miss");
+            let pw = $("#pw");
+            let pwMatch = $("#pw-match");
+
+            // 비밀번호 확인란 입력 이벤트
+            pwMatch.on("keyup", function () {
+                if (pw.val() !== pwMatch.val()) {
+                    missMatch.text("올바른 비밀번호를 입력해주세요");
+                    check2 = false;
+                } else if (pw.val() === pwMatch.val()) {
+                    missMatch.text("");
+                    check2 = true;
+                }
+                check(check1, check2, check3, check4, check5);
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div class="container-sm mt-5">
+    <div class="col-sm-6 mx-auto">
+        <form action="/bmn/signUp/customer/signUp" class="form-control pb-4" method="post">
+            <h3 class="text-center my-5">손님용 회원가입</h3>
+            <a href="#">메인으로</a>
+            <div class="input-group my-4">
+                <input type="text" class="form-control pb-4" placeholder="아이디" aria-label="아이디"
+                       aria-describedby="id-check" name="customerId" id="id-check">
+                <button class="btn btn-outline-secondary" type="button" id="id-check-btn">중복확인</button>
+            </div>
+            <div class="form-floating my-4">
+                <input type="text" class="form-control" id="user-nick" name="customerNick">
+                <label for="user-nick">닉네임</label>
+                <p id="nick-write" class="text-danger"></p>
+            </div>
+            <div class="form-floating my-4">
+                <input type="text" class="form-control" id="user-name" name="customerName">
+                <label for="user-name">이름</label>
+                <p id="name-write" class="text-danger"></p>
+            </div>
+            <!-- 개선 필요-->
+            <div class="my-4 row">
+                <div class="col-sm-6">
+                    <label class="mx-5">성별</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="customerGender" id="user-gen1" checked value="M">
+                        <label class="form-check-label" for="user-gen1">
+                            남
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="customerGender" id="user-gen2" value="F">
+                        <label class="form-check-label" for="user-gen2">
+                            여
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <select class="form-select form-select-sm" name="customerAge" id="user-age">
+                        <option selected>연령대 선택</option>
+                        <option value="10">10대</option>
+                        <option value="20">20대</option>
+                        <option value="30">30대</option>
+                        <option value="40">40대</option>
+                        <option value="50">50대</option>
+                        <option value="60">60대</option>
+                        <option value="70">70대</option>
+                        <option value="80">80대</option>
+                        <option value="90">90대</option>
+                    </select>
+                </div>
+            </div>
+            <div class="my-4">
+                <div class="form-floating my-2">
+                    <input type="password" class="form-control" id="pw">
+                    <label for="pw">비밀번호</label>
+                </div>
+                <div class="form-floating my-2">
+                    <input type="password" class="form-control" id="pw-match" name="customerPw">
+                    <label for="pw-match">비밀번호 확인</label>
+                </div>
+                <p id="match-miss" class="text-danger"></p>
+            </div>
+            <div class="my-4 d-grid gap-3">
+                <button type="submit" id="submit-btn" class="btn btn-outline-primary" disabled>회원가입</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

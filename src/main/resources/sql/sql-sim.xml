@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.bitc.bmn_project.mapper.SimMapper">
+
+    <!-- 손님 아이디 중복 확인-->
+    <select id="idCheckCustomer" resultType="int" parameterType="String">
+        SELECT count(*) as cnt FROM customer_tp WHERE customer_id = #{userId}
+    </select>
+
+    <!-- 사장님 아이디 중복 확인-->
+    <select id="idCheckCeo" resultType="int" parameterType="String">
+        SELECT count(*) as cnt FROM ceo_tp WHERE ceo_id = #{userId}
+    </select>
+
+    <!-- 손님 회원가입 -->
+    <insert id="signUpCustomer" parameterType="com.bitc.bmn_project.DTO.CustomerDTO">
+        INSERT INTO customer_tp (customer_id, customer_pw, customer_name, customer_nick, customer_gender, customer_age)
+        VALUES(#{customerId}, #{customerPw}, #{customerName}, #{customerNick}, #{customerGender}, #{customerAge})
+    </insert>
+
+    <!-- 사장님 회원가입 -->
+    <insert id="signUpCeo" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        INSERT INTO ceo_tp (ceo_id, ceo_pw, ceo_name)
+        VALUES(#{ceoId}, #{ceoPw}, #{ceoName} )
+    </insert>
+    <!-- 아이디 존재 여부 확인 -->
+    <select id="isUser" resultType="int" parameterType="String">
+        SELECT COUNT(*) as cnt
+        FROM customer_tp as cus,
+        ceo_tp as ceo
+        WHERE cus.customer_id = #{userId}
+        OR ceo.ceo_id = #{userId};
+    </select>
+    <!-- 손님 회원 확인-->
+    <select id="isCustomer" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM customer_tp
+        WHERE customer_id = #{userId}
+        AND customer_pw = #{userPw}
+    </select>
+    <!-- 손님 회원이면 등급 출력  -->
+    <select id="getGrade" resultType="int" parameterType="String">
+        SELECT customer_grade
+        FROM customer_tp
+        WHERE customer_id = #{userId}
+    </select>
+    <!-- 사장님 회원 확인-->
+    <select id="isCeo" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM ceo_tp
+        WHERE ceo_id = #{userId}
+        AND ceo_pw = #{userPw}
+    </select>
+
+    <!-- 세션 발급을 위한 손님 전체 데이터 출력 -->
+    <select id="getCustomerInfo" resultType="com.bitc.bmn_project.DTO.CustomerDTO" parameterType="String">
+        SELECT *
+        FROM customer_tp
+        WHERE customer_id = #{userId}
+    </select>
+    <!-- 세션 발급을 위한 사장님 전체 데이터 출력 -->
+    <select id="getCeoInfo" resultType="com.bitc.bmn_project.DTO.CeoDTO" parameterType="String">
+        SELECT *
+        FROM ceo_tp
+        WHERE ceo_id = #{userId}
+    </select>
+
+    <!-- 가게 등록 -->
+    <update id="addStore" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        UPDATE ceo_tp
+        SET
+        ceo_store = #{ceoStore},
+        ceo_main_menu = #{ceoMainMenu},
+        ceo_detail_menu1 = #{ceoDetailMenu1},
+        ceo_menu_img1 = #{ceoMenuImg1},
+        ceo_detail_menu2 = #{ceoDetailMenu2},
+        ceo_menu_img2 = #{ceoMenuImg2},
+        ceo_detail_menu3 = #{ceoDetailMenu3},
+        ceo_menu_img3 = #{ceoMenuImg3},
+        ceo_detail_menu4 = #{ceoDetailMenu4},
+        ceo_menu_img4 = #{ceoMenuImg4},
+        ceo_detail_menu5 = #{ceoDetailMenu5},
+        ceo_menu_img5 = #{ceoMenuImg5},
+        ceo_detail_menu6 = #{ceoDetailMenu6},
+        ceo_menu_img6 = #{ceoMenuImg6},
+        ceo_open_time = #{ceoOpenTime},
+        ceo_closing_time = #{ceoClosingTime},
+        ceo_city_address = #{ceoCityAddress},
+        ceo_full_address = #{ceoFullAddress},
+        ceo_call_number = #{ceoCallNumber},
+        ceo_contents = #{ceoContents},
+        ceo_category = #{ceoCategory},
+        ceo_thumbnail_img = #{ceoThumbnailImg},
+        ceo_main_img = #{ceoMainImg},
+        ceo_lat = #{ceoLat},
+        ceo_lon = #{ceoLon}
+        WHERE ceo_idx = 1
+        <!--        #{ceoIdx}-->
+    </update>
+
+    <!-- 리뷰 작성 페이지 - 가게이름 가져오기 -->
+    <select id="getStoreName" parameterType="int" resultType="String">
+        SELECT ceo_store
+        FROM ceo_tp
+        WHERE ceo_idx = #{ceoIdx};
+    </select>
+
+    <!-- 리뷰 작성 -->
+    <insert id="reviewWrite" parameterType="com.bitc.bmn_project.DTO.ReviewDTO">
+        INSERT INTO review_tp(customer_idx, customer_nick, ceo_idx, review_title, review_contents, review_img,
+        review_date, review_score)
+        VALUES(#{customerIdx},
+        #{customerNick},
+        #{cedIdx},
+        #{reviewTitle},
+        #{reviewContents},
+        #{reviewImg},
+        CURDATE(),
+        #{reviewScore})
+    </insert>
+    <!-- 리뷰 idx 가져오기   -->
+    <select id="getReviewIdx" resultType="int">
+        SELECT max(review_idx) as review_idx FROM review_tp
+    </select>
+    <!-- 리뷰 작성 태그 -->
+    <insert id="reviewWriteTag">
+        INSERT INTO review_tag_tp(review_idx, review_tag2, review_tag3, review_tag4, review_tag5, review_tag6, review_tag7, review_tag8)
+        VALUES(#{reviewIdx}, #{review_tag2}, #{review_tag3}, #{review_tag4}, #{review_tag5}, #{review_tag6}, #{review_tag7}, #{review_tag8})
+    </insert>
+
+</mapper>
