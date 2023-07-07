@@ -1,32 +1,17 @@
 package com.bitc.bmn_project.controller;
 
-import com.bitc.bmn_project.DTO.CeoDTO;
-import com.bitc.bmn_project.DTO.CustomerDTO;
-import com.bitc.bmn_project.DTO.ReservationDTO;
-import com.bitc.bmn_project.service.LeeService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/bmn")
 public class LeeController {
 
-    @Autowired
-    private LeeService leeService;
-
     @RequestMapping("/")
     public String index() throws Exception {
         return "index";
     }
+<<<<<<< HEAD
 
     // 받기 전에 상세 페이지에서 get으로 가게 테이블 정보(ceoIdx, ceoName)가 제공되어야함 제공된거 타임리프로 input hidden에 꼭 넣어야함, mv.addObject(가게정보 dto) 이런식
     // 고객 정보가 입력된 view 제공
@@ -200,4 +185,6 @@ public class LeeController {
 
         return reservation;
     }
+=======
+>>>>>>> origin/swbranch
 }

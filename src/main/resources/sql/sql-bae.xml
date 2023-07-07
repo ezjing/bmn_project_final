@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bitc.bmn_project.mapper.BaeMapper">
+<!--	식당 정보 조회-->
+	<select id="selectCeoDetail" parameterType="int" resultType="com.bitc.bmn_project.DTO.CeoDTO">
+		SELECT
+			ceo_idx, ceo_id, ceo_name, ceo_store, ceo_main_menu, ceo_detail_menu1, ceo_menu_img1,
+			ceo_open_time,ceo_city_address, ceo_full_address, ceo_call_number, ceo_contents, ceo_category,
+			ceo_thumbnail_img, ceo_main_img, ceo_score, ceo_lat, ceo_lon, ceo_grade
+		FROM
+			ceo_tp
+		WHERE
+			ceo_idx = #{ceoIdx}
+	</select>
+	
+	
+	
+<!--	손님 데이터 조회-->
+	<select id="selectCustomerInfo" parameterType="int" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
+		SELECT
+			customer_idx, customer_id, customer_name, customer_nick, customer_gender, customer_age, customer_follow
+		FROM
+			customer_tp
+		WHERE
+			customer_idx = #{customerIdx}
+	</select>
+	
+<!--	팔로우 식당 추가-->
+	<update id="updateFollow" parameterType="map">
+		UPDATE customer_tp SET customer_follow = concat(customer_follow, #{ceoStore}, ",")
+		WHERE customer_idx = #{customerIdx}
+	</update>
+	
+<!--	팔로우한 식당 삭제-->
+	<update id="deleteFollow" parameterType="map">
+		UPDATE
+			customer_tp
+		SET
+			customer_follow = REPLACE(customer_follow, CONCAT(#{ceoStore}, ','), '')
+		WHERE
+			customer_idx = #{customerIdx}
+	</update>
+	
+<!--	팔로우 수 조회-->
+	<select id="getFollows" parameterType="String" resultType="int">
+		SELECT
+			COUNT(*) AS follows_cnt
+		FROM
+			customer_tp
+		WHERE
+			customer_follow
+		LIKE
+		<!--		mysql의 like문은 표기형식 아래와 같이 해줘야 함-->
+		concat('%',#{ceoStore},'%')
+	</select>
+	
+<!--	ceoTp의 팔로우수 연동-->
+	<update id="updateCeoTpFollows" parameterType="int">
+		UPDATE
+			ceo_tp
+		SET
+			ceo_follow_cnt = #{followCnt}
+		WHERE
+			ceo_idx = #{ceoIdx}
+	</update>
+	
+<!--	리뷰 수 조회-->
+	<select id="getReviewCnt" parameterType="int" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			review_tp
+		WHERE
+			ceo_idx = #{ceoIdx} AND review_delete = 'N'
+	</select>
+	
+<!--	리뷰 리스트 가져오기-->
+	<select id="selectReviewList" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReviewJoinDTO">
+		SELECT
+			R.review_idx, R.customer_idx, R.customer_nick, R.ceo_idx, R.review_title, R.review_contents, R.review_img,
+			R.review_date, R.review_score, R.review_delete, RT.review_tag_idx, RT.review_tag1, RT.review_tag2, RT.review_tag3, RT.review_tag4, RT.review_tag5, RT.review_tag6, RT.review_tag7, RT.review_tag8
+		FROM
+			review_tp R JOIN review_tag_tp RT ON(R.review_idx = RT.review_idx)
+		WHERE
+			ceo_idx = #{ceoIdx} AND review_delete = 'N'
+		ORDER BY
+			review_idx DESC
+	</select>
+	
+	
+<!--	관리자 리뷰 삭제-->
+	<update id="reviewDelete" parameterType="int">
+		UPDATE review_tp SET review_delete = 'Y' WHERE review_idx = #{reviewIdx}
+	</update>
+	
+<!--	리뷰에 달린 댓글 리스트 가져오기-->
+	<select id="selectCommentList" parameterType="int" resultType="com.bitc.bmn_project.DTO.CommentJoinDTO">
+		SELECT
+			COM.comment_idx, COM.review_idx, COM.ceo_idx, COM.customer_idx, COM.comment_contents, COM.comment_date,
+			CUS.customer_nick
+		FROM
+			comment_tp COM JOIN customer_tp CUS ON (COM.customer_idx = CUS.customer_idx)
+		WHERE
+			ceo_idx = #{ceoIdx} AND comment_delete = 'N'
+		ORDER BY
+			comment_idx DESC
+	</select>
+	
+<!--	리뷰에 댓글 달기-->
+	<insert id="commentInsert" parameterType="com.bitc.bmn_project.DTO.CommentJoinDTO">
+		INSERT INTO
+			comment_tp (review_idx, ceo_idx, customer_idx, comment_contents, comment_date)
+		VALUES
+			(#{reviewIdx}, #{ceoIdx}, #{customerIdx}, #{commentContents}, NOW())
+	</insert>
+	
+	
+<!--	문의리스트 조회-->
+	<select id="selectQuestionList" parameterType="int" resultType="com.bitc.bmn_project.DTO.QuestionDTO">
+		SELECT
+			question_idx, customer_idx, customer_nick, ceo_idx, question_complete, question_title, question_contents, question_date, answer_contents, answer_date
+		FROM
+			question_tp
+		WHERE
+			ceo_idx = #{ceoIdx}
+		ORDER BY
+			question_idx DESC
+	</select>
+	
+<!--	손님 문의글 작성-->
+	<insert id="insertQuestion" parameterType="com.bitc.bmn_project.DTO.QuestionDTO">
+		INSERT INTO
+			question_tp
+				(customer_idx, customer_nick, ceo_idx, question_title, question_contents, question_date)
+			VALUES
+				(#{customerIdx}, #{customerNick}, #{ceoIdx}, #{questionTitle}, #{questionContents}, NOW())
+	</insert>
+	
+<!--	사장님 문의글 답변-->
+	<update id="answerQuestion" parameterType="com.bitc.bmn_project.DTO.QuestionDTO">
+		UPDATE
+			question_tp
+		SET
+			answer_contents = #{answerContents},
+			answer_date = NOW(),
+			question_complete = '답변완료'
+		WHERE
+			question_idx = #{questionIdx}
+	</update>
+</mapper>
