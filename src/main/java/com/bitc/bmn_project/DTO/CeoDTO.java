@@ -2,6 +2,8 @@ package com.bitc.bmn_project.DTO;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class CeoDTO {
     private int ceoIdx;

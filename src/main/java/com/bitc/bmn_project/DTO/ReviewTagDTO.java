@@ -15,4 +15,8 @@ public class ReviewTagDTO {
   private String reviewTag6;
   private String reviewTag7;
   private String reviewTag8;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/usbranch

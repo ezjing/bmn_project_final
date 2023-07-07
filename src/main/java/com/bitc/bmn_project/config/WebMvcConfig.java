@@ -34,12 +34,31 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 인터셉터 파일 설정
         registry.addInterceptor(new LoginCheck())
-                // 인터셉터가 동작될 컨트롤러 URL 설정(board2 밑의 모든 페이지)
-                .addPathPatterns("/board2/*")
+                // 인터셉터가 동작될 컨트롤러 URL 설정(bmn 밑의 모든 페이지)
+                .addPathPatterns("/bmn/*")
                 // 인터셉터 동작에서 제외할 URL 설정
-                .excludePathPatterns("/board2/board2List.do")
-                .excludePathPatterns("/login/login.do")
-                .excludePathPatterns("/login/logout.do")
-                .excludePathPatterns("/login/logFail.do");
+                .excludePathPatterns("/bmn/")
+
+                .excludePathPatterns("/bmn/login")
+                .excludePathPatterns("/bmn/logOut")
+
+                .excludePathPatterns("/bmn/signUp/customer")
+                .excludePathPatterns("/bmn/signUp/customer/signup")
+
+                .excludePathPatterns("/bmn/sigunUp/ceo")
+                .excludePathPatterns("/bmn/sigunUp/ceo/signup")
+                .excludePathPatterns("/bmn/sigunUp/idCheck")
+
+                // 나중에 합칠때 빼줘야함
+                // (사장이 로그인 했을때)
+                .excludePathPatterns("/bmn/ceoStore")
+                .excludePathPatterns("/bmn/ceoStore/popup")
+                .excludePathPatterns("/bmn/ceoStore/addStore")
+
+                // (리뷰 작성시)
+                .excludePathPatterns("/bmn/review")
+                .excludePathPatterns("/bmn/review/write");
+
+
     }
 }
