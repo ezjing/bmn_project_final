@@ -41,7 +41,7 @@ public class LoginCheck implements HandlerInterceptor {
             System.out.println("\n***** Interceptor *****");
             System.out.println("로그인 상태");
             // 세션 사용 시간을 초기화
-            session.setMaxInactiveInterval(60);
+            session.setMaxInactiveInterval(3600);
 
             // 인터셉터를 정상적으로 통과하여 원하는 컨트롤러에 접근이 가능함
             return true;

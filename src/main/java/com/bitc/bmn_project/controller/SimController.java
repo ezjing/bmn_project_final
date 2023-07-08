@@ -10,17 +10,24 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/bmn4")
+@RequestMapping("/bmn")
 public class SimController {
 
     @Autowired
@@ -96,7 +103,9 @@ public class SimController {
             // 3-2 로그인 성공 우수회원
             case 1, 2 -> {
                 customer = simService.getCustomerInfo(userId);
-                session.setAttribute("user", customer);
+                System.out.println(customer);
+                session.setAttribute("user", "customer");
+                session.setAttribute("customer", customer);
                 session.removeAttribute("failMsg");
 
                 return "redirect:" + returnUrl;
@@ -113,7 +122,8 @@ public class SimController {
 
         if (result == 1) { // 3-4 로그인 성공 사장님
             ceo = simService.getCeoInfo(userId);
-            session.setAttribute("user", ceo);
+            session.setAttribute("user", "ceo");
+            session.setAttribute("ceo", ceo);
             session.removeAttribute("failMsg");
         } else {
             // 실패시 메시지 전송
@@ -318,4 +328,22 @@ public class SimController {
         // 상세뷰로 보내야함
         return "redirect:/bmn/viewDetail/" + review.getCeoIdx();
     }
+
+    @RequestMapping("/getImage")
+    @ResponseBody
+    public ResponseEntity<byte[]> returnImg(
+            @RequestParam("path") String path
+    ) throws Exception {
+        System.out.println(path);
+        System.out.println("리턴 이미지 실행");
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.IMAGE_JPEG);
+
+        return new ResponseEntity<byte[]>(IOUtils.toByteArray(
+                new FileInputStream(
+                        new File(path))),
+                header, HttpStatus.CREATED);
+
+    }
+
 }
