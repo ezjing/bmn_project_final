@@ -161,8 +161,8 @@
                     <div class="my-2 mx-0 d-flex justify-content-end">
                         <input type="hidden" th:value="${ceoIdx}" name="ceoIdx">
                         <input type="hidden" th:value="${ceoStore}" name="ceoStore">
-                        <input type="text" th:value="${session.user.getCustomerIdx}" name="customerIdx">
-                        <input type="text" th:value="${session.user.getCustomerNick}" name="customerNick">
+                        <input type="text" th:value="${session.user.customerIdx}" name="customerIdx">
+                        <input type="text" th:value="${session.user.customerNick}" name="customerNick">
                         <button type="button" class="btn btn-secondary" onclick="reviewCancel()">취소</button>
                         <button type="submit" class="btn btn-primary opacity-75 ms-3" id="submit">작성</button>
                     </div>

@@ -145,7 +145,7 @@
             <div class="fs-3"  th:if="${not #strings.isEmpty(session.user)}">
                 <a href="/bmn/logOut" id="logout-btn" class="btn btn-primary me-3">로그아웃</a>
 <!--                <p th:unless="${#strings.isEmpty(session.user.customerId)}" th:text="|${session.user.customerNick}님 환영합니다.|"></p>-->
-                <p th:unless="${#strings.isEmpty(session.user.ceoId)}" th:text="|${session.user.ceoStore}사장님 환영합니다.|"></p>
+<!--                <p th:unless="${#strings.isEmpty(session.user.ceoId)}" th:text="|${session.user.ceoStore}사장님 환영합니다.|"></p>-->
             </div>
 
             <div class="fs-3" th:unless="${not #strings.isEmpty(session.user)}">
