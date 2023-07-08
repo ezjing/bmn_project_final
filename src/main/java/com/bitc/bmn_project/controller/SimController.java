@@ -27,7 +27,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
-@RequestMapping("/bmn")
+//@RequestMapping("/bmn")
 public class SimController {
 
     @Autowired
@@ -323,7 +323,6 @@ public class SimController {
         // 태그 값 insert 하는 서비스 (미구현)
         System.out.println(reviewTag);
         simService.reviewWriteTag(reviewTag);
-
 
         // 상세뷰로 보내야함
         return "redirect:/bmn/viewDetail/" + review.getCeoIdx();

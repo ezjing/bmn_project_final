@@ -122,8 +122,7 @@ public class SimServiceImpl implements SimService {
     @Override
     public void reviewWriteTag(ReviewTagDTO reviewTag) throws Exception {
 
-        // 전달되는 태그의 값을 변경 해줘야함 on - > Y
-//        simMapper.reviewWriteTag(reviewTag);
+        simMapper.reviewWriteTag(reviewTag);
     }
 
 }

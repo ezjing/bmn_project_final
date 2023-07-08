@@ -127,8 +127,8 @@
     </select>
     <!-- 리뷰 작성 태그 -->
     <insert id="reviewWriteTag" parameterType="com.bitc.bmn_project.DTO.ReviewTagDTO">
-        INSERT INTO review_tag_tp(review_idx, review_tag2, review_tag3, review_tag4, review_tag5, review_tag6, review_tag7, review_tag8)
-        VALUES(#{reviewIdx}, #{review_tag2}, #{review_tag3}, #{review_tag4}, #{review_tag5}, #{review_tag6}, #{review_tag7}, #{review_tag8})
+        INSERT INTO review_tag_tp(review_idx, review_tag1, review_tag2, review_tag3, review_tag4, review_tag5, review_tag6, review_tag7, review_tag8)
+        VALUES(#{reviewIdx}, #{reviewTag1}, #{reviewTag2}, #{reviewTag3}, #{reviewTag4}, #{reviewTag5}, #{reviewTag6}, #{reviewTag7}, #{reviewTag8})
     </insert>
 
 </mapper>
