@@ -14,11 +14,729 @@
 
     </style>
     <script>
+        function events() {
+            const ceoIdx = $("#ceoIdx").val();
 
+            $(".btn-follow").on("click", function () {   // 버튼마다 반복문으로 val 값을 주는것임 그리고 클릭이벤트로 그걸 들고와서 해당 인덱스 지우도록..!(업데이트문)
+                alert("정말 팔로우를 취소하시겠습니까?"); // 제이쿼리로 새로 만들어 지는 버튼에는 이렇게 바로 주면 안됨 그래서 함수로 만들고 그걸 이용해야함.
+                const ceoStore = $(this).val() + ",";  // this 는 클릭 이벤트가 발생된 버튼을 말함, 즉 누른 버튼의 값을 가져옴
+                const btn = $(this);
+                // console.log(ceoStore);   // 가게이름 받아오는지 확인
+
+                $.ajax({
+                    url: "/bmn/myPageCeo/follow/cancel",   // update를 시켜야하는데.. 어떻게 그 문자열만 찾아서 없앤담.... 버튼 값으로 가게이름 주고 가게 이름 바로 들고오자
+                    type: "POST",
+                    data: {ceoStore: ceoStore, ceoIdx: ceoIdx},
+                    success(data) {
+                        // alert("ajax 통신 성공");
+
+                        const parent = $(btn).parent().parent().remove();   // 버튼의 부모는 td 부모의 부모가 tr
+                        // console.log(parent);
+                    },
+                    error() {
+                        alert("ajax 통신 실패");
+                    }
+                });
+            });
+        }
+        $(document).ready(function () {
+            const ceoIdx = $("#ceoIdx").val();
+            console.log(ceoIdx);
+
+            $("#list-reservation-list").on("click", function () {
+                // location.href = "/bmn/reservationCeo";
+                $.ajax({    // 예약 내역 ajax
+                    url: "/bmn/myPageCeo/reservation",
+                    type: "POST",
+                    data: {ceoIdx: ceoIdx},
+                    success(data) { // data = 가게이름, 날짜, 시간, 예약상태 LIST
+                        // alert("ajax 통신 성공");
+                        // console.log(data);
+
+                        $("#theadReservation").empty();
+                        $("#tbodyReservation").empty();
+
+                        let thead =
+                            "<tr>\n" +
+                            "    <th>예약자</th>\n" +
+                            "    <th>예약 인원 / 상세 내용</th>\n" +
+                            "    <th>예약 일시</th>\n" +
+                            "    <th>예약 상태</th>\n" +
+                            "</tr>";
+
+                        $("#theadReservation").append(thead);
+
+                        let tbody = "";
+
+                        if (data.length == 0) {
+                            tbody =
+                                "<tr>\n" +
+                                "    <td colspan=\"4\">예약신청이 없습니다</td>\n" +
+                                "</tr>";
+
+                            $("#tbodyReservation").append(tbody);
+                        }
+                        else {
+                            for (let i = 0; i < data.length; i++) {
+                                const ceoIdx = data[i].ceoIdx;
+                                const customerName = data[i].customerName;
+                                const reservationPeople = data[i].reservationPeople;
+                                let reservationContents = data[i].reservationContents;
+                                const reservationDate = data[i].reservationDate;
+                                const reservationTime = data[i].reservationTime;
+                                let reservationStat = data[i].reservationStat;
+
+                                if (reservationContents == "") {
+                                    reservationContents = "입력된 상세 내용이 없습니다";
+                                }
+
+                                if (reservationStat == 1 ) {
+                                    reservationStat = "예약 신청 중";
+                                }
+                                else if (reservationStat == 2) {
+                                    reservationStat = "예약 확정";
+                                }
+
+                                tbody =
+                                    "<tr>\n" +
+                                    "    <td>" + customerName + "</td>\n" +
+                                    "    <td><a href='/bmn/reservationCeo' class='text-decoration-none'>" + reservationPeople + "명 / " + reservationContents + "</a></td>\n" +
+                                    "    <td>" + reservationDate + " " + reservationTime + ":00" + "</td>\n" +
+                                    "    <td>" + reservationStat + "</td>\n" +
+                                    "</tr>";
+
+                                $("#tbodyReservation").append(tbody);
+                            }
+                        }
+                    },
+                    error() {
+                        alert("ajax 통신 실패");
+                    }
+                });
+            });
+            $("#list-follow-list").on("click", function () {
+                $.ajax({    // follow 내역 ajax
+                    url: "/bmn/myPageCeo/follow",
+                    type: "POST",
+                    data: {ceoIdx: ceoIdx},
+                    success(data) {
+                        // alert("ajax 통신 성공");
+                        const str = data;
+                        const split = str.split(',');   // split 리스트 형식으로 들고옴
+
+                        $("#theadFollow").empty();
+                        $("#tbodyFollow").empty();
+
+                        let thead =
+                            "<tr>\n" +
+                            "    <th>밥뭇나 맛집</th>\n" +
+                            "    <th></th>\n" +
+                            "    <th></th>\n" +
+                            "    <th>팔로우 취소</th>\n" +
+                            "</tr>";
+
+                        $("#theadFollow").append(thead);
+
+                        let tbody = "";
+
+                        if (split.length - 1 == 0) {
+                            tbody =
+                                "<tr>\n" +
+                                "    <td colspan=\"4\">팔로잉이 없습니다</td>\n" +
+                                "</tr>";
+
+                            $("#tbodyFollow").append(tbody);
+                        }
+                        else {
+                            for (let i = 0; i < split.length - 1; i++) { // 리스트의 마지막은 빈 문자열이기 때문에 -1로 제외
+                                const ceoStore = split[i];
+
+                                tbody =
+                                    "<tr>\n" +
+                                    "    <td>" + ceoStore + "</td>\n" +
+                                    "    <td></td>\n" +
+                                    "    <td></td>\n" +
+                                    "    <td>" +
+                                    "        <button type=\"button\" class=\"btn btn-outline-danger btn-follow\" value='" + ceoStore + "' style=\"--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;\">팔로잉</button>" +
+                                    "    </td>\n" +
+                                    "</tr>";
+
+                                $("#tbodyFollow").append(tbody);
+                            }
+                        }
+                        events();
+                    },
+                    error() {
+                        alert("ajax 통신 실패");
+                    }
+                });
+            });
+            $("#list-review-list").on("click", function () {
+                $.ajax({    // review 내역 ajax
+                    url: "/bmn/myPageCeo/review",
+                    type: "POST",
+                    data: {ceoIdx: ceoIdx},
+                    success(data) {
+                        // alert("ajax 통신 성공");
+
+                        $("#theadReview").empty();
+                        $("#tbodyReview").empty();
+
+                        let thead =
+                            "<tr>\n" +
+                            "    <th>닉네임</th>\n" +
+                            "    <th>리뷰제목</th>\n" +
+                            "    <th>평점</th>\n" +
+                            "    <th>날짜</th>\n" +
+                            "</tr>";
+
+                        $("#theadReview").append(thead);
+
+                        let tbody = "";
+
+                        if (data.length == 0) {
+                            tbody =
+                                "<tr>\n" +
+                                "    <td colspan=\"4\">등록된 리뷰가 없습니다</td>\n" +
+                                "</tr>";
+
+                            $("#tbodyReview").append(tbody);
+                        }
+                        else {
+                            for (let i = 0; i < data.length; i++) {
+                                const ceoIdx = data[i].ceoIdx;
+                                const customerNick = data[i].customerNick;
+                                const reviewTitle = data[i].reviewTitle;
+                                const reviewScore = data[i].reviewScore;
+                                const reviewDate = data[i].reviewDate;
+
+                                tbody =
+                                    "<tr>\n" +
+                                    "    <td>" + customerNick + "</td>\n" +
+                                    "    <td><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-decoration-none'>" + reviewTitle + "</a></td>\n" + // 상세페이지로 이동, 내가 쓴 리뷰까지 자동으로 이동할수 있게 태그 달수 있는지 물어보기
+                                    "    <td>" + reviewScore + "</td>\n" +
+                                    "    <td>" + reviewDate + "</td>\n" +
+                                    "</tr>";
+
+                                $("#tbodyReview").append(tbody);
+                            }
+                        }
+                    },
+                    error() {
+                        alert("ajax 통신 실패");
+                    }
+                });
+            });
+            $("#list-question-list").on("click", function () {
+                $.ajax({    // question 내역 ajax
+                    url: "/bmn/myPageCeo/question",
+                    type: "POST",
+                    data: {ceoIdx: ceoIdx},
+                    success(data) {
+                        // alert("ajax 통신 성공");
+
+                        $("#theadQuestion").empty();
+                        $("#tbodyQuestion").empty();
+
+                        let thead =
+                            "<tr>\n" +
+                            "    <th>닉네임</th>\n" +
+                            "    <th>문의제목</th>\n" +
+                            "    <th>날짜</th>\n" +
+                            "    <th>답변여부</th>\n" +
+                            "</tr>";
+
+                        $("#theadQuestion").append(thead);
+
+                        let tbody = "";
+
+                        if (data.length == 0) {
+                            tbody =
+                                "<tr>\n" +
+                                "    <td colspan=\"4\">등록된 문의사항이 없습니다</td>\n" +
+                                "</tr>";
+
+                            $("#tbodyQuestion").append(tbody);
+                        }
+                        else {
+                            for (let i = 0; i < data.length; i++) {
+                                const ceoIdx = data[i].ceoIdx;
+                                const customerNick = data[i].customerNick;
+                                const questionTitle = data[i].questionTitle;
+                                const questionDate = data[i].questionDate;
+                                const questionComplete = data[i].questionComplete;
+
+                                tbody =
+                                    "<tr>\n" +
+                                    "    <td>" + customerNick + "</td>\n" +
+                                    "    <td><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-decoration-none'>" + questionTitle + "</a></td>\n" +
+                                    "    <td>" + questionDate + "</td>\n" +
+                                    "    <td>" + questionComplete + "</td>\n" +
+                                    "</tr>";
+
+                                $("#tbodyQuestion").append(tbody);
+                            }
+                        }
+                    },
+                    error() {
+                        alert("ajax 통신 실패");
+                    }
+                });
+            });
+            $("#out").on("click", function () {
+                $("#modalOut").modal("show");
+            });
+            $("#lastOut").on("click", function () {
+                $("#method").val("DELETE");
+                const form = $("#form")[0];
+                form.submit();
+
+                alert("탈퇴되었습니다.");
+            });
+            $("#submit-btn").on("click", function () {
+                $("#method").val("PUT");
+                const form = $("#form")[0];
+                const ceoName = $("#user-name").val();
+                const pw = $("#pw").val();
+                const ceoPw = $("#pw-match").val();
+
+                if (ceoName == "" || pw == "" || ceoPw == "") {
+                    alert("정보를 모두 입력하세요.");
+                }
+                else {
+                    form.submit();
+
+                    alert("수정되었습니다.")
+                    location.reload();
+                }
+            });
+        });
     </script>
 
 </head>
 <body>
-<!--  가게등록하기 버튼 추가  -->
+<header th:replace="~{layout/header :: header}"></header>
+
+<main class="container-sm">
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between">
+                <div>
+<!--                    <p th:if="${session.user.ceoGrade} == 1">[일반맛집]</p> &lt;!&ndash;  세션값 받아와서 가정법으로 구현하기  &ndash;&gt;-->
+<!--                    <p th:if="${session.user.ceoGrade()} == 2">[우수맛집]</p>-->
+                    <h1 th:text="${session.user.ceoStore}">맛나밥집</h1>
+                    <p th:text="|안녕하세요. ${session.user.ceoName}입니다.|">안녕하세요. 이지원 입니다.</p>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="height: 5em">
+                        내 프로필 수정
+                    </button>
+                    <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStore" aria-expanded="false" aria-controls="collapseExample" style="height: 5em">
+                        가게 정보 수정
+                    </button>
+                </div>
+            </div>
+
+            <!--  콜렙스  -->
+            <div class="collapse" id="collapseExample">
+                <div class="container-sm mt-5">
+                    <div class="col-sm-8 mx-auto">
+                        <form action="/bmn/myPageCeo" class="form-control p-4 mb-5" method="post" id="form">
+                            <div class="form-floating my-4">
+                                <input type="text" class="form-control" id="user-name" name="ceoName"th:value="${session.user.ceoName}">
+                                <label for="user-name">이름</label>
+                                <p id="name-write" class="text-danger"></p>
+                            </div>
+                            <div class="my-4">
+                                <div class="form-floating my-2">
+                                    <input type="password" class="form-control" id="pw">
+                                    <label for="pw">비밀번호</label>
+                                </div>
+                                <div class="form-floating my-2">
+                                    <input type="password" class="form-control" id="pw-match" name="ceoPw">
+                                    <label for="pw-match">비밀번호 확인</label>
+                                </div>
+                                <p id="match-miss" class="text-danger"></p>
+                            </div>
+                            <div class="my-4 d-grid gap-3">
+                                <button type="button" id="submit-btn" class="btn btn-outline-primary">수정하기</button>
+                            </div>
+                            <a href="#" class="text-decoration-none text-danger opacity-75" id="out">회원탈퇴></a>
+                            <input type="hidden" id="ceoIdx" name="ceoIdx" value="2" th:value="${session.user.ceoIdx}">
+                            <!--  REST 방식 사용 시 form 태그의 데이터 전송 방식을 변경하기 위한 태그  -->
+                            <input type="hidden" id="method" name="_method">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapse" id="collapseStore">
+                <div class="container-sm my-4">
+                    <div class="col-sm-10 mx-auto">
+                        <form name="form" id="form2" action="/bmn/ceoStore/addStore" method="post" class="form-control" enctype="multipart/form-data" novalidate>
+                            <h2 class="text-center my-4">가게 정보 수정</h2>
+                            <div>
+                                <!-- 정보 입력 -->
+                                <div class="row">
+                                    <div class="my-2">
+                                        <span>가게 이름</span>
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="ceo_store" name="ceoStore">
+                                            <label for="ceo_store">가게 이름</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <span>운영 시간</span>
+                                    <div class="form-floating col">
+                                        <input type="text" class="form-control" id="ceo-open-time" name="ceoOpenTime">
+                                        <label for="ceo-open-time" class="ms-2">오픈 시간</label>
+                                    </div>
+                                    <div class="form-floating col">
+                                        <input type="text" class="form-control" id="ceo-closing-time" name="ceoClosingTime">
+                                        <label for="ceo-closing-time" class="ms-2">마감 시간</label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <span>카테고리 선택</span>
+                                    <div class="col form-floating">
+                                        <select class="form-select form-select" name="ceoCategory" id="ceo-category">
+                                            <!--                            가게 대분류 (한,중,양)-->
+                                            <option selected value="00"></option>
+                                            <!-- db에서 불러오기 -> 관리자 관리페이지(?) 01~ 06 -->
+                                            <option value="01">한식</option>
+                                            <option value="02">양식</option>
+                                            <option value="03">중식</option>
+                                            <option value="04">일식</option>
+                                            <option value="05">주점</option>
+                                            <!-- 선택시 데이터 못 가져가도록 블락-->
+                                            <option value="06">직접입력</option>
+                                        </select>
+                                        <label for="ceo-category" class="ms-2">카테고리</label>
+                                    </div>
+                                    <!-- 셀렉트 박스 직접입력 선택시 활성화 -->
+                                    <div class="col form-floating">
+                                        <input type="text" class="form-control" id="ceo-category-select" name="ceoCategory" disabled>
+                                        <label for="ceo-category-select" class="ms-2">직접입력</label>
+                                    </div>
+                                </div>
+
+                                <div class="row my-2">
+                                    <span>가게 소개</span>
+                                    <div class="form-floating col-8">
+                                        <input type="text" class="form-control" id="ceo-call-number" name="ceoCallNumber">
+                                        <label for="ceo-call-number" class="ms-2">가게 전화번호</label>
+                                    </div>
+                                    <div class="col">
+                                        <label for="ceo-thumbnail-img">가게 홍보 이미지</label>
+                                        <input type="file" class="form-control" id="ceo-thumbnail-img" name="ceoThumbnailImgFile" accept="image/jpeg" required>
+                                    </div>
+                                </div>
+
+                                <div class="row my-2">
+                                    <span>대표 메뉴</span>
+                                    <div class="form-floating col-8">
+                                        <input type="text" class="form-control" id="ceo-main-menu" name="ceoMainMenu">
+                                        <label for="ceo-main-menu" class="ms-2">대표 메뉴 이름(가격) / ex) 돈까스(7,000원)</label>
+                                    </div>
+                                    <div class="col">
+                                        <label for="ceo-main-img">대표 메뉴 이미지</label>
+                                        <input type="file" class="form-control" id="ceo-main-img" name="ceoMainImgFile" accept="image/jpeg" required>
+                                    </div>
+                                </div>
+
+                                <div class="my-2">
+                                    <span>가게 소개글</span>
+                                    <!-- 스마트 에디터 -->
+                                    <textarea name="ceoContents" id="ceoContents" rows="10" cols="100"></textarea>
+                                </div>
+
+                                <div class="my-2">메뉴 등록<small> (최대 6개)</small>
+                                    <button type="button" class="btn btn-outline-success py-0 px-1 text-center" id="add-item-btn">
+                                        <small><i class="bi bi-plus-circle-fill"></i></small>
+                                    </button>
+                                </div>
+                                <table class="table">
+                                    <colgroup>
+                                        <col width="5%">
+                                        <col width="8%">
+                                        <col width="40%">
+                                        <col width="25%">
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr id="menu1" class="menuItems">
+                                        <td class="text-center align-middle">
+                                            <button type="button" class="btn btn-outline-danger" value="1"
+                                                    onclick="hiddenItem(this.value)">
+                                                <i class="bi bi-dash-circle-fill"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center align-middle align-middle">
+                                            메뉴1
+                                        </td>
+                                        <td class="px-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="ceo-detail-menu1" name="ceoDetailMenu1" accept="image/jpeg">
+                                                <label for="ceo-detail-menu1" class="ms-2">메뉴1 이름(가격) / ex) 돈까스(7,000원)</label>
+                                            </div>
+                                        </td>
+                                        <td class="px-3">
+                                            <div>
+                                                <label for="ceo-menu-img1">메뉴1 이미지</label>
+                                                <input type="file" class="form-control" id="ceo-menu-img1" name="files">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="menu2" class="menuItems" hidden="hidden">
+                                        <td class="text-center align-middle">
+                                            <button type="button" class="btn btn-outline-danger" value="2"
+                                                    onclick="hiddenItem(this.value)">
+                                                <i class="bi bi-dash-circle-fill"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            메뉴2
+                                        </td>
+                                        <td class="px-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="ceo-detail-menu2" name="ceoDetailMenu2" accept="image/jpeg">
+                                                <label for="ceo-detail-menu2" class="ms-2">메뉴2 이름(가격) / ex) 돈까스(7,000원)</label>
+                                            </div>
+                                        </td>
+                                        <td class="px-3">
+                                            <div>
+                                                <label for="ceo-menu-img2">메뉴2 이미지</label>
+                                                <input type="file" class="form-control" id="ceo-menu-img2" name="files">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="menu3" class="menuItems" hidden="hidden">
+                                        <td class="text-center align-middle">
+                                            <button type="button" class="btn btn-outline-danger" value="3"
+                                                    onclick="hiddenItem(this.value)">
+                                                <i class="bi bi-dash-circle-fill"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            메뉴3
+                                        </td>
+                                        <td class="px-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="ceo-detail-menu3" name="ceoDetailMenu3" accept="image/jpeg">
+                                                <label for="ceo-detail-menu3" class="ms-2">메뉴3 이름(가격) / ex) 돈까스(7,000원)</label>
+                                            </div>
+                                        </td>
+                                        <td class="px-3">
+                                            <div>
+                                                <label for="ceo-menu-img3">메뉴3 이미지</label>
+                                                <input type="file" class="form-control" id="ceo-menu-img3" name="files">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="menu4" class="menuItems" hidden="hidden">
+                                        <td class="text-center align-middle">
+                                            <button type="button" class="btn btn-outline-danger" value="4"
+                                                    onclick="hiddenItem(this.value)">
+                                                <i class="bi bi-dash-circle-fill"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            메뉴4
+                                        </td>
+                                        <td class="px-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="ceo-detail-menu4" name="ceoDetailMenu4" accept="image/jpeg">
+                                                <label for="ceo-detail-menu4" class="ms-2">메뉴4 이름(가격) / ex) 돈까스(7,000원)</label>
+                                            </div>
+                                        </td>
+                                        <td class="px-3">
+                                            <div>
+                                                <label for="ceo-menu-img4">메뉴4 이미지</label>
+                                                <input type="file" class="form-control" id="ceo-menu-img4" name="files">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="menu5" class="menuItems" hidden="hidden">
+                                        <td class="text-center align-middle">
+                                            <button type="button" class="btn btn-outline-danger" value="5"
+                                                    onclick="hiddenItem(this.value)">
+                                                <i class="bi bi-dash-circle-fill"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            메뉴5
+                                        </td>
+                                        <td class="px-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="ceo-detail-menu5" name="ceoDetailMenu5" accept="image/jpeg">
+                                                <label for="ceo-detail-menu5" class="ms-2">메뉴5 이름(가격) / ex) 돈까스(7,000원)</label>
+                                            </div>
+                                        </td>
+                                        <td class="px-3">
+                                            <div>
+                                                <label for="ceo-menu-img5">메뉴5 이미지</label>
+                                                <input type="file" class="form-control" id="ceo-menu-img5" name="files">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="menu6" class="menuItems" hidden="hidden">
+                                        <td class="text-center align-middle">
+                                            <button type="button" class="btn btn-outline-danger" value="6"
+                                                    onclick="hiddenItem(this.value)">
+                                                <i class="bi bi-dash-circle-fill"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            메뉴6
+                                        </td>
+                                        <td class="px-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="ceo-detail-menu6" name="ceoDetailMenu6" accept="image/jpeg">
+                                                <label for="ceo-detail-menu6" class="ms-2">메뉴6 이름(가격) / ex) 돈까스(7,000원)</label>
+                                            </div>
+                                        </td>
+                                        <td class="px-3">
+                                            <div>
+                                                <label for="ceo-menu-img6">메뉴6 이미지</label>
+                                                <input type="file" class="form-control" id="ceo-menu-img6" name="files">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <!-- 자동으로 입력되는 정보 -->
+                            <div class="my-2">
+                                <span>가게 주소</span>
+                                <input type="button" class="btn btn-secondary opacity-50 btn-sm" onClick="goPopup();" value="주소 검색"/>
+                                <div class="my-4">
+                                    <label for="roadFullAddr" class="from-label"><small>전체 주소</small></label>
+                                    <input type="text" id="roadFullAddr" name="ceoFullAddress" class="form-control" readonly/>
+
+                                    <label for="roadFullAddr" class="from-label"><small>도시명(시, 군, 구)</small></label>
+                                    <input type="text" id="sggNm" name="ceoCityAddress" class="form-control" readonly/>
+
+                                    <input type="hidden" id="entX" name="ceoLat"/><br>
+                                    <input type="hidden" id="entY" name="ceoLon"/>
+                                </div>
+                            </div>
+                            <button id="submit" type="submit" class="btn btn-primary">확인 버튼</button>
+                            <input type="hidden" name="ceoIdx" th:value="${session.user.ceoIdx}">
+                        </form>
+                    </div>
+                </div>
+                <!--  스마트 에디터-->
+                <script type="text/javascript">
+                    var oEditors = [];
+                    nhn.husky.SE2M_AttachQuickPhoto = true;
+                    nhn.husky.EZCreator.createInIFrame({
+                        oAppRef: oEditors,
+                        elPlaceHolder: "ceoContents",
+                        sSkinURI: "/se2/SmartEditor2Skin.html",
+                        fCreator: "createSEditor2"
+
+                    });
+                </script>
+            </div>
+
+            <div class="list-group list-group-item-action list-group-horizontal" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-reservation-list" data-bs-toggle="list" href="#list-reservation" role="tab" aria-controls="list-reservation">예약 확인</a>
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-follow-list" data-bs-toggle="list" href="#list-follow" role="tab" aria-controls="list-follow">팔로워</a>   <!--  사장은 팔로워  -->
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-review-list" data-bs-toggle="list" href="#list-review" role="tab" aria-controls="list-review">고객 리뷰</a>
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-question-list" data-bs-toggle="list" href="#list-question" role="tab" aria-controls="list-question">문의 답변</a>
+            </div>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-reservation" role="tabpanel" aria-labelledby="list-reservation-list">
+                    <table class="table table-hover">
+                        <colgroup>
+                            <col style="width: 40%"/>
+                            <col style="width: 30%"/>
+                            <col style="width: 20%"/>
+                            <col style="width: 10%"/>
+                        </colgroup>
+                        <thead id="theadReservation">
+                        </thead>
+                        <tbody id="tbodyReservation">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="list-follow" role="tabpanel" aria-labelledby="list-follow-list">
+                    <table class="table table-hover">
+                        <colgroup>
+                            <col style="width: 40%"/>
+                            <col style="width: 30%"/>
+                            <col style="width: 20%"/>
+                            <col style="width: 10%"/>
+                        </colgroup>
+                        <thead id="theadFollow">
+                        </thead>
+                        <tbody id="tbodyFollow">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="list-review" role="tabpanel" aria-labelledby="list-review-list">
+                    <table class="table table-hover">
+                        <colgroup>
+                            <col style="width: 40%"/>
+                            <col style="width: 30%"/>
+                            <col style="width: 20%"/>
+                            <col style="width: 10%"/>
+                        </colgroup>
+                        <thead id="theadReview">
+                        </thead>
+                        <tbody id="tbodyReview">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="list-question" role="tabpanel" aria-labelledby="list-question-list">
+                    <table class="table table-hover">
+                        <colgroup>
+                            <col style="width: 40%"/>
+                            <col style="width: 30%"/>
+                            <col style="width: 20%"/>
+                            <col style="width: 10%"/>
+                        </colgroup>
+                        <thead id="theadQuestion">
+                        </thead>
+                        <tbody id="tbodyQuestion">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalOut" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">밥뭇나</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>정말 탈퇴 하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="lastOut">승인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
 </body>
 </html>

@@ -14,8 +14,34 @@
 
     </style>
     <script>
+        function events() {
+            const customerIdx = $("#customerIdx").val();
+
+            $(".btn-follow").on("click", function () {   // 버튼마다 반복문으로 val 값을 주는것임 그리고 클릭이벤트로 그걸 들고와서 해당 인덱스 지우도록..!(업데이트문)
+                alert("정말 팔로우를 취소하시겠습니까?"); // 제이쿼리로 새로 만들어 지는 버튼에는 이렇게 바로 주면 안됨 그래서 함수로 만들고 그걸 이용해야함.
+                const ceoStore = $(this).val() + ",";  // this 는 클릭 이벤트가 발생된 버튼을 말함, 즉 누른 버튼의 값을 가져옴
+                const btn = $(this);
+                // console.log(ceoStore);   // 가게이름 받아오는지 확인
+
+                $.ajax({
+                    url: "/bmn/myPageCus/follow/cancel",   // update를 시켜야하는데.. 어떻게 그 문자열만 찾아서 없앤담.... 버튼 값으로 가게이름 주고 가게 이름 바로 들고오자
+                    type: "POST",
+                    data: {ceoStore: ceoStore, customerIdx: customerIdx},
+                    success(data) {
+                        // alert("ajax 통신 성공");
+
+                        const parent = $(btn).parent().parent().remove();   // 버튼의 부모는 td 부모의 부모가 tr
+                        // console.log(parent);
+                    },
+                    error() {
+                        alert("ajax 통신 실패");
+                    }
+                });
+            });
+        }
         $(document).ready(function () {
             const customerIdx = $("#customerIdx").val();
+
             $("#list-reservation-list").on("click", function () {
                 $.ajax({    // 예약 내역 ajax
                     url: "/bmn/myPageCus/reservation",
@@ -24,6 +50,9 @@
                     success(data) { // data = 가게이름, 날짜, 시간, 예약상태 LIST
                         // alert("ajax 통신 성공");
                         // console.log(data);
+
+                        $("#theadReservation").empty();
+                        $("#tbodyReservation").empty();
 
                         let thead =
                             "<tr>\n" +
@@ -53,7 +82,7 @@
                                 let reservationStat = data[i].reservationStat;
 
                                 if (reservationStat == 1 ) {
-                                    reservationStat = "예약 신청 중";
+                                    reservationStat = "예약 확인 중";
                                 }
                                 else if (reservationStat == 2) {
                                     reservationStat = "예약 완료";
@@ -82,7 +111,51 @@
                     type: "POST",
                     data: {customerIdx: customerIdx},
                     success(data) {
-                        alert("ajax 통신 성공");
+                        // alert("ajax 통신 성공");
+                        const str = data;
+                        const split = str.split(',');   // split 리스트 형식으로 들고옴
+
+                        $("#theadFollow").empty();
+                        $("#tbodyFollow").empty();
+
+                        let thead =
+                            "<tr>\n" +
+                            "    <th>밥뭇나 맛집</th>\n" +
+                            "    <th></th>\n" +
+                            "    <th></th>\n" +
+                            "    <th>팔로우 취소</th>\n" +
+                            "</tr>";
+
+                        $("#theadFollow").append(thead);
+
+                        let tbody = "";
+
+                        if (split.length - 1 == 0) {
+                            tbody =
+                                "<tr>\n" +
+                                "    <td colspan=\"4\">팔로잉이 없습니다</td>\n" +
+                                "</tr>";
+
+                            $("#tbodyFollow").append(tbody);
+                        }
+                        else {
+                            for (let i = 0; i < split.length - 1; i++) { // 리스트의 마지막은 빈 문자열이기 때문에 -1로 제외
+                                const ceoStore = split[i];
+
+                                tbody =
+                                    "<tr>\n" +
+                                    "    <td>" + ceoStore + "</td>\n" +
+                                    "    <td></td>\n" +
+                                    "    <td></td>\n" +
+                                    "    <td>" +
+                                    "        <button type=\"button\" class=\"btn btn-outline-danger btn-follow\" value='" + ceoStore + "' style=\"--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;\">팔로잉</button>" +
+                                    "    </td>\n" +
+                                    "</tr>";
+
+                                $("#tbodyFollow").append(tbody);
+                            }
+                        }
+                        events();
                     },
                     error() {
                         alert("ajax 통신 실패");
@@ -95,12 +168,15 @@
                     type: "POST",
                     data: {customerIdx: customerIdx},
                     success(data) {
-                        alert("ajax 통신 성공");
+                        // alert("ajax 통신 성공");
+
+                        $("#theadReview").empty();
+                        $("#tbodyReview").empty();
 
                         let thead =
                             "<tr>\n" +
                             "    <th>밥뭇나 맛집</th>\n" +
-                            "    <th>리뷰내용</th>\n" +
+                            "    <th>리뷰제목</th>\n" +
                             "    <th>평점</th>\n" +
                             "    <th>날짜</th>\n" +
                             "</tr>";
@@ -112,27 +188,28 @@
                         if (data.length == 0) {
                             tbody =
                                 "<tr>\n" +
-                                "    <td colspan=\"4\">예약내역이 없습니다</td>\n" +
+                                "    <td colspan=\"4\">내가 쓴 리뷰가 없습니다</td>\n" +
                                 "</tr>";
 
-                            $("#tbody").append(tbody);
+                            $("#tbodyReview").append(tbody);
                         }
                         else {
                             for (let i = 0; i < data.length; i++) {
+                                const ceoIdx = data[i].ceoIdx;
                                 const ceoStore = data[i].ceoStore;
-                                let reviewContents = data[i].reviewContents;
+                                const reviewTitle = data[i].reviewTitle;
                                 const reviewScore = data[i].reviewScore;
                                 const reviewDate = data[i].reviewDate;
 
                                 tbody =
                                     "<tr>\n" +
                                     "    <td>" + ceoStore + "</td>\n" +
-                                    "    <td>" + reviewContents + "</td>\n" +
+                                    "    <td><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-decoration-none'>" + reviewTitle + "</a></td>\n" + // 상세페이지로 이동, 내가 쓴 리뷰까지 자동으로 이동할수 있게 태그 달수 있는지 물어보기
                                     "    <td>" + reviewScore + "</td>\n" +
                                     "    <td>" + reviewDate + "</td>\n" +
                                     "</tr>";
 
-                                $("#tbody").append(tbody);
+                                $("#tbodyReview").append(tbody);
                             }
                         }
                     },
@@ -147,12 +224,86 @@
                     type: "POST",
                     data: {customerIdx: customerIdx},
                     success(data) {
-                        alert("ajax 통신 성공");
+                        // alert("ajax 통신 성공");
+
+                        $("#theadQuestion").empty();
+                        $("#tbodyQuestion").empty();
+
+                        let thead =
+                            "<tr>\n" +
+                            "    <th>밥뭇나 맛집</th>\n" +
+                            "    <th>문의제목</th>\n" +
+                            "    <th>날짜</th>\n" +
+                            "    <th>답변여부</th>\n" +
+                            "</tr>";
+
+                        $("#theadQuestion").append(thead);
+
+                        let tbody = "";
+
+                        if (data.length == 0) {
+                            tbody =
+                                "<tr>\n" +
+                                "    <td colspan=\"4\">문의사항이 없습니다</td>\n" +
+                                "</tr>";
+
+                            $("#tbodyQuestion").append(tbody);
+                        }
+                        else {
+                            for (let i = 0; i < data.length; i++) {
+                                const ceoIdx = data[i].ceoIdx;
+                                const ceoStore = data[i].ceoStore;
+                                const questionTitle = data[i].questionTitle;
+                                const questionDate = data[i].questionDate;
+                                const questionComplete = data[i].questionComplete;
+
+                                tbody =
+                                    "<tr>\n" +
+                                    "    <td>" + ceoStore + "</td>\n" +
+                                    "    <td><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-decoration-none'>" + questionTitle + "</a></td>\n" +
+                                    "    <td>" + questionDate + "</td>\n" +
+                                    "    <td>" + questionComplete + "</td>\n" +
+                                    "</tr>";
+
+                                $("#tbodyQuestion").append(tbody);
+                            }
+                        }
                     },
                     error() {
                         alert("ajax 통신 실패");
                     }
                 });
+            });
+            $("#out").on("click", function () {
+                $("#modalOut").modal("show");
+            });
+            $("#lastOut").on("click", function () {
+                $("#method").val("DELETE");
+                const form = $("#form")[0];
+                form.submit();
+
+                alert("탈퇴되었습니다.");
+            });
+            $("#submit-btn").on("click", function () {
+                $("#method").val("PUT");
+                const form = $("#form")[0];
+                const customerNick = $("#user-nick").val();
+                const customerName = $("#user-name").val();
+                const customerGender1 = $("#user-gen1").val();
+                const customerGender2 = $("#user-gen2").val();
+                const customerAge = $("#user-age").val();
+                const pw = $("#pw").val();
+                const customerPw = $("#pw-match").val();
+
+                if (customerNick == "" || customerName == "" || (customerGender1 && customerGender2 == "") || customerAge == null || pw == "" || customerPw == "") {
+                    alert("정보를 모두 입력하세요.");
+                }
+                else {
+                    form.submit();
+
+                    alert("수정되었습니다.")
+                    location.reload();
+                }
             });
         });
     </script>
@@ -166,8 +317,9 @@
         <div class="col">
             <div class="d-flex justify-content-between">
                 <div>
-                    <p>우수회원</p>
-                    <h1 th:text="${session.user.customerName}">이지원</h1>
+                    <p th:if="${session.user.customerGrade} == 1">[일반회원]</p> <!--  세션값 받아와서 가정법으로 구현하기  -->
+                    <p th:if="${session.user.getCustomerGrade()} == 2">[우수회원]</p>
+                    <h1 th:text="${session.user.customerNick}">이지원</h1>
                     <p th:text="|안녕하세요. ${session.user.customerName}입니다.|">안녕하세요. 이지원 입니다.</p>
                 </div>
 
@@ -180,73 +332,77 @@
 
             <!--  콜렙스  -->
             <div class="collapse" id="collapseExample">
-                    <div class="container-sm mt-5">
-                        <div class="col-sm-8 mx-auto">
-                            <form action="/bmn/signUp/customer/signUp" class="form-control p-4 mb-5" method="post">
-                                <div class="form-floating my-4">
-                                    <input type="text" class="form-control" id="user-nick" name="customerNick" th:value="${session.user.customerNick}">
-                                    <label for="user-nick">닉네임</label>
-                                    <p id="nick-write" class="text-danger"></p>
-                                </div>
-                                <div class="form-floating my-4">
-                                    <input type="text" class="form-control" id="user-name" name="customerName"th:value="${session.user.customerName}">
-                                    <label for="user-name">이름</label>
-                                    <p id="name-write" class="text-danger"></p>
-                                </div>
-                                <!-- 개선 필요-->
-                                <div class="my-4 row">
-                                    <div class="col-sm-6">
-                                        <label class="mx-5">성별</label>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="customerGender" id="user-gen1" checked value="M">
-                                            <label class="form-check-label" for="user-gen1">
-                                                남
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="customerGender" id="user-gen2" value="F">
-                                            <label class="form-check-label" for="user-gen2">
-                                                여
-                                            </label>
-                                        </div>
+                <div class="container-sm mt-5">
+                    <div class="col-sm-8 mx-auto">
+                        <form action="/bmn/myPageCus" class="form-control p-4 mb-5" method="post" id="form">
+                            <div class="form-floating my-4">
+                                <input type="text" class="form-control" id="user-nick" name="customerNick" th:value="${session.user.customerNick}">
+                                <label for="user-nick">닉네임</label>
+                                <p id="nick-write" class="text-danger"></p>
+                            </div>
+                            <div class="form-floating my-4">
+                                <input type="text" class="form-control" id="user-name" name="customerName"th:value="${session.user.customerName}">
+                                <label for="user-name">이름</label>
+                                <p id="name-write" class="text-danger"></p>
+                            </div>
+                            <!-- 개선 필요-->
+                            <div class="my-4 row">
+                                <div class="col-sm-6">
+                                    <label class="mx-5">성별</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="customerGender" id="user-gen1" checked value="M">
+                                        <label class="form-check-label" for="user-gen1">
+                                            남
+                                        </label>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <select class="form-select form-select-sm" name="customerAge" id="user-age">
-                                            <option selected>연령대 선택</option>
-                                            <option value="10">10대</option>
-                                            <option value="20">20대</option>
-                                            <option value="30">30대</option>
-                                            <option value="40">40대</option>
-                                            <option value="50">50대</option>
-                                            <option value="60">60대</option>
-                                            <option value="70">70대</option>
-                                            <option value="80">80대</option>
-                                            <option value="90">90대</option>
-                                        </select>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="customerGender" id="user-gen2" value="F">
+                                        <label class="form-check-label" for="user-gen2">
+                                            여
+                                        </label>
                                     </div>
                                 </div>
-                                <div class="my-4">
-                                    <div class="form-floating my-2">
-                                        <input type="password" class="form-control" id="pw">
-                                        <label for="pw">비밀번호</label>
-                                    </div>
-                                    <div class="form-floating my-2">
-                                        <input type="password" class="form-control" id="pw-match" name="customerPw">
-                                        <label for="pw-match">비밀번호 확인</label>
-                                    </div>
-                                    <p id="match-miss" class="text-danger"></p>
+                                <div class="col-sm-6">
+                                    <select class="form-select form-select-sm" name="customerAge" id="user-age">
+                                        <option selected disabled>연령대 선택</option>
+                                        <option value="10">10대</option>
+                                        <option value="20">20대</option>
+                                        <option value="30">30대</option>
+                                        <option value="40">40대</option>
+                                        <option value="50">50대</option>
+                                        <option value="60">60대</option>
+                                        <option value="70">70대</option>
+                                        <option value="80">80대</option>
+                                        <option value="90">90대</option>
+                                    </select>
                                 </div>
-                                <div class="my-4 d-grid gap-3">
-                                    <button type="submit" id="submit-btn" class="btn btn-outline-primary" disabled>수정하기</button>
+                            </div>
+                            <div class="my-4">
+                                <div class="form-floating my-2">
+                                    <input type="password" class="form-control" id="pw">
+                                    <label for="pw">비밀번호</label>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="form-floating my-2">
+                                    <input type="password" class="form-control" id="pw-match" name="customerPw">
+                                    <label for="pw-match">비밀번호 확인</label>
+                                </div>
+                                <p id="match-miss" class="text-danger"></p>
+                            </div>
+                            <div class="my-4 d-grid gap-3">
+                                <button type="button" id="submit-btn" class="btn btn-outline-primary">수정하기</button>
+                            </div>
+                            <a href="#" class="text-decoration-none text-danger opacity-75" id="out">회원탈퇴></a>
+                            <input type="hidden" id="customerIdx" name="customerIdx" value="2" th:value="${session.user.customerIdx}">
+                            <!--  REST 방식 사용 시 form 태그의 데이터 전송 방식을 변경하기 위한 태그  -->
+                            <input type="hidden" id="method" name="_method">
+                        </form>
                     </div>
+                </div>
             </div>
 
 
             <div class="list-group list-group-item-action list-group-horizontal" id="list-tab" role="tablist">
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center active" id="list-reservation-list" data-bs-toggle="list" href="#list-reservation" role="tab" aria-controls="list-reservation">예약내역</a>
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-reservation-list" data-bs-toggle="list" href="#list-reservation" role="tab" aria-controls="list-reservation">예약내역</a>
                 <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-follow-list" data-bs-toggle="list" href="#list-follow" role="tab" aria-controls="list-follow">팔로우</a>   <!--  사장은 팔로워  -->
                 <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-review-list" data-bs-toggle="list" href="#list-review" role="tab" aria-controls="list-review">내가 쓴 리뷰</a>
                 <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-question-list" data-bs-toggle="list" href="#list-question" role="tab" aria-controls="list-question">문의사항</a>
@@ -261,22 +417,75 @@
                             <col style="width: 10%"/>
                         </colgroup>
                         <thead id="theadReservation">
-
                         </thead>
                         <tbody id="tbodyReservation">
                         </tbody>
                     </table>
                 </div>
                 <div class="tab-pane fade" id="list-follow" role="tabpanel" aria-labelledby="list-follow-list">
-
+                    <table class="table table-hover">
+                        <colgroup>
+                            <col style="width: 40%"/>
+                            <col style="width: 30%"/>
+                            <col style="width: 20%"/>
+                            <col style="width: 10%"/>
+                        </colgroup>
+                        <thead id="theadFollow">
+                        </thead>
+                        <tbody id="tbodyFollow">
+                        </tbody>
+                    </table>
                 </div>
-                <div class="tab-pane fade" id="list-review" role="tabpanel" aria-labelledby="list-review-list">...</div>
-                <div class="tab-pane fade" id="list-question" role="tabpanel" aria-labelledby="list-question-list">...</div>
+                <div class="tab-pane fade" id="list-review" role="tabpanel" aria-labelledby="list-review-list">
+                    <table class="table table-hover">
+                        <colgroup>
+                            <col style="width: 40%"/>
+                            <col style="width: 30%"/>
+                            <col style="width: 20%"/>
+                            <col style="width: 10%"/>
+                        </colgroup>
+                        <thead id="theadReview">
+                        </thead>
+                        <tbody id="tbodyReview">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="list-question" role="tabpanel" aria-labelledby="list-question-list">
+                    <table class="table table-hover">
+                        <colgroup>
+                            <col style="width: 40%"/>
+                            <col style="width: 30%"/>
+                            <col style="width: 20%"/>
+                            <col style="width: 10%"/>
+                        </colgroup>
+                        <thead id="theadQuestion">
+                        </thead>
+                        <tbody id="tbodyQuestion">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
-    <input type="hidden" id="customerIdx" name="customerIdx" value="2" th:value="${session.user.customerIdx}"> <!--  세션에서 자동으로 받아오도록 수정  -->
+    <div class="modal fade" id="modalOut" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">밥뭇나</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>정말 탈퇴 하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="lastOut">승인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>

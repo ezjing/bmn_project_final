@@ -1,6 +1,6 @@
 package com.bitc.bmn_project.service;
 
-import com.bitc.bmn_project.DTO.ReservationDTO;
+import com.bitc.bmn_project.DTO.*;
 import com.bitc.bmn_project.mapper.LeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,62 @@ public class LeeServiceImpl implements LeeService{
     }
 
     @Override
-    public List<ReservationDTO> myPageReview(int customerIdx) throws Exception {
+    public String myPageFollow(int customerIdx) throws Exception {
+        return leeMapper.myPageFollow(customerIdx);
+    }
+
+    @Override
+    public void myPageCusFollowCancel(String ceoStore, int customerIdx) throws Exception {
+        leeMapper.myPageCusFollowCancel(ceoStore, customerIdx);
+    }
+
+    @Override
+    public List<ReviewDTO> myPageReview(int customerIdx) throws Exception {
         return leeMapper.myPageReview(customerIdx);
+    }
+
+    @Override
+    public List<QuestionDTO> myPageQuestion(int customerIdx) throws Exception {
+        return leeMapper.myPageQuestion(customerIdx);
+    }
+
+    @Override
+    public void myPageCusOut(int customerIdx) throws Exception {
+        leeMapper.myPageCusOut(customerIdx);
+    }
+
+    @Override
+    public CustomerDTO myPageCusChange(CustomerDTO customer) throws Exception {
+        leeMapper.myPageCusChange(customer);
+
+        return leeMapper.customerInfo(customer.getCustomerIdx());
+    }
+
+    @Override
+    public List<ReservationDTO> myPageCeoReservation(int ceoIdx) throws Exception {
+        return leeMapper.myPageCeoReservation(ceoIdx);
+    }
+
+    @Override
+    public List<ReviewDTO> myPageCeoReview(int ceoIdx) throws Exception {
+        return leeMapper.myPageCeoReview(ceoIdx);
+    }
+
+    @Override
+    public List<QuestionDTO> myPageCeoQuestion(int ceoIdx) throws Exception {
+        return leeMapper.myPageCeoQuestion(ceoIdx);
+
+    }
+
+    @Override
+    public void myPageCeoOut(int ceoIdx) throws Exception {
+        leeMapper.myPageCeoOut(ceoIdx);
+    }
+
+    @Override
+    public CeoDTO myPageCeoChange(CeoDTO ceo) throws Exception {
+        leeMapper.myPageCeoChange(ceo);
+
+        return leeMapper.ceoInfo(ceo.getCeoIdx());
     }
 }
