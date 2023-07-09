@@ -38,4 +38,8 @@ public interface SimService {
     int getReviewIdx() throws Exception;
 
     void reviewWriteTag(ReviewTagDTO reviewTag) throws Exception;
+
+    List<CeoDTO> getStoreList() throws Exception;
+
+    void storeApprove(int targetIdx, String mode) throws Exception;
 }

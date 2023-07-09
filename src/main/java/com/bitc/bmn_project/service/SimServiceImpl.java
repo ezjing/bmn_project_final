@@ -125,4 +125,21 @@ public class SimServiceImpl implements SimService {
         simMapper.reviewWriteTag(reviewTag);
     }
 
+    @Override
+    public List<CeoDTO> getStoreList() throws Exception {
+
+        return simMapper.getStoreList();
+    }
+
+    @Override
+    public void storeApprove(int targetIdx, String mode) throws Exception {
+
+        if (mode.equals("approve")) {
+            simMapper.storeApprove(targetIdx, 2);
+        } else if (mode.equals("reject")) {
+            simMapper.storeApprove(targetIdx, 0);
+        }
+
+    }
+
 }

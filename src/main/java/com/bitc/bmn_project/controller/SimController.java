@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -328,7 +329,7 @@ public class SimController {
         return "redirect:/bmn/viewDetail/" + review.getCeoIdx();
     }
 
-    @RequestMapping("/getImage")
+    @RequestMapping("/bmn/getImage")
     @ResponseBody
     public ResponseEntity<byte[]> returnImg(
             @RequestParam("path") String path
@@ -344,5 +345,34 @@ public class SimController {
                 header, HttpStatus.CREATED);
 
     }
+
+    // 관리자 페이지 - 가게 승인 (등록 / 변경?) 리스트 출력
+    @RequestMapping("/bmn/approve")
+    public ModelAndView doStoreApproveView() throws Exception {
+        ModelAndView mv = new ModelAndView("storeAprrove");
+
+        // 리스트 가져오는 서비스
+        List<CeoDTO> storeList = simService.getStoreList();
+
+        mv.addObject("storeList", storeList);
+
+
+        return mv;
+    }
+
+    @RequestMapping("/bmn/approve/process")
+    public String doStoreApproveProcess(
+            @RequestParam("targetIdx") int targetIdx,
+            @RequestParam("mode") String mode
+    ) throws Exception {
+
+        System.out.println(mode);
+        System.out.println(targetIdx);
+
+        simService.storeApprove(targetIdx, mode);
+
+        return "redirect:/bmn/approve";
+    }
+
 
 }

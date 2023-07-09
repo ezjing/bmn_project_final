@@ -7,6 +7,8 @@ import com.bitc.bmn_project.DTO.ReviewTagDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface SimMapper {
 
@@ -39,4 +41,8 @@ public interface SimMapper {
     int getReviewIdx() throws Exception;
 
     void reviewWriteTag(ReviewTagDTO reviewTag) throws Exception;
+
+    List<CeoDTO> getStoreList() throws Exception;
+
+    void storeApprove(int targetIdx, int mode) throws Exception;
 }
