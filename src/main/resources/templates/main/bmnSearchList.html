@@ -14,18 +14,18 @@
 
     <script>
 
-        $(document).ready(function(){
-            $("#keyword-val").keydown(function (key){
+        $(document).ready(function () {
+            $("#keyword-val").keydown(function (key) {
                 let keyWorld = $("#keyword-val").val();
-                if(key.keyCode == 13){
+                if (key.keyCode == 13) {
                     $.ajax({
                         url: "/bmn/bmnSearchList",
-                        type : 'GET',
-                        data : {keyWorld : keyWorld},
-                        success:function(data){
-                            location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+                        type: 'GET',
+                        data: {keyWorld: keyWorld},
+                        success: function (data) {
+                            location.href = "/bmn/bmnSearchList?keyWorld=" + keyWorld;
                         },
-                        error:function(){
+                        error: function () {
                             alert('통신 실패');
                         }
                     });
@@ -34,48 +34,71 @@
 
         });
 
-        function foodSearch(){
+        function foodSearch() {
             let keyWorld = $("#keyword-val").val();
             console.log(keyWorld);// 값이 들어오는 거 확인함
             $.ajax({
                 url: "/bmn/bmnSearchList",
-                type : 'GET',
-                data : {keyWorld : keyWorld},
-                success:function(data){
-                    location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+                type: 'GET',
+                data: {keyWorld: keyWorld},
+                success: function (data) {
+                    location.href = "/bmn/bmnSearchList?keyWorld=" + keyWorld;
                 },
-                error:function(){
+                error: function () {
                     alert('통신 실패');
                 }
             });
         }
 
-        function categoryFunction(){
-            let categoryFoods = $('input[name=categoryFood]:checked').val();
-            console.log(categoryFoods); // value 값 확인
+        function categoryFunction() {
+            let keyWorld = $("#keyword-val").val();
+            // 이용자 층 작성할 블럭
+            const query = 'input[name="checkBoxAge"]:checked';
+            const selectedEls =
+                document.querySelectorAll(query);
+            // 선택된 목록에서 value 찾기
+            let result = '';
+            selectedEls.forEach((el) => {
+                result += el.value + ' ';
+            });
+            // 출력
+            document.getElementById('result').innerText
+                = result;
 
+            let checkArr = document.querySelectorAll('input[name="checkBoxAge"]:checked');
+            let arrycheck = [];
+
+            for(let i=0;i<checkArr.length;i++){
+                arrycheck.push(checkArr[i].value);
+            }
+
+            console.log('arrycheck::'+arrycheck);
+
+            $.ajax({
+                url: "/bmn/bmnSearchList",
+                type : 'GET',
+                dataType: 'text',
+                data:{
+                    customAges:arrycheck,
+                    keyWorld:keyWorld
+                },
+                success:function(arrycheck){
+                    if(arrycheck.size() == 0){
+                        return null;
+                    }
+                }
+            });
+            // 여기까지 이용자 층 블럭 /////
+
+            let categoryFoods = $('input[name=categoryFood]:checked').val();
+            //console.log(categoryFoods); // value 값 확인
         }
+
     </script>
 
 </head>
 <body>
-<header class="container-fluid mt-lg-3">
-    <div class="row bg-light ">
-        <div class="col-sm-2">
-            <nav class="navbar">
-                <span class="navbar-brand fs-3" id="headerFont">밥뭇나</span>
-            </nav>
-        </div>
-        <div class="col-sm-6 input-group pt-3 pb-3 w-50">
-            <input id="keyword-val" th:value="${keyWorld}" name="keyword-val" type="search" class="form-control me-3" placeholder="식당,메뉴,주소명을 입력해주세요">
-            <button type="submit" class="btn btn-primary" onclick="foodSearch()" >검색</button>
-        </div>
-        <div class="col-sm-4 btn-group justify-content-center">
-            <div class="fs-3"><button type="submit" class="btn btn-primary me-3">로그인</button></div>
-            <div class="fs-3"><button type="submit" class="btn btn-primary">회원가입</button></div>
-        </div>
-    </div>
-</header>
+<div th:replace="~{/layout/header :: header}"></div>
 <main class="container mt-3">
     <div class="row">
         <div class="col-sm-2">
@@ -83,32 +106,38 @@
                 <div>
                     <span href="#" class="text-decoration-none text-dark">이용자 층</span>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="teenagerCheck">
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                            value="10" id="teenagerCheck">
                         <label class="form-check-label" for="teenagerCheck">
                             10대
                         </label>
                         <br>
-                        <input class="form-check-input" type="checkbox" value="" id="twenitesCheck">
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                            value="20" id="twenitesCheck">
                         <label class="form-check-label" for="twenitesCheck">
                             20대
                         </label>
                         <br>
-                        <input class="form-check-input" type="checkbox" value="" id="thiritesCheck">
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                            value="30" id="thiritesCheck">
                         <label class="form-check-label" for="thiritesCheck">
                             30대
                         </label>
                         <br>
-                        <input class="form-check-input" type="checkbox" value="" id="fortiesCheck">
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                            value="40" id="fortiesCheck">
                         <label class="form-check-label" for="fortiesCheck">
                             40대
                         </label>
                         <br>
-                        <input class="form-check-input" type="checkbox" value="" id="FiftiesCheck">
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                            value="50" id="FiftiesCheck">
                         <label class="form-check-label" for="FiftiesCheck">
                             50대
                         </label>
                         <br>
-                        <input class="form-check-input" type="checkbox" value="" id="SixtiesCheck">
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                            value="60" id="SixtiesCheck">
                         <label class="form-check-label" for="SixtiesCheck">
                             60대 이상
                         </label>
@@ -133,23 +162,28 @@
                     <span href="#" class="text-decoration-none text-dark">카테고리(大)</span>
                     <div class="form-check ms-2">
                         <div class="form-check-inline">
-                            <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioK" value="01" onclick="categoryFunction()">
+                            <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioK"
+                                   value="01" onclick="categoryFunction()">
                             <label class="form-check-label" for="categoryRadioK">한식</label>
                         </div>
                         <div class="form-check-inline ms-2">
-                            <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioJ" value="02" onclick="categoryFunction()">
+                            <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioJ"
+                                   value="02" onclick="categoryFunction()">
                             <label class="form-check-label" for="categoryRadioJ">일식</label>
                         </div>
                         <div class="form-check-inline">
-                            <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioC" value="03" onclick="categoryFunction()">
+                            <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioC"
+                                   value="03" onclick="categoryFunction()">
                             <label class="form-check-label" for="categoryRadioC">중식</label>
                         </div>
                         <div class="form-check-inline ms-2">
-                            <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioW" value="04" onclick="categoryFunction()">
+                            <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioW"
+                                   value="04" onclick="categoryFunction()">
                             <label class="form-check-label" for="categoryRadioW">양식</label>
                         </div>
                         <div class="form-check-inline ">
-                            <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioA" value="05" onclick="categoryFunction()">
+                            <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioA"
+                                   value="05" onclick="categoryFunction()">
                             <label class="form-check-label" for="categoryRadioA">술집</label>
                         </div>
                     </div>
@@ -157,10 +191,12 @@
             </div>
         </div>
         <div class="col-sm-8">
+            <div id="result"></div>
             <!-- 검색 List -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                            type="button"
                             role="tab" aria-controls="home" aria-selected="true">평점 순
                     </button>
                 </li>
@@ -177,12 +213,13 @@
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <p th:if="${#lists.size(storeList)} > 0" class="fs-5 fw-bold" >#평점 순</p>
+                    <p th:if="${#lists.size(storeList)} > 0" class="fs-5 fw-bold">#평점 순</p>
                     <div class="list-group" th:if="${#lists.size(storeList)} > 0" th:each="item : ${storeList}">
-                        <a href="#" class="list-group-item list-group-item-action">
+                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}" class="list-group-item list-group-item-action">
                             <div>
                                 <div class="float-start d-grid w-75">
-                                    <img th:src="${item.getCeoMenuImg1()}" class="img-thumbnail rounded-2 w-50 h-100 d-block">
+                                    <img th:src="${item.getCeoMenuImg1()}"
+                                         class="img-thumbnail rounded-2 w-50 h-100 d-block">
                                 </div>
                                 <div>
                                     <p th:text="${item.getCeoStore()}"></p>
@@ -198,12 +235,13 @@
                 </div>
 
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <p class="fs-5 fw-bold" th:if="${#lists.size(reviewCntList)} > 0">#리뷰 많은 순</p>
+                    <p class="fs-5 fw-bold" th:if="${#lists.size(reviewCntList)} > 0">#리뷰 많은 순</p>
                     <div class="list-group" th:if="${#lists.size(reviewCntList)} > 0" th:each="item : ${reviewCntList}">
-                        <a href="#" class="list-group-item list-group-item-action">
+                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}" class="list-group-item list-group-item-action">
                             <div>
                                 <div class="float-start d-grid w-75">
-                                    <img th:src="${item.getCeoMenuImg1()}" class="img-thumbnail rounded-2 w-50 h-100 d-block">
+                                    <img th:src="${item.getCeoMenuImg1()}"
+                                         class="img-thumbnail rounded-2 w-50 h-100 d-block">
                                 </div>
                                 <div>
                                     <p th:text="${item.getCeoStore()}"></p>
@@ -218,12 +256,13 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                        <p class="fs-5 fw-bold" th:if="${#lists.size(followList)} > 0">#팔로우 순</p>
+                    <p class="fs-5 fw-bold" th:if="${#lists.size(followList)} > 0">#팔로우 순</p>
                     <div class="list-group" th:if="${#lists.size(followList)} > 0" th:each="item : ${followList}">
-                        <a href="#" class="list-group-item list-group-item-action">
+                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}" class="list-group-item list-group-item-action">
                             <div>
                                 <div class="float-start d-grid w-75">
-                                    <img th:src="${item.getCeoMenuImg1()}" class="img-thumbnail rounded-2 w-50 h-100 d-block">
+                                    <img th:src="${item.getCeoMenuImg1()}"
+                                         class="img-thumbnail rounded-2 w-50 h-100 d-block">
                                 </div>
                                 <div>
                                     <p th:text="${item.getCeoStore()}"></p>

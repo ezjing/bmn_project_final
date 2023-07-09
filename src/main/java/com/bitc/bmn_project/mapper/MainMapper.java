@@ -2,6 +2,7 @@ package com.bitc.bmn_project.mapper;
 
 import com.bitc.bmn_project.DTO.CeoDTO;
 import com.bitc.bmn_project.DTO.ReviewCntDto;
+import com.bitc.bmn_project.DTO.ceoCustomDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface MainMapper {
     List<CeoDTO> followPlacingLists() throws Exception;
 
     List<ReviewCntDto> reviewCntLists(String keyWorld) throws Exception;
+
+    List<ceoCustomDTO> ageFilterLists(String keyWorld, String customAge) throws Exception;
 }

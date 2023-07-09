@@ -34,6 +34,7 @@
             height: auto;
             object-fit: cover;
         }
+
         .overlay {
             position: absolute;
             top: 0;
@@ -65,17 +66,29 @@
 
     </style>
     <script>
-
-        $(document).ready(function(){
-            const session = sessionStorage.getItem('user');
-            console.log(session);
-            $("#keyword-val").keydown(function (key){
+        function foodSearch(){
             let keyWorld = $("#keyword-val").val();
+            console.log(keyWorld);// 값이 들어오는 거 확인함
+            $.ajax({
+               url:"/bmn/bmnSearchList",
+                type: "GET",
+                success:function(){
+                    location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+                    // alert('접속 성공')
+                },
+                error:function(){
+                    alert('접속 실패')
+                }
+            });
+
+        }
+        $(document).ready(function(){
+            $("#keyword-val").keydown(function (key){
+                let keyWorld = $("#keyword-val").val();
                 if(key.keyCode == 13){
                     $.ajax({
+                        type : "GET",
                         url: "/bmn/bmnSearchList",
-                        type : 'GET',
-                        data : {keyWorld : keyWorld},
                         success:function(data){
                             location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
                         },
@@ -84,8 +97,9 @@
                         }
                     });
                 }
-            })
-
+            });
+            const session = sessionStorage.getItem('user');
+            console.log(session);
             let msg = document.getElementById("sessionMsg");
             if (msg.textContent.length > 0) {
                 alert(msg.textContent);
@@ -108,60 +122,12 @@
                 }
             });
         });
-
-    function foodSearch(){
-        let keyWorld = $("#keyword-val").val();
-        console.log(keyWorld);// 값이 들어오는 거 확인함
-        $.ajax({
-            url: "/bmn/bmnSearchList",
-            type : 'GET',
-            data : {keyWorld : keyWorld},
-            success:function(data){
-                location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
-            },
-            error:function(){
-                alert('통신 실패');
-            }
-        });
-    }
     </script>
 
 </head>
 <body>
-<header class="container-fluid mt-lg-3">
-    <div class="row bg-light ">
-        <div class="col-sm-2">
-            <nav class="navbar">
-                <span class="navbar-brand fs-3" id="headerFont">밥뭇나</span>
-            </nav>
-        </div>
-        <div class="col-sm-6 input-group pt-3 pb-3 w-50">
-                <input id="keyword-val" name="keyword-val" type="search" class="form-control me-3" placeholder="식당,메뉴,주소명을 입력해주세요">
-                <button type="submit" class="btn btn-primary" onclick="foodSearch()">검색</button>
-        </div>
+<div th:replace="~{/layout/header :: header}"></div>
 
-        <div class="col-sm-4 btn-group justify-content-center">
-            <!-- 로그인 시 사장님/회원님 환영합니다 메시지 구현, 타임리프 오류해결 필요  -->
-            <div class="fs-3"  th:if="${not #strings.isEmpty(session.user)}">
-                <a href="/bmn/logOut" id="logout-btn" class="btn btn-primary me-3">로그아웃</a>
-<!--                <p th:unless="${#strings.isEmpty(session.user.customerId)}" th:text="|${session.user.customerNick}님 환영합니다.|"></p>-->
-                <p th:unless="${#strings.isEmpty(session.user.ceoId)}" th:text="|${session.user.ceoStore}사장님 환영합니다.|"></p>
-            </div>
-
-            <div class="fs-3" th:unless="${not #strings.isEmpty(session.user)}">
-                <button type="button" id="login-btn" class="btn btn-primary me-3" data-bs-toggle="modal"
-                        data-bs-target="#modal-login">로그인
-                </button>
-            </div>
-            <div class="fs-3"><button type="submit" class="btn btn-primary">회원가입</button></div>
-            <div class="fs-3" th:if="${not #strings.isEmpty(session.user)}">
-                <a href="/bmn/myPageCus" class="btn btn-primary">마이 페이지</a>
-                <!--  사장님 계정 로그인 시 가게등록하기 버튼 추가, 무조건 페이지 연동까지 구현하기  -->
-                <!--  사장님 계정 로그인 시 내 가게로 가기 버튼 추가(viewDetail 연결)  -->
-            </div>
-        </div>
-    </div>
-</header>
 <main class="container mt-5">
     <!-- 1. 먼저 불러 오는거 확인해 보기 테이블로 만들어서 들어 오는지 확인 완료   -->
     <!-- 2. 리뷰, 팔로우 많은 순을 추후 swiper 을 통해서 구현하기(완성) -->
@@ -175,16 +141,16 @@
                 <div class="swiper-wrapper">
                     <!-- th:each 을 써서 여러개 이미지 3개씩 출력 -->
                     <div class="swiper-slide imgHoverContainer" th:each="item : ${scorePlacingList}">
-                            <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}">
-                                <img th:src="${item.getCeoMenuImg1()}">
-                                <div class="overlay">
-                                    <div class="text">
-                                        <p th:text="${item.getCeoStore()}"></p>
-                                        평점:<span th:text="${item.getCeoScore()}"></span>
-                                        팔로우 수:<span th:text="${item.getCeoFollowCnt()}"></span>
-                                    </div>
+                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}">
+                            <img th:src="${item.getCeoMenuImg1()}">
+                            <div class="overlay">
+                                <div class="text">
+                                    <p th:text="${item.getCeoStore()}"></p>
+                                    평점:<span th:text="${item.getCeoScore()}"></span>
+                                    팔로우 수:<span th:text="${item.getCeoFollowCnt()}"></span>
                                 </div>
-                            </a>
+                            </div>
+                        </a>
                     </div>
                 </div>
                 <div class="swiper-pagination"></div>
@@ -370,7 +336,7 @@
 
 
     <!-- 사용할 세션 값(제이쿼리 값으로 변경 필요) -->
-<!--    <p th:text="${session.user}"></p>-->
+    <!--    <p th:text="${session.user}"></p>-->
 
     <!-- 모달창 본문 -->
     <div class="modal fade" id="modal-login">
@@ -404,10 +370,7 @@
         </div>
     </div>
 </main>
-<footer class="border border-top border-2 bg-light mt-5 pt-5 mb-5">
-    <div class="text-center">
-        <p>이곳은 footer 화면 입니다.</p>
-    </div>
-</footer>
+
+<div th:replace="~{/layout/footer :: footer}"></div>
 </body>
 </html>

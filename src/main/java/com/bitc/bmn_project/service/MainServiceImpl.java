@@ -2,6 +2,7 @@ package com.bitc.bmn_project.service;
 
 import com.bitc.bmn_project.DTO.CeoDTO;
 import com.bitc.bmn_project.DTO.ReviewCntDto;
+import com.bitc.bmn_project.DTO.ceoCustomDTO;
 import com.bitc.bmn_project.mapper.MainMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,5 +56,26 @@ public class MainServiceImpl implements MainService{
     @Override
     public List<ReviewCntDto> reviewCntLists(String keyWorld) throws Exception {
         return mainMapper.reviewCntLists(keyWorld);
+    }
+
+    @Override
+    public List<ceoCustomDTO> ageFilterLists(String keyWorld, List<String> customAge) throws Exception {
+        try{
+            if(customAge.size() == 0){
+                System.out.println("값이 0입니다.");
+                return null;
+            }
+            else if(customAge.size() > 0){
+                System.out.println("값이 1개 이상 있습니다.");
+                return null;
+            }
+        }
+        catch (Exception e){
+            System.out.println("에러가 발생했습니다."+e.getMessage());
+            e.printStackTrace();
+        }
+
+
+        return null;
     }
 }
