@@ -96,7 +96,8 @@ public class SimController {
             // 3-2 로그인 성공 우수회원
             case 1, 2 -> {
                 customer = simService.getCustomerInfo(userId);
-                session.setAttribute("user", customer);
+                session.setAttribute("user", "customer");
+                session.setAttribute("customer", customer);
                 session.removeAttribute("failMsg");
 
                 return "redirect:" + returnUrl;
@@ -113,7 +114,8 @@ public class SimController {
 
         if (result == 1) { // 3-4 로그인 성공 사장님
             ceo = simService.getCeoInfo(userId);
-            session.setAttribute("user", ceo);
+            session.setAttribute("user", "ceo");
+            session.setAttribute("ceo", ceo);
             session.removeAttribute("failMsg");
         } else {
             // 실패시 메시지 전송

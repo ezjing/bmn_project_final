@@ -47,7 +47,10 @@ public class BaeController {
 //    List<ReviewJoinDTO> reviewJoinList = baeService.selectReviewTagList(ceoIdx);
 
     // 리뷰 댓글 리스트 조회
-    List<CommentJoinDTO> commentList = baeService.selectCommentList(ceoIdx);
+    List<CommentDTO> commentList = baeService.selectCommentList(ceoIdx);
+
+    // 사장님 댓글 리스트 조회
+//    List<CommentDTO> commentListCeo = baeService.selectCommentListCeo(ceoIdx);
 
 
     // 문의 게시판(페이징 처리)~
@@ -56,14 +59,15 @@ public class BaeController {
     // 문의 게시판(페이징 전)
 //    List<QuestionDTO> questionList = baeService.selectQuestionList(ceoIdx, pageNum);
 
-    session.setAttribute("customerIdx", 3);
-    session.setAttribute("customerNick", "아이유");
+//    session.setAttribute("customerIdx", 3);
+//    session.setAttribute("customerNick", "아이유");
 
     mv.addObject("ceoDto", ceoDto);
     mv.addObject("followCnt", followCnt);
     mv.addObject("reviewCnt", reviewCnt);
     mv.addObject("reviewList", reviewList);
     mv.addObject("commentList", commentList);
+//    mv.addObject("commentListCeo", commentListCeo);
     mv.addObject("questionList", questionList);
 
     return mv;
@@ -73,11 +77,18 @@ public class BaeController {
   // 리뷰에 댓글 달기
   @ResponseBody
   @RequestMapping(value = "/bmn/commentInsert", method = RequestMethod.POST)
-  public Object commentInsert(CommentJoinDTO commentJoinDTO) throws Exception {
-    baeService.commentInsert(commentJoinDTO);
+  public Object commentInsert(CommentDTO commentDTO) throws Exception {
+    baeService.commentInsert(commentDTO);
     return "success";
   }
 
+  // 리뷰에 달린 댓글 삭제(본인만 보임)
+  @ResponseBody
+  @RequestMapping(value = "/bmn/commentDelete", method = RequestMethod.PUT)
+  public Object commentDelete(@RequestParam("commentIdx") int commentIdx) throws Exception {
+    baeService.commentDelete(commentIdx);
+    return "success";
+  }
 
 
   // 관리자 리뷰 삭제
@@ -112,6 +123,7 @@ public class BaeController {
   // 사장님에게 문의하기
   @RequestMapping(value = "/bmn/insertQuestion", method = RequestMethod.POST)
   public String insertQuestion(QuestionDTO questionDTO) throws Exception {
+
     baeService.insertQuestion(questionDTO);
 
     return "redirect:/bmn/viewDetail/" + questionDTO.getCeoIdx();
@@ -121,7 +133,7 @@ public class BaeController {
   // 문의하기에 대한 사장님 답변
   @ResponseBody
   @RequestMapping(value = "/bmn/updateAnswer", method = RequestMethod.PUT)
-  public String answerQuestion(QuestionDTO questionDTO) throws Exception {
+  public Object answerQuestion(QuestionDTO questionDTO) throws Exception {
     baeService.answerQuestion(questionDTO);
 
     return "success";

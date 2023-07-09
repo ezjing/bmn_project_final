@@ -87,13 +87,25 @@ public class BaeServiceImpl implements BaeService {
   }
 
   @Override
-  public List<CommentJoinDTO> selectCommentList(int ceoIdx) throws Exception {
-    List<CommentJoinDTO> commentList = baeMapper.selectCommentList(ceoIdx);
+  public List<CommentDTO> selectCommentList(int ceoIdx) throws Exception {
+    List<CommentDTO> commentList = baeMapper.selectCommentList(ceoIdx);
     return commentList;
   }
 
   @Override
-  public void commentInsert(CommentJoinDTO commentJoinDTO) throws Exception {
-    baeMapper.commentInsert(commentJoinDTO);
+  public void commentInsert(CommentDTO commentDTO) throws Exception {
+    baeMapper.commentInsert(commentDTO);
   }
+
+  @Override
+  public void commentDelete(int commentIdx) throws Exception {
+    baeMapper.commentDelete(commentIdx);
+  }
+
+//  @Override
+//  public List<CommentDTO> selectCommentListCeo(int ceoIdx) throws Exception {
+//    List<CommentDTO> commentListCeo = baeMapper.selectCommentListCeo(ceoIdx);
+//    return commentListCeo;
+//  }
+
 }

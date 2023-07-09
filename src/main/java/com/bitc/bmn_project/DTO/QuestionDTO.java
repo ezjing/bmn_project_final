@@ -8,6 +8,7 @@ public class QuestionDTO {
     private int customerIdx;
     private String customerNick;
     private int ceoIdx;
+    private String ceoStore;
     private String questionComplete;
     private String questionTitle;
     private String questionContents;

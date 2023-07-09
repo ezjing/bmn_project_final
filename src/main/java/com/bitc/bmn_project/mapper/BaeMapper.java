@@ -34,7 +34,11 @@ public interface BaeMapper {
 
   void reviewDelete(int reviewIdx) throws Exception;
 
-  List<CommentJoinDTO> selectCommentList(int ceoIdx) throws Exception;
+  List<CommentDTO> selectCommentList(int ceoIdx) throws Exception;
 
-  void commentInsert(CommentJoinDTO commentJoinDTO) throws Exception;
+  void commentInsert(CommentDTO commentDTO) throws Exception;
+
+  void commentDelete(int commentIdx) throws Exception;
+
+//  List<CommentDTO> selectCommentListCeo(int ceoIdx) throws Exception;
 }

@@ -95,25 +95,39 @@
 	</update>
 	
 <!--	리뷰에 달린 댓글 리스트 가져오기-->
-	<select id="selectCommentList" parameterType="int" resultType="com.bitc.bmn_project.DTO.CommentJoinDTO">
+	<select id="selectCommentList" parameterType="int" resultType="com.bitc.bmn_project.DTO.CommentDTO">
 		SELECT
-			COM.comment_idx, COM.review_idx, COM.ceo_idx, COM.customer_idx, COM.comment_contents, COM.comment_date,
-			CUS.customer_nick
+			*
 		FROM
-			comment_tp COM JOIN customer_tp CUS ON (COM.customer_idx = CUS.customer_idx)
+			comment_tp
 		WHERE
 			ceo_idx = #{ceoIdx} AND comment_delete = 'N'
 		ORDER BY
-			comment_idx DESC
+			comment_idx
 	</select>
 	
+<!--	리뷰에 달린 사장님 댓글 리스트 가져오기-->
+<!--	<select id="selectCommentListCeo" parameterType="int" resultType="com.bitc.bmn_project.DTO.CommentDTO">-->
+<!--		SELECT * FROM comment_tp WHERE ceo_idx = #{ceoIdx} AND customer_idx = 0 AND comment_delete = 'N'-->
+<!--	</select>-->
+	
 <!--	리뷰에 댓글 달기-->
-	<insert id="commentInsert" parameterType="com.bitc.bmn_project.DTO.CommentJoinDTO">
+	<insert id="commentInsert" parameterType="com.bitc.bmn_project.DTO.CommentDTO">
 		INSERT INTO
-			comment_tp (review_idx, ceo_idx, customer_idx, comment_contents, comment_date)
+			comment_tp (review_idx, ceo_idx, customer_idx, comment_contents, comment_date, customer_nick)
 		VALUES
-			(#{reviewIdx}, #{ceoIdx}, #{customerIdx}, #{commentContents}, NOW())
+			(#{reviewIdx}, #{ceoIdx}, #{customerIdx}, #{commentContents}, NOW(), #{customerNick})
 	</insert>
+	
+<!--	리뷰 댓글 삭제하기-->
+	<update id="commentDelete" parameterType="int">
+		UPDATE
+			comment_tp
+		SET
+			comment_delete = 'Y'
+		WHERE
+			comment_idx = #{commentIdx}
+	</update>
 	
 	
 <!--	문의리스트 조회-->
@@ -132,9 +146,9 @@
 	<insert id="insertQuestion" parameterType="com.bitc.bmn_project.DTO.QuestionDTO">
 		INSERT INTO
 			question_tp
-				(customer_idx, customer_nick, ceo_idx, question_title, question_contents, question_date)
+				(customer_idx, customer_nick, ceo_idx, ceo_store, question_title, question_contents, question_date)
 			VALUES
-				(#{customerIdx}, #{customerNick}, #{ceoIdx}, #{questionTitle}, #{questionContents}, NOW())
+				(#{customerIdx}, #{customerNick}, #{ceoIdx}, #{ceoStore}, #{questionTitle}, #{questionContents}, NOW())
 	</insert>
 	
 <!--	사장님 문의글 답변-->
