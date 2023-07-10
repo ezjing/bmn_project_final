@@ -115,10 +115,10 @@
         CUSTOMER_TP A
         JOIN
             CEO_TP B
-        ON INSTR(A.CUSTOMER_FOLLOW, B.CEO_STORE) > 0
+        ON INSTR(A.customer_follow, B.ceo_store) > 0
         AND IFNULL(SUBSTR(
-            A.CUSTOMER_FOLLOW,
-        INSTR(A.CUSTOMER_FOLLOW, B.CEO_STORE) + CHAR_LENGTH(B.CEO_STORE),
+            A.customer_follow,
+        INSTR(A.customer_follow, B.ceo_store) + CHAR_LENGTH(B.ceo_store),
         1),
         ',') = ','
         AND
