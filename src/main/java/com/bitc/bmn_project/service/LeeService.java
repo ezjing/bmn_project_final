@@ -1,6 +1,6 @@
 package com.bitc.bmn_project.service;
 
-import com.bitc.bmn_project.DTO.ReservationDTO;
+import com.bitc.bmn_project.DTO.*;
 
 import java.util.List;
 
@@ -21,5 +21,31 @@ public interface LeeService {
 
     List<ReservationDTO> myPageReservation(int customerIdx) throws Exception;
 
-    List<ReservationDTO> myPageReview(int customerIdx) throws Exception;
+    String myPageFollow(int customerIdx) throws Exception;
+
+    void myPageCusFollowCancel(String ceoStore, int customerIdx) throws Exception;
+
+    List<ReviewDTO> myPageReview(int customerIdx) throws Exception;
+
+    List<QuestionDTO> myPageQuestion(int customerIdx) throws Exception;
+
+    void myPageCusOut(int customerIdx) throws Exception;
+
+    CustomerDTO myPageCusChange(CustomerDTO customer) throws Exception;
+
+    List<ReservationDTO> myPageCeoReservation(int ceoIdx) throws Exception;
+
+    List<ReviewDTO> myPageCeoReview(int ceoIdx) throws Exception;
+
+    List<QuestionDTO> myPageCeoQuestion(int ceoIdx) throws Exception;
+
+    void myPageCeoOut(int ceoIdx) throws Exception;
+
+    CeoDTO myPageCeoUpdate(CeoDTO ceo) throws Exception;
+
+    CeoDTO myPageCeoStoreUpdate(CeoDTO ceo) throws Exception;
+
+    List<CustomerDTO> myPageCeoFollowerList(String ceoStore) throws Exception;
+
+    void myPageCeoFollowerDelete(String ceoStore, int customerIdx) throws Exception;
 }

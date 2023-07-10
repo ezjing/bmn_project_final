@@ -56,14 +56,126 @@
         AND (R.reservation_stat = 1 OR R.reservation_stat = 2)
         ORDER BY reservation_date DESC, reservation_time DESC
     </select>
-
-    <select id="myPageReview" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReservationDTO">
-        SELECT ceo_store, review_contents, review_score, review_date
+    <select id="myPageFollow" parameterType="int" resultType="String">
+        SELECT customer_follow
+        FROM customer_tp
+        WHERE customer_idx = #{customerIdx}
+    </select>
+    <update id="myPageCusFollowCancel" parameterType="map">
+        UPDATE customer_tp
+        SET customer_follow = REPLACE(customer_follow, #{ceoStore}, '')
+        WHERE customer_idx = #{customerIdx}
+    </update>
+    <select id="myPageReview" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReviewDTO">
+        SELECT ceo_idx, ceo_store, review_contents, review_score, review_date
         FROM java505_team3_db.customer_tp U
         JOIN java505_team3_db.review_tp V
         ON U.customer_idx = V.customer_idx
         WHERE U.customer_idx = #{customerIdx}
         ORDER BY review_date DESC
     </select>
+    <select id="myPageQuestion" parameterType="int" resultType="com.bitc.bmn_project.DTO.QuestionDTO">
+        SELECT ceo_idx, ceo_store, question_title, question_date, question_complete
+        FROM customer_tp U
+        JOIN question_tp Q
+        ON U.customer_idx = Q.customer_idx
+        WHERE U.customer_idx = #{customerIdx}
+        ORDER BY question_date DESC
+    </select>
+    <delete id="myPageCusOut" parameterType="int">
+        DELETE FROM customer_tp
+        WHERE customer_idx = #{customerIdx}
+    </delete>
+    <update id="myPageCusChange" parameterType="com.bitc.bmn_project.DTO.CustomerDTO">
+        UPDATE customer_tp
+        SET customer_pw = #{customerPw}, customer_name = #{customerName}, customer_nick = #{customerNick}, customer_gender = #{customerGender} , customer_age = #{customerAge}
+        WHERE customer_idx = #{customerIdx}
+    </update>
+    <select id="customerInfo" parameterType="int" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
+        SELECT *
+        FROM customer_tp
+        WHERE customer_idx = #{customerIdx}
+    </select>
+    <select id="myPageCeoReservation" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReservationDTO">
+        SELECT ceo_idx, customer_name, reservation_people, reservation_contents, reservation_date, reservation_time, reservation_stat
+        FROM reservation_tp
+        WHERE ceo_idx = #{ceoIdx}
+    </select>
+    <select id="myPageCeoReview" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReviewDTO">
+        SELECT ceo_idx, customer_nick, review_title, review_score, review_date
+        FROM review_tp
+        WHERE ceo_idx = #{ceoIdx}
+    </select>
+    <select id="myPageCeoQuestion" parameterType="int" resultType="com.bitc.bmn_project.DTO.QuestionDTO">
+        SELECT ceo_idx, customer_nick, question_title, question_date, question_complete
+        FROM question_tp
+        WHERE ceo_idx = #{ceoIdx}
+    </select>
+    <delete id="myPageCeoOut">
+        DELETE FROM ceo_tp
+        WHERE ceo_idx = #{ceoIdx}
+    </delete>
+    <update id="myPageCeoUpdate" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        UPDATE ceo_tp
+        SET ceo_pw = #{ceoPw}, ceo_name = #{ceoName}
+        WHERE ceo_idx = #{ceoIdx}
+    </update>
+    <select id="ceoInfo" parameterType="int" resultType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT *
+        FROM ceo_tp
+        WHERE ceo_idx = #{ceoIdx}
+    </select>
+    <update id="myPageCeoStoreUpdate" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        UPDATE ceo_tp
+        SET
+        ceo_store = #{ceoStore},
+        ceo_main_menu = #{ceoMainMenu},
+        ceo_detail_menu1 = #{ceoDetailMenu1},
+        ceo_menu_img1 = #{ceoMenuImg1},
+        ceo_detail_menu2 = #{ceoDetailMenu2},
+        ceo_menu_img2 = #{ceoMenuImg2},
+        ceo_detail_menu3 = #{ceoDetailMenu3},
+        ceo_menu_img3 = #{ceoMenuImg3},
+        ceo_detail_menu4 = #{ceoDetailMenu4},
+        ceo_menu_img4 = #{ceoMenuImg4},
+        ceo_detail_menu5 = #{ceoDetailMenu5},
+        ceo_menu_img5 = #{ceoMenuImg5},
+        ceo_detail_menu6 = #{ceoDetailMenu6},
+        ceo_menu_img6 = #{ceoMenuImg6},
+        ceo_open_time = #{ceoOpenTime},
+        ceo_closing_time = #{ceoClosingTime},
+        ceo_city_address = #{ceoCityAddress},
+        ceo_full_address = #{ceoFullAddress},
+        ceo_call_number = #{ceoCallNumber},
+        ceo_contents = #{ceoContents},
+        ceo_category = #{ceoCategory},
+        ceo_thumbnail_img = #{ceoThumbnailImg},
+        ceo_main_img = #{ceoMainImg},
+        ceo_lat = #{ceoLat},
+        ceo_lon = #{ceoLon}
+        WHERE ceo_idx = #{ceoIdx}
+    </update>
+    
+<!--    사장 마이페이지 팔로워 리스트 가져오기-->
+    <select id="myPageCeoFollowerList" parameterType="String" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
+        SELECT
+            *
+        FROM
+            customer_tp
+        WHERE
+            customer_follow
+        LIKE
+            concat('%',#{ceoStore},'%')
+    </select>
+    
+<!--    사장 마이페이지 팔로워 삭제하기-->
+    <update id="myPageCeoFollowerDelete" parameterType="map">
+        UPDATE
+            customer_tp
+        SET
+            customer_follow = REPLACE(customer_follow, CONCAT(#{ceoStore}, ','), '')
+        WHERE
+            customer_idx = #{customerIdx}
+    </update>
 </mapper>
 

@@ -104,16 +104,20 @@ public class BaeController {
   // 팔로우 추가/삭제
   @ResponseBody
   @RequestMapping(value = "/bmn/updateFollow", method = RequestMethod.PUT)
-  public Object updateFollow(@RequestParam("ceoStore") String ceoStore, @RequestParam("customerIdx") int customerIdx) throws Exception {
+  public Object updateFollow(@RequestParam("ceoStore") String ceoStore, @RequestParam("customerIdx") int customerIdx, @RequestParam("ceoIdx") int ceoIdx) throws Exception {
     int result = 0;
 
     CustomerDTO customerDTO = baeService.selectCustomerInfo(customerIdx);
+    String customerNick = customerDTO.getCustomerNick();
 
     if (customerDTO.getCustomerFollow().contains(ceoStore)) {
-      baeService.deleteFollow(customerIdx, ceoStore);
+      baeService.deleteFollowStore(customerIdx, ceoStore);
+      baeService.deleteFollowNick(ceoIdx, customerNick);
     }
     else {
-      baeService.updateFollow(customerIdx, ceoStore);
+      baeService.updateFollowStore(customerIdx, ceoStore);
+      baeService.updateFollowNick(ceoIdx, customerNick);
+
     }
     result = baeService.getFollows(ceoStore);
 

@@ -11,11 +11,11 @@ public interface BaeService {
 
   int getFollows(String ceoStore) throws Exception;
 
-  void updateFollow(int customerIdx, String ceoStore) throws Exception;
+  void updateFollowStore(int customerIdx, String ceoStore) throws Exception;
 
   CustomerDTO selectCustomerInfo(int customerIdx) throws Exception;
 
-  void deleteFollow(int customerIdx, String ceoStore) throws Exception;
+  void deleteFollowStore(int customerIdx, String ceoStore) throws Exception;
 
   Page<QuestionDTO> selectQuestionList(int ceoIdx, int pageNum) throws Exception;
 
@@ -36,6 +36,10 @@ public interface BaeService {
   void commentInsert(CommentDTO commentDTO) throws Exception;
 
   void commentDelete(int commentIdx) throws Exception;
+
+  void updateFollowNick(int ceoIdx, String customerNick) throws Exception;
+
+  void deleteFollowNick(int ceoIdx, String customerNick) throws Exception;
 
 //  List<CommentDTO> selectCommentListCeo(int ceoIdx) throws Exception;
 }

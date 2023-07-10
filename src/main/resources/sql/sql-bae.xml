@@ -27,13 +27,13 @@
 	</select>
 	
 <!--	팔로우 식당 추가-->
-	<update id="updateFollow" parameterType="map">
+	<update id="updateFollowStore" parameterType="map">
 		UPDATE customer_tp SET customer_follow = concat(customer_follow, #{ceoStore}, ",")
 		WHERE customer_idx = #{customerIdx}
 	</update>
 	
 <!--	팔로우한 식당 삭제-->
-	<update id="deleteFollow" parameterType="map">
+	<update id="deleteFollowStore" parameterType="map">
 		UPDATE
 			customer_tp
 		SET
@@ -61,6 +61,26 @@
 			ceo_tp
 		SET
 			ceo_follow_cnt = #{followCnt}
+		WHERE
+			ceo_idx = #{ceoIdx}
+	</update>
+	
+<!--	ceo_tp에 팔로워 nick 추가-->
+	<update id="updateFollowNick" parameterType="map">
+		UPDATE
+			ceo_tp
+		SET
+			ceo_follow_customer_nick = CONCAT(ceo_follow_customer_nick, #{customerNick}, ',')
+		WHERE
+			ceo_idx = #{ceoIdx}
+	</update>
+	
+<!--	ceo_tp에 팔로워 nick 삭제-->
+	<update id="deleteFollowNick" parameterType="map">
+		UPDATE
+			ceo_tp
+		SET
+			ceo_follow_customer_nick = REPLACE(ceo_follow_customer_nick, CONCAT(#{customerNick}, ','), '')
 		WHERE
 			ceo_idx = #{ceoIdx}
 	</update>

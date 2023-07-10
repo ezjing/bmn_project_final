@@ -30,8 +30,8 @@ public class BaeServiceImpl implements BaeService {
   }
 
   @Override
-  public void updateFollow(int customerIdx, String ceoStore) throws Exception {
-    baeMapper.updateFollow(customerIdx, ceoStore);
+  public void updateFollowStore(int customerIdx, String ceoStore) throws Exception {
+    baeMapper.updateFollowStore(customerIdx, ceoStore);
   }
 
   @Override
@@ -41,8 +41,8 @@ public class BaeServiceImpl implements BaeService {
   }
 
   @Override
-  public void deleteFollow(int customerIdx, String ceoStore) throws Exception {
-    baeMapper.deleteFollow(customerIdx, ceoStore);
+  public void deleteFollowStore(int customerIdx, String ceoStore) throws Exception {
+    baeMapper.deleteFollowStore(customerIdx, ceoStore);
   }
 
   @Override
@@ -100,6 +100,16 @@ public class BaeServiceImpl implements BaeService {
   @Override
   public void commentDelete(int commentIdx) throws Exception {
     baeMapper.commentDelete(commentIdx);
+  }
+
+  @Override
+  public void updateFollowNick(int ceoIdx, String customerNick) throws Exception {
+    baeMapper.updateFollowNick(ceoIdx, customerNick);
+  }
+
+  @Override
+  public void deleteFollowNick(int ceoIdx, String customerNick) throws Exception {
+    baeMapper.deleteFollowNick(ceoIdx, customerNick);
   }
 
 //  @Override
