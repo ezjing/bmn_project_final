@@ -14,4 +14,5 @@ public class CustomerDTO {
     private String customerFollow;
     private int customerGrade;
     private String customerBan;
+    private String customerJoinDt;
 }

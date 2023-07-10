@@ -38,4 +38,5 @@ public class CeoDTO {
     private double ceoLon;
     private int ceoGrade;
     private int ceoFollowCnt;
+    private String ceoFollowCustomerNick;
 }

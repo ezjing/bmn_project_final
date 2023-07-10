@@ -41,6 +41,10 @@ public interface LeeMapper {
 
     List<ReservationDTO> myPageCeoReservation(int ceoIdx) throws Exception;
 
+    List<CustomerDTO> myPageCeoFollowerList(String ceoStore) throws Exception;
+
+    void myPageCeoFollowerDelete(String ceoStore, int customerIdx) throws Exception;
+
     List<ReviewDTO> myPageCeoReview(int ceoIdx) throws Exception;
 
     List<QuestionDTO> myPageCeoQuestion(int ceoIdx) throws Exception;
@@ -52,11 +56,4 @@ public interface LeeMapper {
     CeoDTO ceoInfo(int ceoIdx) throws Exception;
 
     void myPageCeoStoreUpdate(CeoDTO ceo) throws Exception;
-<<<<<<< HEAD
-
-    List<CustomerDTO> myPageCeoFollowerList(String ceoStore) throws Exception;
-
-    void myPageCeoFollowerDelete(String ceoStore, int customerIdx) throws Exception;
-=======
->>>>>>> ezbranch
 }

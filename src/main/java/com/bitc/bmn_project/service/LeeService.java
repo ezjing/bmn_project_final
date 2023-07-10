@@ -35,6 +35,10 @@ public interface LeeService {
 
     List<ReservationDTO> myPageCeoReservation(int ceoIdx) throws Exception;
 
+    List<CustomerDTO> myPageCeoFollowerList(String ceoStore) throws Exception;
+
+    void myPageCeoFollowerDelete(String ceoStore, int customerIdx) throws Exception;
+
     List<ReviewDTO> myPageCeoReview(int ceoIdx) throws Exception;
 
     List<QuestionDTO> myPageCeoQuestion(int ceoIdx) throws Exception;
@@ -44,11 +48,4 @@ public interface LeeService {
     CeoDTO myPageCeoUpdate(CeoDTO ceo) throws Exception;
 
     CeoDTO myPageCeoStoreUpdate(CeoDTO ceo) throws Exception;
-<<<<<<< HEAD
-
-    List<CustomerDTO> myPageCeoFollowerList(String ceoStore) throws Exception;
-
-    void myPageCeoFollowerDelete(String ceoStore, int customerIdx) throws Exception;
-=======
->>>>>>> ezbranch
 }

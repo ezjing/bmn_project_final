@@ -11,17 +11,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 
-<<<<<<< HEAD
-
-=======
->>>>>>> ezbranch
 
     <style>
 
     </style>
     <script>
         function events() {
-<<<<<<< HEAD
             $(".btn-follow").off('click');
             $(".btn-follow").on("click", function () {   // 버튼마다 반복문으로 val 값을 주는것임 그리고 클릭이벤트로 그걸 들고와서 해당 인덱스 지우도록..!(업데이트문)
                 alert("정말 팔로워를 삭제하시겠습니까?"); // 제이쿼리로 새로 만들어 지는 버튼에는 이렇게 바로 주면 안됨 그래서 함수로 만들고 그걸 이용해야함.
@@ -37,79 +32,55 @@
                     data: {ceoStore: ceoStore, customerIdx: customerIdx},
                     success: function (data) {
                         // alert(data);
-                        
+
                         // const parent = $(btn).parent().parent().remove();   // 버튼의 부모는 td 부모의 부모가 tr
                         // console.log(parent);
-                      $("#theadFollow").empty();
-                      $("#tbodyFollow").empty();
-  
-                      $("#theadFollow").empty();
-                      $("#tbodyFollow").empty();
-                      //
-                      let thead =
-                        "<tr>\n" +
-                        "    <th>팔로워</th>\n" +
-                        "    <th></th>\n" +
-                        "    <th></th>\n" +
-                        "    <th>팔로워 삭제</th>\n" +
-                        "</tr>";
-                      //
-                      $("#theadFollow").append(thead);
-                      //
-                      let tbody = "";
-                      //
-                      if (data.length == 0) {
-                        tbody =
-                          "<tr>\n" +
-                          "    <td colspan=\"4\">팔로잉이 없습니다</td>\n" +
-                          "</tr>";
-    
-                        $("#tbodyFollow").append(tbody);
-                      } else {
-                        for (let i = 0; i < data.length; i++) {
-                          tbody =
+                        $("#theadFollow").empty();
+                        $("#tbodyFollow").empty();
+
+                        $("#theadFollow").empty();
+                        $("#tbodyFollow").empty();
+                        //
+                        let thead =
                             "<tr>\n" +
-                            "    <td>" + data[i].customerNick + "</td>\n" +
-                            "    <td></td>\n" +
-                            "    <td></td>\n" +
-                            "    <td>" +
-                            "        <button type=\"button\" class=\"btn btn-outline-secondary btn-follow\" value='" + data[i].customerIdx + "' style=\"--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;\">삭제</button>" +
-                            "    </td>\n" +
+                            "    <th>팔로워</th>\n" +
+                            "    <th></th>\n" +
+                            "    <th></th>\n" +
+                            "    <th>팔로워 삭제</th>\n" +
                             "</tr>";
-                          $("#tbodyFollow").append(tbody);
+                        //
+                        $("#theadFollow").append(thead);
+                        //
+                        let tbody = "";
+                        //
+                        if (data.length == 0) {
+                            tbody =
+                                "<tr>\n" +
+                                "    <td colspan=\"4\">팔로잉이 없습니다</td>\n" +
+                                "</tr>";
+
+                            $("#tbodyFollow").append(tbody);
+                        } else {
+                            for (let i = 0; i < data.length; i++) {
+                                tbody =
+                                    "<tr>\n" +
+                                    "    <td>" + data[i].customerNick + "</td>\n" +
+                                    "    <td></td>\n" +
+                                    "    <td></td>\n" +
+                                    "    <td>" +
+                                    "        <button type=\"button\" class=\"btn btn-outline-secondary btn-follow\" value='" + data[i].customerIdx + "' style=\"--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;\">삭제</button>" +
+                                    "    </td>\n" +
+                                    "</tr>";
+                                $("#tbodyFollow").append(tbody);
+                            }
                         }
-                      }
-                      events();
-=======
-            const ceoIdx = $("#ceoIdx").val();
-
-            $(".btn-follow").on("click", function () {   // 버튼마다 반복문으로 val 값을 주는것임 그리고 클릭이벤트로 그걸 들고와서 해당 인덱스 지우도록..!(업데이트문)
-                alert("정말 팔로우를 취소하시겠습니까?"); // 제이쿼리로 새로 만들어 지는 버튼에는 이렇게 바로 주면 안됨 그래서 함수로 만들고 그걸 이용해야함.
-                const ceoStore = $(this).val() + ",";  // this 는 클릭 이벤트가 발생된 버튼을 말함, 즉 누른 버튼의 값을 가져옴
-                const btn = $(this);
-                // console.log(ceoStore);   // 가게이름 받아오는지 확인
-
-                $.ajax({
-                    url: "/bmn/myPageCeo/follow/cancel",   // update를 시켜야하는데.. 어떻게 그 문자열만 찾아서 없앤담.... 버튼 값으로 가게이름 주고 가게 이름 바로 들고오자
-                    type: "POST",
-                    data: {ceoStore: ceoStore, ceoIdx: ceoIdx},
-                    success(data) {
-                        // alert("ajax 통신 성공");
-
-                        const parent = $(btn).parent().parent().remove();   // 버튼의 부모는 td 부모의 부모가 tr
-                        // console.log(parent);
->>>>>>> ezbranch
+                        events();
                     },
                     error() {
                         alert("ajax 통신 실패");
                     }
                 });
             });
-<<<<<<< HEAD
-            
-            
-=======
->>>>>>> ezbranch
         }
 
         $(document).ready(function () {
@@ -129,10 +100,6 @@
                 }
             };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> ezbranch
             let category = $('#categoryText').text();
             for (let i = 1; i < 7; i++) {
                 let val = "#val" + i;
@@ -140,11 +107,7 @@
                 if (category === target.val()) {
                     target.attr("selected", "selected");
                 }
-<<<<<<< HEAD
-            }
-=======
             };
->>>>>>> ezbranch
 
             $("#list-reservation-list").on("click", function () {
                 // location.href = "/bmn/reservationCeo";
@@ -216,15 +179,14 @@
                 });
             });
             $("#list-follow-list").on("click", function () {
-<<<<<<< HEAD
-              const ceoStore = $("#ceo-store").val();
+                const ceoStore = $("#ceo-store").val();
                 $.ajax({    // follow 내역 ajax
                     url: "/bmn/myPageCeo/followerList",
                     type: "POST",
                     data: {ceoStore: ceoStore},
                     success(data) {
                         // alert("ajax 통신 성공");
-                        
+
                         $("#theadFollow").empty();
                         $("#tbodyFollow").empty();
                         //
@@ -241,33 +203,6 @@
                         let tbody = "";
                         //
                         if (data.length == 0) {
-=======
-                $.ajax({    // follow 내역 ajax
-                    url: "/bmn/myPageCeo/follow",
-                    type: "POST",
-                    data: {ceoIdx: ceoIdx},
-                    success(data) {
-                        // alert("ajax 통신 성공");
-                        const str = data;
-                        const split = str.split(',');   // split 리스트 형식으로 들고옴
-
-                        $("#theadFollow").empty();
-                        $("#tbodyFollow").empty();
-
-                        let thead =
-                            "<tr>\n" +
-                            "    <th>밥뭇나 맛집</th>\n" +
-                            "    <th></th>\n" +
-                            "    <th></th>\n" +
-                            "    <th>팔로우 취소</th>\n" +
-                            "</tr>";
-
-                        $("#theadFollow").append(thead);
-
-                        let tbody = "";
-
-                        if (split.length - 1 == 0) {
->>>>>>> ezbranch
                             tbody =
                                 "<tr>\n" +
                                 "    <td colspan=\"4\">팔로잉이 없습니다</td>\n" +
@@ -275,37 +210,19 @@
 
                             $("#tbodyFollow").append(tbody);
                         } else {
-<<<<<<< HEAD
-                          for (let i = 0; i < data.length; i++) {
-                            tbody =
-                              "<tr>\n" +
-                              "    <td>" + data[i].customerNick + "</td>\n" +
-                              "    <td></td>\n" +
-                              "    <td></td>\n" +
-                              "    <td>" +
-                              "        <button type=\"button\" class=\"btn btn-outline-secondary btn-follow\" value='" + data[i].customerIdx + "' style=\"--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;\">삭제</button>" +
-                              "    </td>\n" +
-                              "</tr>";
-                            $("#tbodyFollow").append(tbody);
-                            
-                          }
-=======
-                            for (let i = 0; i < split.length - 1; i++) { // 리스트의 마지막은 빈 문자열이기 때문에 -1로 제외
-                                const ceoStore = split[i];
-
+                            for (let i = 0; i < data.length; i++) {
                                 tbody =
                                     "<tr>\n" +
-                                    "    <td>" + ceoStore + "</td>\n" +
+                                    "    <td>" + data[i].customerNick + "</td>\n" +
                                     "    <td></td>\n" +
                                     "    <td></td>\n" +
                                     "    <td>" +
-                                    "        <button type=\"button\" class=\"btn btn-outline-danger btn-follow\" value='" + ceoStore + "' style=\"--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;\">팔로잉</button>" +
+                                    "        <button type=\"button\" class=\"btn btn-outline-secondary btn-follow\" value='" + data[i].customerIdx + "' style=\"--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;\">삭제</button>" +
                                     "    </td>\n" +
                                     "</tr>";
-
                                 $("#tbodyFollow").append(tbody);
+
                             }
->>>>>>> ezbranch
                         }
                         events();
                     },
@@ -437,10 +354,6 @@
             $("#submit-btn").on("click", function () {
                 $("#method").val("PUT");
                 const form = $("#ceoForm")[0];
-<<<<<<< HEAD
-                // form.action = "/bmn/myPageCeo";
-=======
->>>>>>> ezbranch
                 const ceoName = $("#user-name").val();
                 const pw = $("#pw").val();
                 const ceoPw = $("#pw-match").val();
@@ -450,51 +363,14 @@
                 } else {
                     form.submit();
                     alert("수정되었습니다.")
-<<<<<<< HEAD
-                    location.reload();
                 }
             });
-            $("#storeSubmit").on("click", function () {
-                // $("#method").val("POST");
-                const form = $("#storeForm")[0];
-
-                form.submit();
-                alert("수정되었습니다.");
-                location.reload();
-            });
-=======
-                }
-            });
->>>>>>> ezbranch
 
             $("#profile").on("click", function () {
                 $("#collapseStore").collapse("hide");
                 $("#collapseExample").collapse("show");
             });
             $("#storeInfo").on("click", function () {
-<<<<<<< HEAD
-                $("#collapseExample").collapse("hide");
-                $("#collapseStore").collapse("show");
-                $("iframe").remove();
-                let utext = document.getElementById("utext").textContent;
-                $(".isSE").attr("id","ceoContents").attr("name","ceoContents").text(utext);
-                doSE();
-                // $(".se2_inputarea").children("p").text($("#utext").text());
-                // console.log($(".se2_inputarea").children("p").text($("#utext").text()));
-
-            });
-
-
-
-        });
-
-            // 팝업 호출
-            function goPopup() {
-            var pop = window.open("myPageCeo/popup", "pop", "width=570,height=420, scrollbars=yes");
-        }
-
-            function jusoCallBack(
-=======
 
                 $("#collapseExample").collapse("hide");
                 $("#collapseStore").collapse("show");
@@ -552,16 +428,11 @@
         }
 
         function jusoCallBack(
->>>>>>> ezbranch
             roadFullAddr, roadAddrPart1, addrDetail, roadAddrPart2, engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn,
             detBdNmList, bdNm, bdKdcd, siNm, sggNm, emdNm, liNm, rn, udrtYn, buldMnnm, buldSlno, mtYn, lnbrMnnm,
             lnbrSlno,
             emdNo, entX, entY
-<<<<<<< HEAD
-            ) {
-=======
         ) {
->>>>>>> ezbranch
             // 좌표 변환
             Proj4js.defs["EPSG:5179"] = "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
             Proj4js.defs["EPSG:4326"] = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
@@ -583,11 +454,7 @@
             document.getElementById("entY").value = result.x.toFixed(6);
         }
 
-<<<<<<< HEAD
-            function hiddenItem(itemNum) {
-=======
         function hiddenItem(itemNum) {
->>>>>>> ezbranch
             // tr 태그 hidden
             const targetId1 = "menu" + itemNum;
             const target1 = document.getElementById(targetId1);
@@ -607,69 +474,6 @@
             // 아이템 sort, 내용 옮기는 기능
         }
 
-<<<<<<< HEAD
-            $(document).ready(function () {
-            // 서브밋 시 스마트 에디터의 밸류 확인
-            $("#storeSubmit").on("click", function () {
-
-                oEditors.getById["ceoContents"].exec("UPDATE_CONTENTS_FIELD", []);
-
-                // 에디터의 내용에 대한 값 검증은 이곳에서
-                // document.getElementById("ceoContents").value를 이용해서 처리한다.
-
-                try {
-                    $("#storeForm").submit();
-                } catch (e) {
-                    console.log(e);
-                }
-            });
-
-            // 카테고리 직접입력 이벤트
-            $("#ceo-category").on("change", function () {
-            if (this.value === "06") {
-            // this.setAttribute("disabled","disabled");
-            this.setAttribute("value", "");
-            this.removeAttribute("name",);
-            $("#ceo-category-select").removeAttr("disabled");
-        } else {
-            this.setAttribute("name", "ceoCategory");
-            $("#ceo-category-select").val("").attr("disabled", "disabled");
-        }
-        });
-
-            // 메뉴 추가 버튼 클릭 이벤트
-            $("#add-item-btn").on("click", function () {
-            let items = [];
-            let cnt = 0;
-            for (let i = 1; i < 7; i++) {
-            const targetId = "menu" + i;
-            const target = document.getElementById(targetId);
-            if (target.getAttribute("hidden") === "hidden") {
-            items[cnt] = i;
-            cnt++;
-        }
-        }
-            if (items.length > 0) {
-            // tr 태그 hidden 해제
-            const targetId1 = "menu" + items[0];
-            const target1 = document.getElementById(targetId1);
-
-            target1.removeAttribute("hidden");
-            // 인풋 태그 2개 디스에이블 해제
-            const targetId2 = "ceo-detail-menu" + items[0];
-            const target2 = document.getElementById(targetId2);
-
-            target2.removeAttribute("disabled");
-
-            const targetId3 = "ceo-menu-img" + items[0];
-            const target3 = document.getElementById(targetId3);
-
-            target3.removeAttribute("disabled");
-        } else {
-            alert('메뉴 등록은 최대 6개까지 가능합니다.')
-        }
-        });
-=======
         $(document).ready(function () {
             // 서브밋 시 스마트 에디터의 밸류 확인
             // $("#storeSubmit").on("click", function () {
@@ -722,7 +526,6 @@
                     alert('메뉴 등록은 최대 6개까지 가능합니다.')
                 }
             });
->>>>>>> ezbranch
         });
     </script>
 
@@ -736,17 +539,10 @@
         <div class="col">
             <div class="d-flex justify-content-between">
                 <div>
-<<<<<<< HEAD
-                    <p th:if="${session.ceo.ceoGrade} != 2">[미인증 맛집]</p>
-                    <p th:if="${session.ceo.ceoGrade} == 2">[인증 맛집]</p>
-                    <h1 th:text="${session.ceo.ceoStore}">맛나밥집</h1>
-                    <p th:text="|안녕하세요. ${session.ceo.ceoName}입니다.|">안녕하세요. 이지원 입니다.</p>
-=======
                     <p th:if="${session.user.ceoGrade} != 2">[미인증 맛집]</p>
                     <p th:if="${session.user.ceoGrade} == 2">[인증 맛집]</p>
                     <h1 th:text="${session.user.ceoStore}">맛나밥집</h1>
                     <p th:text="|안녕하세요. ${session.user.ceoName}입니다.|">안녕하세요. 이지원 입니다.</p>
->>>>>>> ezbranch
                 </div>
 
                 <div class="d-flex justify-content-end align-items-center">
@@ -755,12 +551,8 @@
                             style="height: 5em">
                         내 프로필 수정
                     </button>
-<<<<<<< HEAD
-                    <button th:if="${session.ceo.ceoGrade} == 2" class="btn btn-success" type="button" id="storeInfo" data-bs-toggle="collapse"
-=======
                     <button th:if="${session.user.ceoGrade} == 2" class="btn btn-success" type="button" id="storeInfo"
                             data-bs-toggle="collapse"
->>>>>>> ezbranch
                             data-bs-target="#collapseStore" aria-expanded="false" aria-controls="collapseExample"
                             style="height: 5em">
                         가게 정보 수정
@@ -772,17 +564,11 @@
             <div class="collapse" id="collapseExample">
                 <div class="container-sm mt-5">
                     <div class="col-sm-8 mx-auto">
-<<<<<<< HEAD
-                        <form action="/bmn/myPageCeo" class="form-control p-4 mb-5" method="post" id="ceoForm" name="ceoForm">
-                            <div class="form-floating my-4">
-                                <input type="text" class="form-control" id="user-name" name="ceoName" th:value="${session.ceo.ceoName}">
-=======
                         <form action="/bmn/myPageCeo/ceo" class="form-control p-4 mb-5" method="post" id="ceoForm"
                               name="ceoForm">
                             <div class="form-floating my-4">
                                 <input type="text" class="form-control" id="user-name" name="ceoName"
                                        th:value="${session.user.ceoName}">
->>>>>>> ezbranch
                                 <label for="user-name">이름</label>
                                 <p id="name-write" class="text-danger"></p>
                             </div>
@@ -798,17 +584,10 @@
                                 <p id="match-miss" class="text-danger"></p>
                             </div>
                             <div class="my-4 d-grid gap-3">
-<<<<<<< HEAD
-                                <button type="submit" id="submit-btn" class="btn btn-outline-primary">수정하기</button>
-                            </div>
-                            <a href="#" class="text-decoration-none text-danger opacity-75" id="out">회원탈퇴></a>
-                            <input type="hidden" id="ceoIdx" name="ceoIdx" value="2" th:value="${session.ceo.ceoIdx}">
-=======
                                 <button type="button" id="submit-btn" class="btn btn-outline-primary">수정하기</button>
                             </div>
                             <a href="#" class="text-decoration-none text-danger opacity-75" id="out">회원탈퇴></a>
                             <input type="hidden" id="ceoIdx" name="ceoIdx" value="2" th:value="${session.user.ceoIdx}">
->>>>>>> ezbranch
                             <!--  REST 방식 사용 시 form 태그의 데이터 전송 방식을 변경하기 위한 태그  -->
                             <input type="hidden" id="method" name="_method">
                         </form>
@@ -816,439 +595,313 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
-            <div class="collapse" id="collapseStore">
-                <div class="container-sm my-4">
-                    <div class="col-sm-10 mx-auto">
-                        <form name="storeForm" id="storeForm" action="/bmn/myPageCeo/store" method="post" class="form-control" enctype="multipart/form-data" novalidate>
-=======
-<!--            <div class="collapse" id="collapseStore">-->
-                <div class="container-sm my-4">
-                    <div class="col-sm-10 mx-auto">
-                        <form name="storeForm" id="storeForm" action="/bmn/myPageCeo" method="post" class="form-control"
-                              enctype="multipart/form-data" novalidate>
->>>>>>> ezbranch
-                            <h2 class="text-center my-4">가게 정보 수정</h2>
-                            <div>
-                                <!-- 정보 입력 -->
-                                <div class="row">
-                                    <div class="my-2">
-                                        <span>가게 이름</span>
-                                        <div class="form-floating">
-<<<<<<< HEAD
-                                            <input type="text" class="form-control" id="ceo_store" name="ceoStore" th:value="${session.ceo.ceoStore}">
-=======
-                                            <input type="text" class="form-control" id="ceo_store" name="ceoStore"
-                                                   th:value="${session.user.ceoStore}">
->>>>>>> ezbranch
-                                            <label for="ceo_store">가게 이름</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row my-2">
-                                    <span>운영 시간</span>
-                                    <div class="form-floating col">
-<<<<<<< HEAD
-                                        <input type="text" class="form-control" id="ceo-open-time" name="ceoOpenTime" th:value="${session.ceo.ceoOpenTime}">
-                                        <label for="ceo-open-time" class="ms-2">오픈 시간</label>
-                                    </div>
-                                    <div class="form-floating col">
-                                        <input type="text" class="form-control" id="ceo-closing-time" name="ceoClosingTime" th:value="${session.ceo.ceoClosingTime}">
-=======
-                                        <input type="text" class="form-control" id="ceo-open-time" name="ceoOpenTime"
-                                               th:value="${session.user.ceoOpenTime}">
-                                        <label for="ceo-open-time" class="ms-2">오픈 시간</label>
-                                    </div>
-                                    <div class="form-floating col">
-                                        <input type="text" class="form-control" id="ceo-closing-time"
-                                               name="ceoClosingTime" th:value="${session.user.ceoClosingTime}">
->>>>>>> ezbranch
-                                        <label for="ceo-closing-time" class="ms-2">마감 시간</label>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <span>카테고리 선택</span>
-<<<<<<< HEAD
-                                    <p th:text="${session.ceo.ceoCategory}" id="categoryText" hidden="hidden"></p>
-=======
-                                    <p th:text="${session.user.ceoCategory}" id="categoryText" hidden="hidden"></p>
->>>>>>> ezbranch
-                                    <div class="col form-floating">
-                                        <select class="form-select form-select" name="ceoCategory" id="ceo-category">
-                                            <!--                            가게 대분류 (한,중,양)-->
-                                            <option selected value="00"></option>
-                                            <option value="01" id="val1">한식</option>
-                                            <option value="02" id="val2">양식</option>
-                                            <option value="03" id="val3">중식</option>
-                                            <option value="04" id="val4">일식</option>
-                                            <option value="05" id="val5">주점</option>
-                                            <!-- 선택시 데이터 못 가져가도록 블락-->
-                                            <option value="06">직접입력</option>
-                                        </select>
-                                        <label for="ceo-category" class="ms-2">카테고리</label>
-                                    </div>
-                                    <!-- 셀렉트 박스 직접입력 선택시 활성화 -->
-                                    <div class="col form-floating">
-<<<<<<< HEAD
-                                        <input type="text" class="form-control" id="ceo-category-select" name="ceoCategory" disabled>
-=======
-                                        <input type="text" class="form-control" id="ceo-category-select"
-                                               name="ceoCategory" disabled>
->>>>>>> ezbranch
-                                        <label for="ceo-category-select" class="ms-2">직접입력</label>
-                                    </div>
-                                </div>
-
-                                <div class="row my-2">
-                                    <span>가게 소개</span>
-                                    <div class="form-floating col-8">
-<<<<<<< HEAD
-                                        <input type="text" class="form-control" id="ceo-call-number" name="ceoCallNumber" th:value="${session.ceo.ceoCallNumber}">
-=======
-                                        <input type="text" class="form-control" id="ceo-call-number"
-                                               name="ceoCallNumber" th:value="${session.user.ceoCallNumber}">
->>>>>>> ezbranch
-                                        <label for="ceo-call-number" class="ms-2">가게 전화번호</label>
-                                    </div>
-                                    <div class="col">
-                                        <label for="ceo-thumbnail-img">가게 홍보 이미지</label>
-<<<<<<< HEAD
-                                        <input type="file" class="form-control" id="ceo-thumbnail-img" name="ceoThumbnailImgFile" accept="image/jpeg" required th:value="${session.ceo.ceoThumbnailImg}">
-=======
-                                        <input type="file" class="form-control" id="ceo-thumbnail-img"
-                                               name="ceoThumbnailImgFile" accept="image/jpeg" required
-                                               th:value="${session.user.ceoThumbnailImg}">
->>>>>>> ezbranch
-                                    </div>
-                                </div>
-
-                                <div class="row my-2">
-                                    <span>대표 메뉴</span>
-                                    <div class="form-floating col-8">
-<<<<<<< HEAD
-                                        <input type="text" class="form-control" id="ceo-main-menu" name="ceoMainMenu" th:value="${session.ceo.ceoMainMenu}">
-=======
-                                        <input type="text" class="form-control" id="ceo-main-menu" name="ceoMainMenu"
-                                               th:value="${session.user.ceoMainMenu}">
->>>>>>> ezbranch
-                                        <label for="ceo-main-menu" class="ms-2">대표 메뉴 이름(가격) / ex) 돈까스(7,000원)</label>
-                                    </div>
-                                    <div class="col">
-                                        <label for="ceo-main-img">대표 메뉴 이미지</label>
-<<<<<<< HEAD
-                                        <input type="file" class="form-control" id="ceo-main-img" name="ceoMainImgFile" accept="image/jpeg" required th:value="${session.ceo.ceoMainImg}">
-=======
-                                        <input type="file" class="form-control" id="ceo-main-img" name="ceoMainImgFile"
-                                               accept="image/jpeg" required th:value="${session.user.ceoMainImg}">
->>>>>>> ezbranch
-                                    </div>
-                                </div>
-
+            <!--            <div class="collapse" id="collapseStore">-->
+            <div class="container-sm my-4">
+                <div class="col-sm-10 mx-auto">
+                    <form name="storeForm" id="storeForm" action="/bmn/myPageCeo" method="post" class="form-control"
+                          enctype="multipart/form-data" novalidate>
+                        <h2 class="text-center my-4">가게 정보 수정</h2>
+                        <div>
+                            <!-- 정보 입력 -->
+                            <div class="row">
                                 <div class="my-2">
-                                    <span>가게 소개글</span>
-                                    <!-- 스마트 에디터 -->
-<<<<<<< HEAD
-                                    <p id="utext" th:text="${session.ceo.ceoContents}" hidden="hidden"></p>
-                                    <textarea rows="10" cols="100" class="isSE"></textarea>
-=======
-                                    <textarea rows="10" cols="100" name="ceoContents" id="ceoContents" th:utext="${session.user.ceoContents}"></textarea>
->>>>>>> ezbranch
+                                    <span>가게 이름</span>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="ceo_store" name="ceoStore"
+                                               th:value="${session.user.ceoStore}">
+                                        <label for="ceo_store">가게 이름</label>
+                                    </div>
                                 </div>
-
-                                <div class="my-2">메뉴 등록<small> (최대 6개)</small>
-                                    <button type="button" class="btn btn-outline-success py-0 px-1 text-center"
-                                            id="add-item-btn">
-                                        <small><i class="bi bi-plus-circle-fill"></i></small>
-                                    </button>
-                                </div>
-                                <table class="table">
-                                    <colgroup>
-                                        <col width="5%">
-                                        <col width="8%">
-                                        <col width="40%">
-                                        <col width="25%">
-                                    </colgroup>
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr id="menu1" class="menuItems">
-                                        <td class="text-center align-middle">
-                                            <button type="button" class="btn btn-outline-danger" value="1"
-                                                    onclick="hiddenItem(this.value)">
-                                                <i class="bi bi-dash-circle-fill"></i>
-                                            </button>
-                                        </td>
-                                        <td class="text-center align-middle align-middle">
-                                            메뉴1
-                                        </td>
-                                        <td class="px-4">
-                                            <div class="form-floating">
-<<<<<<< HEAD
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu1" name="ceoDetailMenu1" accept="image/jpeg" th:value="${session.ceo.ceoDetailMenu1}">
-=======
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu1"
-                                                       name="ceoDetailMenu1" accept="image/jpeg"
-                                                       th:value="${session.user.ceoDetailMenu1}">
->>>>>>> ezbranch
-                                                <label for="ceo-detail-menu1" class="ms-2">메뉴1 이름(가격) / ex)
-                                                    돈까스(7,000원)</label>
-                                            </div>
-                                        </td>
-                                        <td class="px-3">
-                                            <div>
-                                                <label for="ceo-menu-img1">메뉴1 이미지</label>
-<<<<<<< HEAD
-                                                <input type="file" class="form-control" id="ceo-menu-img1" name="files" th:value="${session.ceo.ceoMenuImg1}">
-=======
-                                                <input type="file" class="form-control" id="ceo-menu-img1" name="files"
-                                                       th:value="${session.user.ceoMenuImg1}">
->>>>>>> ezbranch
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr id="menu2" class="menuItems" hidden="hidden">
-                                        <td class="text-center align-middle">
-                                            <button type="button" class="btn btn-outline-danger" value="2"
-                                                    onclick="hiddenItem(this.value)">
-                                                <i class="bi bi-dash-circle-fill"></i>
-                                            </button>
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            메뉴2
-                                        </td>
-                                        <td class="px-4">
-                                            <div class="form-floating">
-<<<<<<< HEAD
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu2" name="ceoDetailMenu2" accept="image/jpeg" th:value="${session.ceo.ceoDetailMenu2}">
-=======
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu2"
-                                                       name="ceoDetailMenu2" accept="image/jpeg"
-                                                       th:value="${session.user.ceoDetailMenu2}">
->>>>>>> ezbranch
-                                                <label for="ceo-detail-menu2" class="ms-2">메뉴2 이름(가격) / ex)
-                                                    돈까스(7,000원)</label>
-                                            </div>
-                                        </td>
-                                        <td class="px-3">
-                                            <div>
-                                                <label for="ceo-menu-img2">메뉴2 이미지</label>
-<<<<<<< HEAD
-                                                <input type="file" class="form-control" id="ceo-menu-img2" name="files" th:value="${session.ceo.ceoMenuImg2}">
-=======
-                                                <input type="file" class="form-control" id="ceo-menu-img2" name="files"
-                                                       th:value="${session.user.ceoMenuImg2}">
->>>>>>> ezbranch
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr id="menu3" class="menuItems" hidden="hidden">
-                                        <td class="text-center align-middle">
-                                            <button type="button" class="btn btn-outline-danger" value="3"
-                                                    onclick="hiddenItem(this.value)">
-                                                <i class="bi bi-dash-circle-fill"></i>
-                                            </button>
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            메뉴3
-                                        </td>
-                                        <td class="px-4">
-                                            <div class="form-floating">
-<<<<<<< HEAD
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu3" name="ceoDetailMenu3" accept="image/jpeg" th:value="${session.ceo.ceoDetailMenu3}">
-=======
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu3"
-                                                       name="ceoDetailMenu3" accept="image/jpeg"
-                                                       th:value="${session.user.ceoDetailMenu3}">
->>>>>>> ezbranch
-                                                <label for="ceo-detail-menu3" class="ms-2">메뉴3 이름(가격) / ex)
-                                                    돈까스(7,000원)</label>
-                                            </div>
-                                        </td>
-                                        <td class="px-3">
-                                            <div>
-                                                <label for="ceo-menu-img3">메뉴3 이미지</label>
-<<<<<<< HEAD
-                                                <input type="file" class="form-control" id="ceo-menu-img3" name="files" th:value="${session.ceo.ceoMenuImg3}">
-=======
-                                                <input type="file" class="form-control" id="ceo-menu-img3" name="files"
-                                                       th:value="${session.user.ceoMenuImg3}">
->>>>>>> ezbranch
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr id="menu4" class="menuItems" hidden="hidden">
-                                        <td class="text-center align-middle">
-                                            <button type="button" class="btn btn-outline-danger" value="4"
-                                                    onclick="hiddenItem(this.value)">
-                                                <i class="bi bi-dash-circle-fill"></i>
-                                            </button>
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            메뉴4
-                                        </td>
-                                        <td class="px-4">
-                                            <div class="form-floating">
-<<<<<<< HEAD
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu4" name="ceoDetailMenu4" accept="image/jpeg" th:value="${session.ceo.ceoDetailMenu4}">
-=======
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu4"
-                                                       name="ceoDetailMenu4" accept="image/jpeg"
-                                                       th:value="${session.user.ceoDetailMenu4}">
->>>>>>> ezbranch
-                                                <label for="ceo-detail-menu4" class="ms-2">메뉴4 이름(가격) / ex)
-                                                    돈까스(7,000원)</label>
-                                            </div>
-                                        </td>
-                                        <td class="px-3">
-                                            <div>
-                                                <label for="ceo-menu-img4">메뉴4 이미지</label>
-<<<<<<< HEAD
-                                                <input type="file" class="form-control" id="ceo-menu-img4" name="files" th:value="${session.ceo.ceoMenuImg4}">
-=======
-                                                <input type="file" class="form-control" id="ceo-menu-img4" name="files"
-                                                       th:value="${session.user.ceoMenuImg4}">
->>>>>>> ezbranch
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr id="menu5" class="menuItems" hidden="hidden">
-                                        <td class="text-center align-middle">
-                                            <button type="button" class="btn btn-outline-danger" value="5"
-                                                    onclick="hiddenItem(this.value)">
-                                                <i class="bi bi-dash-circle-fill"></i>
-                                            </button>
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            메뉴5
-                                        </td>
-                                        <td class="px-4">
-                                            <div class="form-floating">
-<<<<<<< HEAD
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu5" name="ceoDetailMenu5" accept="image/jpeg" th:value="${session.ceo.ceoDetailMenu5}">
-=======
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu5"
-                                                       name="ceoDetailMenu5" accept="image/jpeg"
-                                                       th:value="${session.user.ceoDetailMenu5}">
->>>>>>> ezbranch
-                                                <label for="ceo-detail-menu5" class="ms-2">메뉴5 이름(가격) / ex)
-                                                    돈까스(7,000원)</label>
-                                            </div>
-                                        </td>
-                                        <td class="px-3">
-                                            <div>
-                                                <label for="ceo-menu-img5">메뉴5 이미지</label>
-<<<<<<< HEAD
-                                                <input type="file" class="form-control" id="ceo-menu-img5" name="files" th:value="${session.ceo.ceoMenuImg5}">
-=======
-                                                <input type="file" class="form-control" id="ceo-menu-img5" name="files"
-                                                       th:value="${session.user.ceoMenuImg5}">
->>>>>>> ezbranch
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr id="menu6" class="menuItems" hidden="hidden">
-                                        <td class="text-center align-middle">
-                                            <button type="button" class="btn btn-outline-danger" value="6"
-                                                    onclick="hiddenItem(this.value)">
-                                                <i class="bi bi-dash-circle-fill"></i>
-                                            </button>
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            메뉴6
-                                        </td>
-                                        <td class="px-4">
-                                            <div class="form-floating">
-<<<<<<< HEAD
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu6" name="ceoDetailMenu6" accept="image/jpeg" th:value="${session.ceo.ceoDetailMenu6}">
-=======
-                                                <input type="text" class="form-control menuValue" id="ceo-detail-menu6"
-                                                       name="ceoDetailMenu6" accept="image/jpeg"
-                                                       th:value="${session.user.ceoDetailMenu6}">
->>>>>>> ezbranch
-                                                <label for="ceo-detail-menu6" class="ms-2">메뉴6 이름(가격) / ex)
-                                                    돈까스(7,000원)</label>
-                                            </div>
-                                        </td>
-                                        <td class="px-3">
-                                            <div>
-                                                <label for="ceo-menu-img6">메뉴6 이미지</label>
-<<<<<<< HEAD
-                                                <input type="file" class="form-control" id="ceo-menu-img6" name="files" th:value="${session.ceo.ceoMenuImg6}">
-=======
-                                                <input type="file" class="form-control" id="ceo-menu-img6" name="files"
-                                                       th:value="${session.user.ceoMenuImg6}">
->>>>>>> ezbranch
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-
                             </div>
-                            <!-- 자동으로 입력되는 정보 -->
+                            <div class="row my-2">
+                                <span>운영 시간</span>
+                                <div class="form-floating col">
+                                    <input type="text" class="form-control" id="ceo-open-time" name="ceoOpenTime"
+                                           th:value="${session.user.ceoOpenTime}">
+                                    <label for="ceo-open-time" class="ms-2">오픈 시간</label>
+                                </div>
+                                <div class="form-floating col">
+                                    <input type="text" class="form-control" id="ceo-closing-time"
+                                           name="ceoClosingTime" th:value="${session.user.ceoClosingTime}">
+                                    <label for="ceo-closing-time" class="ms-2">마감 시간</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <span>카테고리 선택</span>
+                                <p th:text="${session.user.ceoCategory}" id="categoryText" hidden="hidden"></p>
+                                <div class="col form-floating">
+                                    <select class="form-select form-select" name="ceoCategory" id="ceo-category">
+                                        <!--                            가게 대분류 (한,중,양)-->
+                                        <option selected value="00"></option>
+                                        <option value="01" id="val1">한식</option>
+                                        <option value="02" id="val2">양식</option>
+                                        <option value="03" id="val3">중식</option>
+                                        <option value="04" id="val4">일식</option>
+                                        <option value="05" id="val5">주점</option>
+                                        <!-- 선택시 데이터 못 가져가도록 블락-->
+                                        <option value="06">직접입력</option>
+                                    </select>
+                                    <label for="ceo-category" class="ms-2">카테고리</label>
+                                </div>
+                                <!-- 셀렉트 박스 직접입력 선택시 활성화 -->
+                                <div class="col form-floating">
+                                    <input type="text" class="form-control" id="ceo-category-select"
+                                           name="ceoCategory" disabled>
+                                    <label for="ceo-category-select" class="ms-2">직접입력</label>
+                                </div>
+                            </div>
+
+                            <div class="row my-2">
+                                <span>가게 소개</span>
+                                <div class="form-floating col-8">
+                                    <input type="text" class="form-control" id="ceo-call-number"
+                                           name="ceoCallNumber" th:value="${session.user.ceoCallNumber}">
+                                    <label for="ceo-call-number" class="ms-2">가게 전화번호</label>
+                                </div>
+                                <div class="col">
+                                    <label for="ceo-thumbnail-img">가게 홍보 이미지</label>
+                                    <input type="file" class="form-control" id="ceo-thumbnail-img"
+                                           name="ceoThumbnailImgFile" accept="image/jpeg" required
+                                           th:value="${session.user.ceoThumbnailImg}">
+                                </div>
+                            </div>
+
+                            <div class="row my-2">
+                                <span>대표 메뉴</span>
+                                <div class="form-floating col-8">
+                                    <input type="text" class="form-control" id="ceo-main-menu" name="ceoMainMenu"
+                                           th:value="${session.user.ceoMainMenu}">
+                                    <label for="ceo-main-menu" class="ms-2">대표 메뉴 이름(가격) / ex) 돈까스(7,000원)</label>
+                                </div>
+                                <div class="col">
+                                    <label for="ceo-main-img">대표 메뉴 이미지</label>
+                                    <input type="file" class="form-control" id="ceo-main-img" name="ceoMainImgFile"
+                                           accept="image/jpeg" required th:value="${session.user.ceoMainImg}">
+                                </div>
+                            </div>
+
                             <div class="my-2">
-                                <span>가게 주소</span>
-<<<<<<< HEAD
-                                <input type="button" class="btn btn-secondary opacity-50 btn-sm" onClick="goPopup();" value="주소 검색"/>
-                                <div class="my-4">
-                                    <label for="roadFullAddr" class="from-label"><small>전체 주소</small></label>
-                                    <input type="text" id="roadFullAddr" name="ceoFullAddress" class="form-control" th:value="${session.ceo.ceoFullAddress}" readonly/>
-
-                                    <label for="roadFullAddr" class="from-label"><small>도시명(시, 군, 구)</small></label>
-                                    <input type="text" id="sggNm" name="ceoCityAddress" class="form-control" th:value="${session.ceo.ceoCityAddress}" readonly/>
-
-                                    <input type="text" id="entX" name="ceoLat" th:value="${session.ceo.ceoLat}"/><br>
-                                    <input type="text" id="entY" name="ceoLon" th:value="${session.ceo.ceoLon}"/>
-                                </div>
+                                <span>가게 소개글</span>
+                                <!-- 스마트 에디터 -->
+                                <textarea rows="10" cols="100" name="ceoContents" id="ceoContents" th:utext="${session.user.ceoContents}"></textarea>
                             </div>
-                            <button id="storeSubmit" type="submit" class="btn btn-primary">확인 버튼</button>
-                            <input type="hidden" name="ceoIdx" th:value="${session.ceo.ceoIdx}">
-=======
-                                <input type="button" class="btn btn-secondary opacity-50 btn-sm" onClick="goPopup();"
-                                       value="주소 검색"/>
-                                <div class="my-4">
-                                    <label for="roadFullAddr" class="from-label"><small>전체 주소</small></label>
-                                    <input type="text" id="roadFullAddr" name="ceoFullAddress" class="form-control"
-                                           th:value="${session.user.ceoFullAddress}" readonly/>
 
-                                    <label for="roadFullAddr" class="from-label"><small>도시명(시, 군, 구)</small></label>
-                                    <input type="text" id="sggNm" name="ceoCityAddress" class="form-control"
-                                           th:value="${session.user.ceoCityAddress}" readonly/>
-
-                                    <input type="text" id="entX" name="ceoLat" th:value="${session.user.ceoLat}"/><br>
-                                    <input type="text" id="entY" name="ceoLon" th:value="${session.user.ceoLon}"/>
-                                </div>
+                            <div class="my-2">메뉴 등록<small> (최대 6개)</small>
+                                <button type="button" class="btn btn-outline-success py-0 px-1 text-center"
+                                        id="add-item-btn">
+                                    <small><i class="bi bi-plus-circle-fill"></i></small>
+                                </button>
                             </div>
-                            <input type="hidden" name="ceoIdx" th:value="${session.user.ceoIdx}">
-                            <!--  REST 방식 사용 시 form 태그의 데이터 전송 방식을 변경하기 위한 태그  -->
-                            <input type="hidden" id="method2" name="_method">
-                            <button id="storeSubmit" type="button" class="btn btn-primary">확인 버튼</button>
->>>>>>> ezbranch
-                        </form>
-                    </div>
+                            <table class="table">
+                                <colgroup>
+                                    <col width="5%">
+                                    <col width="8%">
+                                    <col width="40%">
+                                    <col width="25%">
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr id="menu1" class="menuItems">
+                                    <td class="text-center align-middle">
+                                        <button type="button" class="btn btn-outline-danger" value="1"
+                                                onclick="hiddenItem(this.value)">
+                                            <i class="bi bi-dash-circle-fill"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center align-middle align-middle">
+                                        메뉴1
+                                    </td>
+                                    <td class="px-4">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control menuValue" id="ceo-detail-menu1"
+                                                   name="ceoDetailMenu1" accept="image/jpeg"
+                                                   th:value="${session.user.ceoDetailMenu1}">
+                                            <label for="ceo-detail-menu1" class="ms-2">메뉴1 이름(가격) / ex)
+                                                돈까스(7,000원)</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-3">
+                                        <div>
+                                            <label for="ceo-menu-img1">메뉴1 이미지</label>
+                                            <input type="file" class="form-control" id="ceo-menu-img1" name="files"
+                                                   th:value="${session.user.ceoMenuImg1}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="menu2" class="menuItems" hidden="hidden">
+                                    <td class="text-center align-middle">
+                                        <button type="button" class="btn btn-outline-danger" value="2"
+                                                onclick="hiddenItem(this.value)">
+                                            <i class="bi bi-dash-circle-fill"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        메뉴2
+                                    </td>
+                                    <td class="px-4">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control menuValue" id="ceo-detail-menu2"
+                                                   name="ceoDetailMenu2" accept="image/jpeg"
+                                                   th:value="${session.user.ceoDetailMenu2}">
+                                            <label for="ceo-detail-menu2" class="ms-2">메뉴2 이름(가격) / ex)
+                                                돈까스(7,000원)</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-3">
+                                        <div>
+                                            <label for="ceo-menu-img2">메뉴2 이미지</label>
+                                            <input type="file" class="form-control" id="ceo-menu-img2" name="files"
+                                                   th:value="${session.user.ceoMenuImg2}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="menu3" class="menuItems" hidden="hidden">
+                                    <td class="text-center align-middle">
+                                        <button type="button" class="btn btn-outline-danger" value="3"
+                                                onclick="hiddenItem(this.value)">
+                                            <i class="bi bi-dash-circle-fill"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        메뉴3
+                                    </td>
+                                    <td class="px-4">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control menuValue" id="ceo-detail-menu3"
+                                                   name="ceoDetailMenu3" accept="image/jpeg"
+                                                   th:value="${session.user.ceoDetailMenu3}">
+                                            <label for="ceo-detail-menu3" class="ms-2">메뉴3 이름(가격) / ex)
+                                                돈까스(7,000원)</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-3">
+                                        <div>
+                                            <label for="ceo-menu-img3">메뉴3 이미지</label>
+                                            <input type="file" class="form-control" id="ceo-menu-img3" name="files"
+                                                   th:value="${session.user.ceoMenuImg3}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="menu4" class="menuItems" hidden="hidden">
+                                    <td class="text-center align-middle">
+                                        <button type="button" class="btn btn-outline-danger" value="4"
+                                                onclick="hiddenItem(this.value)">
+                                            <i class="bi bi-dash-circle-fill"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        메뉴4
+                                    </td>
+                                    <td class="px-4">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control menuValue" id="ceo-detail-menu4"
+                                                   name="ceoDetailMenu4" accept="image/jpeg"
+                                                   th:value="${session.user.ceoDetailMenu4}">
+                                            <label for="ceo-detail-menu4" class="ms-2">메뉴4 이름(가격) / ex)
+                                                돈까스(7,000원)</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-3">
+                                        <div>
+                                            <label for="ceo-menu-img4">메뉴4 이미지</label>
+                                            <input type="file" class="form-control" id="ceo-menu-img4" name="files"
+                                                   th:value="${session.user.ceoMenuImg4}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="menu5" class="menuItems" hidden="hidden">
+                                    <td class="text-center align-middle">
+                                        <button type="button" class="btn btn-outline-danger" value="5"
+                                                onclick="hiddenItem(this.value)">
+                                            <i class="bi bi-dash-circle-fill"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        메뉴5
+                                    </td>
+                                    <td class="px-4">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control menuValue" id="ceo-detail-menu5"
+                                                   name="ceoDetailMenu5" accept="image/jpeg"
+                                                   th:value="${session.user.ceoDetailMenu5}">
+                                            <label for="ceo-detail-menu5" class="ms-2">메뉴5 이름(가격) / ex)
+                                                돈까스(7,000원)</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-3">
+                                        <div>
+                                            <label for="ceo-menu-img5">메뉴5 이미지</label>
+                                            <input type="file" class="form-control" id="ceo-menu-img5" name="files"
+                                                   th:value="${session.user.ceoMenuImg5}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="menu6" class="menuItems" hidden="hidden">
+                                    <td class="text-center align-middle">
+                                        <button type="button" class="btn btn-outline-danger" value="6"
+                                                onclick="hiddenItem(this.value)">
+                                            <i class="bi bi-dash-circle-fill"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        메뉴6
+                                    </td>
+                                    <td class="px-4">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control menuValue" id="ceo-detail-menu6"
+                                                   name="ceoDetailMenu6" accept="image/jpeg"
+                                                   th:value="${session.user.ceoDetailMenu6}">
+                                            <label for="ceo-detail-menu6" class="ms-2">메뉴6 이름(가격) / ex)
+                                                돈까스(7,000원)</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-3">
+                                        <div>
+                                            <label for="ceo-menu-img6">메뉴6 이미지</label>
+                                            <input type="file" class="form-control" id="ceo-menu-img6" name="files"
+                                                   th:value="${session.user.ceoMenuImg6}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!-- 자동으로 입력되는 정보 -->
+                        <div class="my-2">
+                            <span>가게 주소</span>
+                            <input type="button" class="btn btn-secondary opacity-50 btn-sm" onClick="goPopup();"
+                                   value="주소 검색"/>
+                            <div class="my-4">
+                                <label for="roadFullAddr" class="from-label"><small>전체 주소</small></label>
+                                <input type="text" id="roadFullAddr" name="ceoFullAddress" class="form-control"
+                                       th:value="${session.user.ceoFullAddress}" readonly/>
+
+                                <label for="roadFullAddr" class="from-label"><small>도시명(시, 군, 구)</small></label>
+                                <input type="text" id="sggNm" name="ceoCityAddress" class="form-control"
+                                       th:value="${session.user.ceoCityAddress}" readonly/>
+
+                                <input type="text" id="entX" name="ceoLat" th:value="${session.user.ceoLat}"/><br>
+                                <input type="text" id="entY" name="ceoLon" th:value="${session.user.ceoLon}"/>
+                            </div>
+                        </div>
+                        <input type="hidden" name="ceoIdx" th:value="${session.user.ceoIdx}">
+                        <!--  REST 방식 사용 시 form 태그의 데이터 전송 방식을 변경하기 위한 태그  -->
+                        <input type="hidden" id="method2" name="_method">
+                        <button id="storeSubmit" type="button" class="btn btn-primary">확인 버튼</button>
+                    </form>
                 </div>
-                <!--  스마트 에디터-->
-<<<<<<< HEAD
             </div>
-
-            <div th:if="${session.ceo.ceoGrade} != 2"><h1 class="text-center">관리자 인증이 필요한 맛집입니다.</h1></div>
-            <div class="list-group list-group-item-action list-group-horizontal" id="list-tab" role="tablist" th:if="${session.ceo.ceoGrade} == 2">
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-reservation-list" data-bs-toggle="list" href="#list-reservation" role="tab" aria-controls="list-reservation">예약 확인</a>
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-follow-list" data-bs-toggle="list" href="#list-follow" role="tab" aria-controls="list-follow">팔로워</a>   <!--  사장은 팔로워  -->
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-review-list" data-bs-toggle="list" href="#list-review" role="tab" aria-controls="list-review">고객 리뷰</a>
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-question-list" data-bs-toggle="list" href="#list-question" role="tab" aria-controls="list-question">문의 답변</a>
-            </div>
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="list-reservation" role="tabpanel" aria-labelledby="list-reservation-list">
-=======
-<!--            </div>-->
+            <!--  스마트 에디터-->
+            <!--            </div>-->
 
             <div th:if="${session.user.ceoGrade} != 2"><h1 class="text-center">관리자 인증이 필요한 맛집입니다.</h1></div>
             <div class="list-group list-group-item-action list-group-horizontal" id="list-tab" role="tablist"
@@ -1269,7 +922,6 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="list-reservation" role="tabpanel"
                      aria-labelledby="list-reservation-list">
->>>>>>> ezbranch
                     <table class="table table-hover">
                         <colgroup>
                             <col style="width: 40%"/>
@@ -1329,12 +981,8 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-    <div class="modal fade" id="modalOut" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-=======
     <div class="modal fade" id="modalOut" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
->>>>>>> ezbranch
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1352,44 +1000,32 @@
         </div>
     </div>
 
+    <!--세션 정보 hidden 인풋태그 구역-->
+    <div th:if="${not #strings.isEmpty(session.user)}">
+        <div th:if="${session.user == 'customer'}">
+            <input type="hidden" id="customer-idx" th:value="${session.customer.customerIdx}">
+            <input type="hidden" id="customer-nick" th:value="${session.customer.customerNick}">
+            <input type="hidden" id="customer-grade" th:value="${session.customer.customerGrade}">
+        </div>
+        <div th:unless="${session.user == 'customer'}">
+            <div th:if="${session.user == 'ceo'}">
+                <input type="hidden" id="ceo-idx" th:value="${session.ceo.ceoIdx}">
+                <input type="hidden" id="ceo-store" th:value="${session.ceo.ceoStore}">
+            </div>
+        </div>
+
+    </div>
 </main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script type="text/javascript">
-<<<<<<< HEAD
-    function doSE() {
-=======
->>>>>>> ezbranch
-        var oEditors = [];
-        nhn.husky.EZCreator.createInIFrame({
-            oAppRef: oEditors,
-            elPlaceHolder: "ceoContents",
-            sSkinURI: "/se2/SmartEditor2Skin.html",
-            fCreator: "createSEditor2"
-
-        });
-<<<<<<< HEAD
-    }
-
+    var oEditors = [];
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "ceoContents",
+        sSkinURI: "/se2/SmartEditor2Skin.html",
+        fCreator: "createSEditor2"
+    });
 </script>
-<!--세션 정보 hidden 인풋태그 구역-->
-<div th:if="${not #strings.isEmpty(session.user)}">
-  <div th:if="${session.user == 'customer'}">
-    <input type="hidden" id="customer-idx" th:value="${session.customer.customerIdx}">
-    <input type="hidden" id="customer-nick" th:value="${session.customer.customerNick}">
-    <input type="hidden" id="customer-grade" th:value="${session.customer.customerGrade}">
-  </div>
-  <div th:unless="${session.user == 'customer'}">
-    <div th:if="${session.user == 'ceo'}">
-      <input type="hidden" id="ceo-idx" th:value="${session.ceo.ceoIdx}">
-      <input type="hidden" id="ceo-store" th:value="${session.ceo.ceoStore}">
-    </div>
-  </div>
-
-</div>
-=======
-
-</script>
->>>>>>> ezbranch
 </body>
 </html>

@@ -101,6 +101,27 @@
         FROM reservation_tp
         WHERE ceo_idx = #{ceoIdx}
     </select>
+    <!--    사장 마이페이지 팔로워 리스트 가져오기-->
+    <select id="myPageCeoFollowerList" parameterType="String" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
+        SELECT
+        *
+        FROM
+        customer_tp
+        WHERE
+        customer_follow
+        LIKE
+        concat('%',#{ceoStore},'%')
+    </select>
+
+    <!--    사장 마이페이지 팔로워 삭제하기-->
+    <update id="myPageCeoFollowerDelete" parameterType="map">
+        UPDATE
+        customer_tp
+        SET
+        customer_follow = REPLACE(customer_follow, CONCAT(#{ceoStore}, ','), '')
+        WHERE
+        customer_idx = #{customerIdx}
+    </update>
     <select id="myPageCeoReview" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReviewDTO">
         SELECT ceo_idx, customer_nick, review_title, review_score, review_date
         FROM review_tp
@@ -155,30 +176,5 @@
         ceo_lon = #{ceoLon}
         WHERE ceo_idx = #{ceoIdx}
     </update>
-<<<<<<< HEAD
-    
-<!--    사장 마이페이지 팔로워 리스트 가져오기-->
-    <select id="myPageCeoFollowerList" parameterType="String" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
-        SELECT
-            *
-        FROM
-            customer_tp
-        WHERE
-            customer_follow
-        LIKE
-            concat('%',#{ceoStore},'%')
-    </select>
-    
-<!--    사장 마이페이지 팔로워 삭제하기-->
-    <update id="myPageCeoFollowerDelete" parameterType="map">
-        UPDATE
-            customer_tp
-        SET
-            customer_follow = REPLACE(customer_follow, CONCAT(#{ceoStore}, ','), '')
-        WHERE
-            customer_idx = #{customerIdx}
-    </update>
-=======
->>>>>>> ezbranch
 </mapper>
 

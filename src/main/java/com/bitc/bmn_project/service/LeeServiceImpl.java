@@ -98,6 +98,17 @@ public class LeeServiceImpl implements LeeService{
     }
 
     @Override
+    public List<CustomerDTO> myPageCeoFollowerList(String ceoStore) throws Exception {
+        List<CustomerDTO> followerList = leeMapper.myPageCeoFollowerList(ceoStore);
+        return followerList;
+    }
+
+    @Override
+    public void myPageCeoFollowerDelete(String ceoStore, int customerIdx) throws Exception {
+        leeMapper.myPageCeoFollowerDelete(ceoStore, customerIdx);
+    }
+
+    @Override
     public List<ReviewDTO> myPageCeoReview(int ceoIdx) throws Exception {
         return leeMapper.myPageCeoReview(ceoIdx);
     }
@@ -126,18 +137,4 @@ public class LeeServiceImpl implements LeeService{
 
         return leeMapper.ceoInfo(ceo.getCeoIdx());
     }
-<<<<<<< HEAD
-
-    @Override
-    public List<CustomerDTO> myPageCeoFollowerList(String ceoStore) throws Exception {
-        List<CustomerDTO> followerList = leeMapper.myPageCeoFollowerList(ceoStore);
-        return followerList;
-    }
-
-    @Override
-    public void myPageCeoFollowerDelete(String ceoStore, int customerIdx) throws Exception {
-        leeMapper.myPageCeoFollowerDelete(ceoStore, customerIdx);
-    }
-=======
->>>>>>> ezbranch
 }
