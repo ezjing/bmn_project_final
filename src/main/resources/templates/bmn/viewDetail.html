@@ -603,8 +603,10 @@
                     <span th:text="|리뷰 : ${reviewCnt}개|" class="rounded-5 border border-primary p-3 ms-3"></span>
                     <div class="row">
                         <div class="card mt-5" style="width: 40rem;">
-                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|" class="card-img-top" alt="등록된 이미지가 없습니다.">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|" class="card-img-top"
+                                 alt="등록된 이미지가 없습니다." style="width: 400px;" height="300px;">
                         </div>
+                      
                     </div>
                 </div>
                 <div class="border rounded-2 my-3 p-2">
@@ -612,9 +614,9 @@
                     <p th:text="|시군구 : ${ceoDto.ceoCityAddress}|"></p>
                     <p th:text="|주소 : ${ceoDto.ceoFullAddress}|">주소</p>
                     <input type="hidden" id="ceo-full-address" th:value="${ceoDto.ceoFullAddress}">
-                    <button class="btn">대표메뉴</button>
+                    <p class="btn">대표메뉴</p>
                     <div class="card">
-                        <img th:src="|/bmn/getImage?path=${ceoDto.ceoMainImg}|" alt="등록된 이미지가 없습니다.">
+                        <img th:src="|/bmn/getImage?path=${ceoDto.ceoMainImg}|" alt="등록된 이미지가 없습니다." style="width:300px; height: 200px">
                         <div class="card-body">
                             <p th:text="${ceoDto.ceoMainMenu}"></p>
                         </div>
@@ -690,7 +692,7 @@
                         <div class="row">
                             <div class="col-sm d-flex align-items-center">
                                 <p style="margin-bottom: 0px">식당 평점 : <span th:text="${ceoDto.ceoScore}"
-                                                                            class="fw-semibold"></span></p>
+                                                                            class="fw-semibold bg-info rounded p-2"></span></p>
                             </div>
                             <div class="col-sm d-flex justify-content-end">
                                 <button type="button" class="btn btn-outline-info m-3" id="customer-grade-check">#리뷰작성
@@ -731,49 +733,49 @@
                             </div>
                             <div class="d-flex ms-3">
                                 <div th:if="${item.reviewTag1} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">맛</button>
+                                    <button class="btn btn-outline-primary">맛</button>
                                 </div>
                                 <div th:unless="${item.reviewTag1} == Y">
                                 </div>
 
                                 <div th:if="${item.reviewTag2} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">만족도</button>
+                                    <button class="btn btn-outline-primary">만족도</button>
                                 </div>
                                 <div th:unless="${item.reviewTag2} == Y">
                                 </div>
 
                                 <div th:if="${item.reviewTag3} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">서비스</button>
+                                    <button class="btn btn-outline-primary">서비스</button>
                                 </div>
                                 <div th:unless="${item.reviewTag3} == Y">
                                 </div>
 
                                 <div th:if="${item.reviewTag4} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">음식량</button>
+                                    <button class="btn btn-outline-primary">음식량</button>
                                 </div>
                                 <div th:unless="${item.reviewTag4} == Y">
                                 </div>
 
                                 <div th:if="${item.reviewTag5} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">대기시간</button>
+                                    <button class="btn btn-outline-primary">대기시간</button>
                                 </div>
                                 <div th:unless="${item.reviewTag5} == Y">
                                 </div>
 
                                 <div th:if="${item.reviewTag6} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">청결도</button>
+                                    <button class="btn btn-outline-primary">청결도</button>
                                 </div>
                                 <div th:unless="${item.reviewTag6} == Y">
                                 </div>
 
                                 <div th:if="${item.reviewTag7} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">분위기</button>
+                                    <button class="btn btn-outline-primary">분위기</button>
                                 </div>
                                 <div th:unless="${item.reviewTag7} == Y">
                                 </div>
 
                                 <div th:if="${item.reviewTag8} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">가격</button>
+                                    <button class="btn btn-outline-primary">가격</button>
                                 </div>
                                 <div th:unless="${item.reviewTag8} == Y">
                                 </div>

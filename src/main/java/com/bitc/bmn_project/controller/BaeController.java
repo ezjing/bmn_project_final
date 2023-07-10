@@ -22,53 +22,68 @@ public class BaeController {
 
 
   @RequestMapping(value = "/bmn/viewDetail/{ceoIdx}", method = RequestMethod.GET)
-  public ModelAndView viewDetail(@PathVariable("ceoIdx") int ceoIdx, HttpServletRequest req, @RequestParam(required = false, defaultValue = "1") int pageNum) throws Exception {
-    ModelAndView mv = new ModelAndView("bmn/viewDetail");
+  public ModelAndView viewDetail(@PathVariable("ceoIdx") int ceoIdx, HttpServletRequest req, @RequestParam(required = false, defaultValue = "1") int pageNum, HttpServletResponse resp) throws Exception {
+    ModelAndView mv = null;
+
+    CeoDTO ceoDto;
 
     HttpSession session = req.getSession();
+    String user = (String) session.getAttribute("user");
+    if (user == "admin") {
+      // 가게정보 조회(관리자)
+      ceoDto = baeService.selectCeoDetail(ceoIdx);
+    }
+    // 가게정보 조회(비회원, 손님, 사장)
+    else {
+      ceoDto = baeService.selectCeoDetail2(ceoIdx);
+    }
 
-    // 가게정보 조회
-    CeoDTO ceoDto = baeService.selectCeoDetail(ceoIdx);
+    if (ceoDto != null) {
+      mv = new ModelAndView("bmn/viewDetail");
+      // 팔로워수 조회
+      String ceoStore = ceoDto.getCeoStore();
+      int followCnt = baeService.getFollows(ceoStore);
 
-    // 팔로워수 조회
-    String ceoStore = ceoDto.getCeoStore();
-    int followCnt = baeService.getFollows(ceoStore);
+      // 팔로워 수 ceoTp 연동
+      baeService.updateCeoTpFollows(followCnt, ceoIdx);
 
-    // 팔로워 수 ceoTp 연동
-    baeService.updateCeoTpFollows(followCnt, ceoIdx);
+      // 총 리뷰수 조회
+      int reviewCnt = baeService.getReviewCnt(ceoIdx);
 
-    // 총 리뷰수 조회
-    int reviewCnt = baeService.getReviewCnt(ceoIdx);
+      // 리뷰정보 조회
+      List<ReviewJoinDTO> reviewList = baeService.selectReviewList(ceoIdx);
 
-    // 리뷰정보 조회
-    List<ReviewJoinDTO> reviewList = baeService.selectReviewList(ceoIdx);
-
-    // 리뷰 태그 조회
+      // 리뷰 태그 조회
 //    List<ReviewJoinDTO> reviewJoinList = baeService.selectReviewTagList(ceoIdx);
 
-    // 리뷰 댓글 리스트 조회
-    List<CommentDTO> commentList = baeService.selectCommentList(ceoIdx);
+      // 리뷰 댓글 리스트 조회
+      List<CommentDTO> commentList = baeService.selectCommentList(ceoIdx);
 
-    // 사장님 댓글 리스트 조회
+      // 사장님 댓글 리스트 조회
 //    List<CommentDTO> commentListCeo = baeService.selectCommentListCeo(ceoIdx);
 
 
-    // 문의 게시판(페이징 처리)~
-    PageInfo<QuestionDTO> questionList = new PageInfo<>(baeService.selectQuestionList(ceoIdx, pageNum), 5);
+      // 문의 게시판(페이징 처리)~
+      PageInfo<QuestionDTO> questionList = new PageInfo<>(baeService.selectQuestionList(ceoIdx, pageNum), 5);
+      mv.addObject("ceoDto", ceoDto);
+      mv.addObject("followCnt", followCnt);
+      mv.addObject("reviewCnt", reviewCnt);
+      mv.addObject("reviewList", reviewList);
+      mv.addObject("commentList", commentList);
+      mv.addObject("questionList", questionList);
+    }
+    else {
+      resp.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = resp.getWriter();
 
-    // 문의 게시판(페이징 전)
-//    List<QuestionDTO> questionList = baeService.selectQuestionList(ceoIdx, pageNum);
+      String script = "<script>";
+      script += "alert('식당 정보를 조회할 수 없습니다.');";
+      script += "history.back();";
+      script += "</script>";
 
-//    session.setAttribute("customerIdx", 3);
-//    session.setAttribute("customerNick", "아이유");
-
-    mv.addObject("ceoDto", ceoDto);
-    mv.addObject("followCnt", followCnt);
-    mv.addObject("reviewCnt", reviewCnt);
-    mv.addObject("reviewList", reviewList);
-    mv.addObject("commentList", commentList);
-//    mv.addObject("commentListCeo", commentListCeo);
-    mv.addObject("questionList", questionList);
+      out.println(script);
+      out.close();
+    }
 
     return mv;
   }

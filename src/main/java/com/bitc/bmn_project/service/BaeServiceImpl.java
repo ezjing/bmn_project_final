@@ -112,6 +112,12 @@ public class BaeServiceImpl implements BaeService {
     baeMapper.deleteFollowNick(ceoIdx, customerNick);
   }
 
+  @Override
+  public CeoDTO selectCeoDetail2(int ceoIdx) throws Exception {
+    CeoDTO ceoDTO = baeMapper.selectCeoDetail2(ceoIdx);
+    return ceoDTO;
+  }
+
 //  @Override
 //  public List<CommentDTO> selectCommentListCeo(int ceoIdx) throws Exception {
 //    List<CommentDTO> commentListCeo = baeMapper.selectCommentListCeo(ceoIdx);
