@@ -115,7 +115,7 @@
         DELETE FROM ceo_tp
         WHERE ceo_idx = #{ceoIdx}
     </delete>
-    <update id="myPageCeoChange" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+    <update id="myPageCeoUpdate" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
         UPDATE ceo_tp
         SET ceo_pw = #{ceoPw}, ceo_name = #{ceoName}
         WHERE ceo_idx = #{ceoIdx}
@@ -125,5 +125,35 @@
         FROM ceo_tp
         WHERE ceo_idx = #{ceoIdx}
     </select>
+    <update id="myPageCeoStoreUpdate" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
+        UPDATE ceo_tp
+        SET
+        ceo_store = #{ceoStore},
+        ceo_main_menu = #{ceoMainMenu},
+        ceo_detail_menu1 = #{ceoDetailMenu1},
+        ceo_menu_img1 = #{ceoMenuImg1},
+        ceo_detail_menu2 = #{ceoDetailMenu2},
+        ceo_menu_img2 = #{ceoMenuImg2},
+        ceo_detail_menu3 = #{ceoDetailMenu3},
+        ceo_menu_img3 = #{ceoMenuImg3},
+        ceo_detail_menu4 = #{ceoDetailMenu4},
+        ceo_menu_img4 = #{ceoMenuImg4},
+        ceo_detail_menu5 = #{ceoDetailMenu5},
+        ceo_menu_img5 = #{ceoMenuImg5},
+        ceo_detail_menu6 = #{ceoDetailMenu6},
+        ceo_menu_img6 = #{ceoMenuImg6},
+        ceo_open_time = #{ceoOpenTime},
+        ceo_closing_time = #{ceoClosingTime},
+        ceo_city_address = #{ceoCityAddress},
+        ceo_full_address = #{ceoFullAddress},
+        ceo_call_number = #{ceoCallNumber},
+        ceo_contents = #{ceoContents},
+        ceo_category = #{ceoCategory},
+        ceo_thumbnail_img = #{ceoThumbnailImg},
+        ceo_main_img = #{ceoMainImg},
+        ceo_lat = #{ceoLat},
+        ceo_lon = #{ceoLon}
+        WHERE ceo_idx = #{ceoIdx}
+    </update>
 </mapper>
 

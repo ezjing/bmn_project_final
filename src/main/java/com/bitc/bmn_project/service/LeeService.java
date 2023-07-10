@@ -41,5 +41,7 @@ public interface LeeService {
 
     void myPageCeoOut(int ceoIdx) throws Exception;
 
-    CeoDTO myPageCeoChange(CeoDTO ceo) throws Exception;
+    CeoDTO myPageCeoUpdate(CeoDTO ceo) throws Exception;
+
+    CeoDTO myPageCeoStoreUpdate(CeoDTO ceo) throws Exception;
 }

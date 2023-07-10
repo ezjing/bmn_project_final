@@ -114,8 +114,15 @@ public class LeeServiceImpl implements LeeService{
     }
 
     @Override
-    public CeoDTO myPageCeoChange(CeoDTO ceo) throws Exception {
-        leeMapper.myPageCeoChange(ceo);
+    public CeoDTO myPageCeoUpdate(CeoDTO ceo) throws Exception {
+        leeMapper.myPageCeoUpdate(ceo);
+
+        return leeMapper.ceoInfo(ceo.getCeoIdx());
+    }
+
+    @Override
+    public CeoDTO myPageCeoStoreUpdate(CeoDTO ceo) throws Exception {
+        leeMapper.myPageCeoStoreUpdate(ceo);
 
         return leeMapper.ceoInfo(ceo.getCeoIdx());
     }

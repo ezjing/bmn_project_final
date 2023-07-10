@@ -47,7 +47,9 @@ public interface LeeMapper {
 
     void myPageCeoOut(int ceoIdx) throws Exception;
 
-    void myPageCeoChange(CeoDTO ceo) throws Exception;
+    void myPageCeoUpdate(CeoDTO ceo) throws Exception;
 
     CeoDTO ceoInfo(int ceoIdx) throws Exception;
+
+    void myPageCeoStoreUpdate(CeoDTO ceo) throws Exception;
 }

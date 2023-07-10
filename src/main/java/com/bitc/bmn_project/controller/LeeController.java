@@ -266,7 +266,7 @@ public class LeeController {
         return question;
     }
 
-    @RequestMapping(value = "/bmn/myPageCeo", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/bmn/myPageCeo/ceo", method = RequestMethod.DELETE)
     public String myPageCeoOut(int ceoIdx, HttpServletRequest req) throws Exception {
         leeService.myPageCeoOut(ceoIdx);
         // 세션값 다 지우기
@@ -275,13 +275,100 @@ public class LeeController {
         return "redirect:/bmn/bmnMain";
     }
 
-    @RequestMapping(value = "/bmn/myPageCeo", method = RequestMethod.PUT)
-    public String myPageCeoChange(CeoDTO ceo, HttpServletRequest req) throws Exception {
-        ceo = leeService.myPageCeoChange(ceo);
+    @RequestMapping(value = "/bmn/myPageCeo/ceo", method = RequestMethod.PUT)
+    public String myPageCeoUpdate(CeoDTO ceo, HttpServletRequest req) throws Exception {
+
+        ceo = leeService.myPageCeoUpdate(ceo);
         // 변경된 세션값 입력
         HttpSession session = req.getSession();
         session.setAttribute("user", ceo);
 
-        return "myPage/myPageCeo";
+        return "redirect:/bmn/myPageCeo";
     }
+
+    @RequestMapping(value = "/bmn/myPageCeo/popup", method = RequestMethod.GET)
+    public String doMyPagePopup() throws Exception {
+
+        return "myPage/updateAddrPopup";
+    }
+
+    @RequestMapping(value = "/bmn/myPageCeo", method = RequestMethod.POST)
+    public ModelAndView doMyPagePopupCallback(
+            @RequestParam("inputYn") String inputYn,
+            @RequestParam("roadFullAddr") String roadFullAddr,
+            @RequestParam("roadAddrPart1") String roadAddrPart1,
+            @RequestParam("roadAddrPart2") String roadAddrPart2,
+            @RequestParam("engAddr") String engAddr,
+            @RequestParam("jibunAddr") String jibunAddr,
+            @RequestParam("zipNo") String zipNo,
+            @RequestParam("addrDetail") String addrDetail,
+            @RequestParam("admCd") String admCd,
+            @RequestParam("rnMgtSn") String rnMgtSn,
+            @RequestParam("bdMgtSn") String bdMgtSn,
+            @RequestParam("detBdNmList") String detBdNmList,
+            @RequestParam("bdNm") String bdNm,
+            @RequestParam("bdKdcd") String bdKdcd,
+            @RequestParam("siNm") String siNm,
+            @RequestParam("sggNm") String sggNm,
+            @RequestParam("emdNm") String emdNm,
+            @RequestParam("liNm") String liNm,
+            @RequestParam("rn") String rn,
+            @RequestParam("udrtYn") String udrtYn,
+            @RequestParam("buldMnnm") String buldMnnm,
+            @RequestParam("buldSlno") String buldSlno,
+            @RequestParam("mtYn") String mtYn,
+            @RequestParam("lnbrMnnm") String lnbrMnnm,
+            @RequestParam("lnbrSlno") String lnbrSlno,
+            @RequestParam("emdNo") String emdNo,
+            @RequestParam("entX") String entX,
+            @RequestParam("entY") String entY,
+            HttpServletRequest req
+    ) throws Exception {
+        ModelAndView mv = new ModelAndView("myPage/updateAddrPopup");
+
+        mv.addObject("inputYn", inputYn);
+        mv.addObject("roadFullAddr", roadFullAddr);
+        mv.addObject("roadAddrPart1", roadAddrPart1);
+        mv.addObject("roadAddrPart2", roadAddrPart2);
+        mv.addObject("engAddr", engAddr);
+        mv.addObject("jibunAddr", jibunAddr);
+        mv.addObject("zipNo", zipNo);
+        mv.addObject("addrDetail", addrDetail);
+        mv.addObject("admCd", admCd);
+        mv.addObject("rnMgtSn", rnMgtSn);
+        mv.addObject("bdMgtSn", bdMgtSn);
+        mv.addObject("detBdNmList", detBdNmList);
+        mv.addObject("bdNm", bdNm);
+        mv.addObject("bdKdcd", bdKdcd);
+        mv.addObject("siNm", siNm);
+        mv.addObject("sggNm", sggNm);
+        mv.addObject("emdNm", emdNm);
+        mv.addObject("liNm", liNm);
+        mv.addObject("rn", rn);
+        mv.addObject("udrtYn", udrtYn);
+        mv.addObject("buldMnnm", buldMnnm);
+        mv.addObject("buldSlno", buldSlno);
+        mv.addObject("mtYn", mtYn);
+        mv.addObject("lnbrMnnm", lnbrMnnm);
+        mv.addObject("lnbrSlno", lnbrSlno);
+        mv.addObject("emdNo", emdNo);
+        mv.addObject("entX", entX);
+        mv.addObject("entY", entY);
+
+        return mv;
+    }
+
+    @RequestMapping(value = "/bmn/myPageCeo", method = RequestMethod.PUT)
+    public String myPageCeoStoreUpdate(CeoDTO ceo, HttpServletRequest req) throws Exception {
+        System.out.println("컨트롤러 도착");
+
+        ceo = leeService.myPageCeoStoreUpdate(ceo);
+
+        HttpSession session = req.getSession();
+        session.setAttribute("user", ceo);
+
+        return "redirect:/bmn/myPageCeo";
+    }
+
+
 }
