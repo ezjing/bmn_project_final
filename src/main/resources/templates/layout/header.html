@@ -22,12 +22,14 @@
     <div class="row bg-light ">
         <div class="col-sm-2">
             <nav class="navbar">
-                <span class="navbar-brand fs-3" id="headerFont">밥뭇나</span>
+                <a href="/bmn/bmnMain" class="text-decoration-none mx-auto mt-3">
+                    <span class="navbar-brand fs-3" id="headerFont">밥뭇나</span>
+                </a>
             </nav>
         </div>
         <div class="col-sm-6 input-group pt-3 pb-3 w-50">
             <input th:value="${keyWorld}" id="keyword-val" name="keyword-val" type="search" class="form-control me-3" placeholder="식당,메뉴,주소명을 입력해주세요">
-            <a class="btn btn-primary" onclick="foodSearch()">검색</a>
+            <a class="btn btn-primary mx-auto" onclick="foodSearch()">검색</a>
         </div>
 
         <div class="col-sm-4 btn-group justify-content-center">
@@ -43,7 +45,10 @@
                         data-bs-target="#modal-login">로그인
                 </button>
             </div>
-            <div class="fs-3"><button type="submit" class="btn btn-primary">회원가입</button></div>
+            <div class="fs-3 d-grid">
+                <a href="/bmn/signUp/customer" class="btn btn-primary flex-fill mx-1 mt-3">손님 회원가입</a>
+                <a href="/bmn/signUp/ceo" class="btn btn-primary flex-fill mx-1 mt-3">사장님 회원가입</a>
+            </div>
             <div class="fs-3" th:if="${not #strings.isEmpty(session.user)}">
                 <a href="/bmn/myPageCus" class="btn btn-primary">마이 페이지</a>
                 <!--  사장님 계정 로그인 시 가게등록하기 버튼 추가, 무조건 페이지 연동까지 구현하기  -->

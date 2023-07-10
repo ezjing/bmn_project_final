@@ -3,16 +3,18 @@ package com.bitc.bmn_project.controller;
 import com.bitc.bmn_project.DTO.CeoDTO;
 import com.bitc.bmn_project.DTO.CustomerDTO;
 import com.bitc.bmn_project.DTO.ReviewCntDto;
+import com.bitc.bmn_project.DTO.ceoCustomDTO;
 import com.bitc.bmn_project.service.MainService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.ibatis.annotations.One;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -56,19 +58,19 @@ public class ParkController {
 
     @RequestMapping(value="/bmn/bmnSearchList", method = RequestMethod.GET)
     public ModelAndView searchListGet(
-            @Param("keyWorld") String keyWorld
+            @RequestParam(value = "keyWorld", required = false) String keyWorld
         ) throws Exception{
         ModelAndView mv = new ModelAndView("main/bmnSearchList");
         // keyWorld 값 가져 오는 지 확인
         System.out.println("key값::"+keyWorld);
+//        System.out.println("wo"+customAge.get(0).toString());
         // 평점 순위 검색 리스트
         List<CeoDTO> storeList = mainService.storeLists(keyWorld);
         // 리뷰 순 검색 리스트
         List<ReviewCntDto> reviewCntList = mainService.reviewCntLists(keyWorld);
         // 팔로우 순위 검색 리스트
         List<CeoDTO> followList = mainService.followLists(keyWorld);
-        // 이용자 층 검색 시
-        //List<ceoCustomDTO> ageFilterList = mainService.ageFilterLists(keyWorld, customAge);
+
         // 성별만 검색 시
 
         // 카테고리만 검색 시
@@ -86,4 +88,49 @@ public class ParkController {
     public void searchListPost() throws Exception{
 
     }
+
+    // 연령층 필터
+    @ResponseBody
+    @RequestMapping(value="/bmn/bmnFilterList", method = RequestMethod.POST)
+    public Object filterListPost(
+            @RequestParam(value = "keyWorld", required = false) String keyWorld,
+            @RequestParam(value = "customAge[]", required = false) List<String> customAge
+    ) throws Exception{
+        ModelAndView mv = new ModelAndView("main/bmnSearchList");
+        System.out.println("keyWorld:::"+keyWorld);
+
+        // 이용자 층 검색 시
+        List<ceoCustomDTO> ageFilterList = mainService.ageFilterLists(keyWorld, customAge);
+
+        return ageFilterList;
+    }
+
+    // 성별 필터 기능
+    @ResponseBody
+    @RequestMapping(value="/bmn/bmnFilterGender", method = RequestMethod.POST)
+    public Object filterGenderPost(
+            @RequestParam(value = "keyWorld", required = false) String keyWorld,
+            @RequestParam(value = "genderKey", required = false) String genderKey
+    ) throws Exception{
+        ModelAndView mv = new ModelAndView("main/bmnSearchList");
+        System.out.println("genderKey::"+genderKey);
+
+        List<ceoCustomDTO> genderFilterList = mainService.genderFilterLists(keyWorld,genderKey);
+        return genderFilterList;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/bmn/bmnFilterFood", method = RequestMethod.POST)
+    public Object filterFoodPost(
+            @RequestParam(value="keyWorld", required = false) String keyWorld,
+            @RequestParam(value ="categoryFoods", required = false) String categoryFoods
+    ) throws Exception{
+        ModelAndView mv = new ModelAndView("main/bmnSearchList");
+
+        List<ceoCustomDTO> categoryFood = mainService.categoryFoods(keyWorld,categoryFoods);
+
+
+        return categoryFood;
+    }
+
 }

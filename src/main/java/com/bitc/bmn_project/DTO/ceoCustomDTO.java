@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ceoCustomDTO {
+    private int ceoIdx;
     private String customerAge;
     private String customerFollow;
     private String ceoStore;
@@ -11,4 +12,5 @@ public class ceoCustomDTO {
     private String ceoMainMenu;
     private String ceoScore;
     private String ceoFollowCnt;
+    private String food;
 }

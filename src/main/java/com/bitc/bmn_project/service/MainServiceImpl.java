@@ -7,6 +7,7 @@ import com.bitc.bmn_project.mapper.MainMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,22 +61,34 @@ public class MainServiceImpl implements MainService{
 
     @Override
     public List<ceoCustomDTO> ageFilterLists(String keyWorld, List<String> customAge) throws Exception {
-        try{
-            if(customAge.size() == 0){
-                System.out.println("값이 0입니다.");
-                return null;
-            }
-            else if(customAge.size() > 0){
-                System.out.println("값이 1개 이상 있습니다.");
-                return null;
-            }
-        }
-        catch (Exception e){
-            System.out.println("에러가 발생했습니다."+e.getMessage());
-            e.printStackTrace();
-        }
+
+            List<String> arr1 = new ArrayList<String>();
 
 
-        return null;
+            for(int i=0; i<customAge.size();i++){
+                arr1.add(customAge.get(i).toString());
+            }
+
+            System.out.println(arr1.get(0).toString());
+            String CustomAge1 = arr1.get(0).toString();
+            String CustomAge2 = arr1.get(0).toString();
+            String CustomAge3 = arr1.get(0).toString();
+            String CustomAge4 = arr1.get(0).toString();
+            String CustomAge5 = arr1.get(0).toString();
+            String CustomAge6 = arr1.get(0).toString();
+
+            System.out.println("null??:::"+CustomAge1);
+            return mainMapper.ageFilterLists(keyWorld,CustomAge1,CustomAge2,CustomAge3,
+                    CustomAge4,CustomAge5,CustomAge6);
+    }
+
+    @Override
+    public List<ceoCustomDTO> genderFilterLists(String keyWorld, String genderKey) throws Exception {
+        return mainMapper.genderFilterLists(keyWorld,genderKey);
+    }
+
+    @Override
+    public List<ceoCustomDTO> categoryFoods(String keyWorld, String categoryFoods) throws Exception {
+        return mainMapper.categoryFoods(keyWorld,categoryFoods);
     }
 }

@@ -89,6 +89,7 @@
                     $.ajax({
                         type : "GET",
                         url: "/bmn/bmnSearchList",
+                        data: {keyWorld: keyWorld},
                         success:function(data){
                             location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
                         },
@@ -98,6 +99,9 @@
                     });
                 }
             });
+
+
+
             const session = sessionStorage.getItem('user');
             console.log(session);
             let msg = document.getElementById("sessionMsg");
