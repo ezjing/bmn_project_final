@@ -6,10 +6,10 @@ import com.bitc.bmn_project.DTO.ReviewDTO;
 import com.bitc.bmn_project.DTO.ReviewTagDTO;
 import com.bitc.bmn_project.common.FileUtils;
 import com.bitc.bmn_project.service.SimService;
+import com.github.pagehelper.PageInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,12 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/bmn")
 public class SimController {
 
     @Autowired
@@ -44,15 +41,7 @@ public class SimController {
     }
 
     @RequestMapping(value = "/bmn/login", method = RequestMethod.GET)
-    public String doLoginView(HttpServletResponse resp) throws Exception {  // 로그인 완료 시 이전 페이지로 이동하게끔 구현 필요(returnUrl를 어떻게 쓰는지 모르겠음)
-//        resp.setContentType("text/html;characters=UTF-8z");
-//        PrintWriter writer = resp.getWriter();
-//
-//        String script = "<script>";
-//        script += "history.back();";
-//        script += "</script>";
-//
-//        writer.print(script);
+    public String doLoginView() throws Exception {  // 로그인 완료 시 이전 페이지로 이동하게끔 구현 필요(returnUrl를 어떻게 쓰는지 모르겠음)
 
         return "redirect:/bmn/bmnMain";
     }
@@ -138,7 +127,6 @@ public class SimController {
     @RequestMapping("/bmn/logOut")
     public String doLogOut(HttpServletRequest req) throws Exception {
 
-
         HttpSession session = req.getSession();
         session.invalidate();
 
@@ -150,7 +138,7 @@ public class SimController {
     public String doSignUpCustomerView() throws Exception {
 
 
-        return "signUpCustomer";
+        return "signUp/signUpCustomer";
     }
 
     @RequestMapping(value = "/bmn/signUp/customer/signUp", method = RequestMethod.POST)
@@ -166,7 +154,7 @@ public class SimController {
     @RequestMapping("/bmn/signUp/ceo")
     public String doSignUpCeoView() throws Exception {
 
-        return "signUpCeo";
+        return "signUp/signUpCeo";
     }
 
     @RequestMapping(value = "/bmn/signUp/ceo/signUp", method = RequestMethod.POST)
@@ -197,13 +185,13 @@ public class SimController {
     @RequestMapping("/bmn/ceoStore")
     public String doCeoStore() throws Exception {
 
-        return "ceoStore";
+        return "store/ceoStore";
     }
 
 
     @RequestMapping(value = "/bmn/ceoStore/popup", method = RequestMethod.GET)
     public String doPopup() throws Exception {
-        return "addrPopup";
+        return "signUp/addrPopup";
     }
 
     @RequestMapping(value = "/bmn/ceoStore", method = RequestMethod.POST)
@@ -237,7 +225,7 @@ public class SimController {
             @RequestParam("entX") String entX,
             @RequestParam("entY") String entY
     ) throws Exception {
-        ModelAndView mv = new ModelAndView("addrPopup");
+        ModelAndView mv = new ModelAndView("signUp/addrPopup");
 
         mv.addObject("inputYn", inputYn);
         mv.addObject("roadFullAddr", roadFullAddr);
@@ -347,10 +335,10 @@ public class SimController {
     }
 
     // 관리자 페이지 - 가게 승인 (등록 / 변경?) 리스트 출력
-    @RequestMapping("/bmn/approve")
-    public ModelAndView doStoreApproveView() throws Exception {
-        ModelAndView mv = new ModelAndView("storeAprrove");
+    @RequestMapping("/bmn/admin/ceoManagement")
+    public ModelAndView doCeoManagement() throws Exception {
 
+        ModelAndView mv = new ModelAndView("admin/ceoManagement");
         // 리스트 가져오는 서비스
         List<CeoDTO> storeList = simService.getStoreList();
 
@@ -360,18 +348,58 @@ public class SimController {
         return mv;
     }
 
-    @RequestMapping("/bmn/approve/process")
-    public String doStoreApproveProcess(
+    @RequestMapping("/bmn/admin/ceoManagement/Approve")
+    public String doCeoManagementApprove(
             @RequestParam("targetIdx") int targetIdx,
             @RequestParam("mode") String mode
     ) throws Exception {
 
-        System.out.println(mode);
-        System.out.println(targetIdx);
 
         simService.storeApprove(targetIdx, mode);
 
-        return "redirect:/bmn/approve";
+        return "redirect:/bmn/admin/ceoManagement";
+    }
+
+    @RequestMapping(value = "/bmn/admin/customerManagement", method = RequestMethod.GET)
+    public ModelAndView doCustomerManagement(
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum
+    ) throws Exception {
+
+        System.out.println("컨트롤러 도착");
+
+        ModelAndView mv = new ModelAndView("admin/customerManagement");
+        PageInfo<CustomerDTO> customerList = new PageInfo<>(simService.getCustomerList(pageNum),3);
+        mv.addObject("customerList", customerList);
+
+        return mv;
+    }
+
+    @RequestMapping(value = "/bmn/admin/customerManagement", method = RequestMethod.POST)
+    public String doCustomerManagementProcess(
+            @RequestParam("targetIdx") int targetIdx,
+            @RequestParam("grade") int grade,
+            HttpServletRequest req
+    ) throws Exception {
+
+        String returnUrl = req.getRequestURI();
+
+        System.out.println(targetIdx);
+        System.out.println(grade);
+
+        simService.changeCustomerGrade(targetIdx, grade);
+
+
+        return "redirect:" + returnUrl;
+    }
+
+    @RequestMapping("/bmn/admin/customerManagement/ban")
+    public String doCustomerBan(
+            @RequestParam("targetIdx") int targetIdx
+    ) throws Exception {
+
+        simService.customerBan(targetIdx);
+
+        return "redirect:/bmn/admin/customerManagement";
     }
 
 

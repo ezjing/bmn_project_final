@@ -15,14 +15,14 @@
 
         function approve(targetIdx) {
             if (confirm('정말 승인 하시겠습니까?')) {
-                location.href = "/bmn/approve/process?targetIdx=" + targetIdx + "&mode=approve";
+                location.href = "/bmn/admin/ceoManagement/Approve?targetIdx=" + targetIdx + "&mode=approve";
                 alert('승인되었습니다.');
             }
         }
 
         function reject(targetIdx) {
             if (confirm('정말 거부 하시겠습니까?')) {
-                location.href = "/bmn/approve/process?targetIdx=" + targetIdx + "&mode=reject";
+                location.href = "/bmn/admin/ceoManagement/Approve?targetIdx=" + targetIdx + "&mode=reject";
                 alert('거부되었습니다.');
             }
 

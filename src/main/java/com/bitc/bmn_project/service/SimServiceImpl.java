@@ -6,6 +6,9 @@ import com.bitc.bmn_project.DTO.ReviewDTO;
 import com.bitc.bmn_project.DTO.ReviewTagDTO;
 import com.bitc.bmn_project.common.FileUtils;
 import com.bitc.bmn_project.mapper.SimMapper;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -141,5 +144,26 @@ public class SimServiceImpl implements SimService {
         }
 
     }
+
+    @Override
+    public Page<CustomerDTO> getCustomerList(int pageNum) throws Exception {
+        PageHelper.startPage(pageNum, 10);
+
+        return simMapper.getCustomerList();
+    }
+
+    @Override
+    public void changeCustomerGrade(int targetIdx, int grade) throws Exception {
+
+        simMapper.changeCustomerGrade(targetIdx, grade);
+    }
+
+
+    @Override
+    public void customerBan(int targetIdx) throws Exception {
+
+        simMapper.customerBan(targetIdx);
+    }
+
 
 }

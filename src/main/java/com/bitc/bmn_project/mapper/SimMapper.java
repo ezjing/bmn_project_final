@@ -4,6 +4,8 @@ import com.bitc.bmn_project.DTO.CeoDTO;
 import com.bitc.bmn_project.DTO.CustomerDTO;
 import com.bitc.bmn_project.DTO.ReviewDTO;
 import com.bitc.bmn_project.DTO.ReviewTagDTO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -45,4 +47,13 @@ public interface SimMapper {
     List<CeoDTO> getStoreList() throws Exception;
 
     void storeApprove(int targetIdx, int mode) throws Exception;
+
+    Page<CustomerDTO> getCustomerList() throws Exception;
+
+    void changeCustomerGrade(int targetIdx, int grade) throws Exception;
+
+    void customerBan(int targetIdx) throws Exception;
+
+
+//    Page<CustomerDTO> getPageList() throws Exception;
 }
