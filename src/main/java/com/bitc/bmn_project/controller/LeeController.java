@@ -250,6 +250,7 @@ public class LeeController {
         return reservation;
     }
 
+<<<<<<< HEAD
     // ---------------------상원작 팔로워 리스트 가져오기~----------------------
     @ResponseBody
     @RequestMapping(value = "/bmn/myPageCeo/followerList", method = RequestMethod.POST)
@@ -269,6 +270,8 @@ public class LeeController {
     }
 
 
+=======
+>>>>>>> ezbranch
     @ResponseBody
     @RequestMapping(value = "/bmn/myPageCeo/review", method = RequestMethod.POST)
     public Object myPageCeoReview(@RequestParam int ceoIdx) throws Exception {
@@ -285,7 +288,11 @@ public class LeeController {
         return question;
     }
 
+<<<<<<< HEAD
     @RequestMapping(value = "/bmn/myPageCeo", method = RequestMethod.DELETE)
+=======
+    @RequestMapping(value = "/bmn/myPageCeo/ceo", method = RequestMethod.DELETE)
+>>>>>>> ezbranch
     public String myPageCeoOut(int ceoIdx, HttpServletRequest req) throws Exception {
         leeService.myPageCeoOut(ceoIdx);
         // 세션값 다 지우기
@@ -294,14 +301,24 @@ public class LeeController {
         return "redirect:/bmn/bmnMain";
     }
 
+<<<<<<< HEAD
     @RequestMapping(value = "/bmn/myPageCeo", method = RequestMethod.PUT)
     public String myPageCeoUpdate(CeoDTO ceo, HttpServletRequest req) throws Exception {
+=======
+    @RequestMapping(value = "/bmn/myPageCeo/ceo", method = RequestMethod.PUT)
+    public String myPageCeoUpdate(CeoDTO ceo, HttpServletRequest req) throws Exception {
+
+>>>>>>> ezbranch
         ceo = leeService.myPageCeoUpdate(ceo);
         // 변경된 세션값 입력
         HttpSession session = req.getSession();
         session.setAttribute("user", ceo);
 
+<<<<<<< HEAD
         return "myPage/myPageCeo";
+=======
+        return "redirect:/bmn/myPageCeo";
+>>>>>>> ezbranch
     }
 
     @RequestMapping(value = "/bmn/myPageCeo/popup", method = RequestMethod.GET)
@@ -376,8 +393,15 @@ public class LeeController {
         return mv;
     }
 
+<<<<<<< HEAD
     @RequestMapping(value = "/bmn/myPageCeo/store", method = RequestMethod.POST)
     public String myPageCeoStoreUpdate(CeoDTO ceo, HttpServletRequest req) throws Exception {
+=======
+    @RequestMapping(value = "/bmn/myPageCeo", method = RequestMethod.PUT)
+    public String myPageCeoStoreUpdate(CeoDTO ceo, HttpServletRequest req) throws Exception {
+        System.out.println("컨트롤러 도착");
+
+>>>>>>> ezbranch
         ceo = leeService.myPageCeoStoreUpdate(ceo);
 
         HttpSession session = req.getSession();

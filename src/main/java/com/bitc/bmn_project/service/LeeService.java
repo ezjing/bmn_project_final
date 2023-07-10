@@ -44,8 +44,11 @@ public interface LeeService {
     CeoDTO myPageCeoUpdate(CeoDTO ceo) throws Exception;
 
     CeoDTO myPageCeoStoreUpdate(CeoDTO ceo) throws Exception;
+<<<<<<< HEAD
 
     List<CustomerDTO> myPageCeoFollowerList(String ceoStore) throws Exception;
 
     void myPageCeoFollowerDelete(String ceoStore, int customerIdx) throws Exception;
+=======
+>>>>>>> ezbranch
 }

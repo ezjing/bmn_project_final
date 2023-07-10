@@ -156,6 +156,7 @@
             <div class="fs-3"><button type="submit" class="btn btn-primary">회원가입</button></div>
             <div class="fs-3" th:if="${not #strings.isEmpty(session.user)}">
                 <a href="/bmn/myPageCus" class="btn btn-primary">마이 페이지</a>
+                <a href="/bmn/myPageCeo" class="btn btn-success">사장 페이지</a>
                 <!--  사장님 계정 로그인 시 가게등록하기 버튼 추가, 무조건 페이지 연동까지 구현하기  -->
                 <!--  사장님 계정 로그인 시 내 가게로 가기 버튼 추가(viewDetail 연결)  -->
             </div>

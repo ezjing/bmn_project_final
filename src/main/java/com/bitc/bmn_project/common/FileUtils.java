@@ -36,7 +36,7 @@ public class FileUtils {
         // 경로 생성, 현재 타임존 기준 시간을 패턴에 맞게 설정하여 출력
 //        String path = "images/" + current.format(format);
         // 현재 StandardServletMultipartResolver 사용 시 전체 경로가 아니면 파일 복사 시 오류가 발생함
-        String path = "C:\\smart505\\bmn_project\\src\\main\\resources\\static\\images\\" + current.format(format);
+        String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images" + current.format(format);
         // 자바의 File 클래스 객체 생성, 위에서 생성한 경로로 생성
         File file = new File(path);
 
@@ -115,7 +115,7 @@ public class FileUtils {
             // 경로 생성, 현재 타임존 기준 시간을 패턴에 맞게 설정하여 출력
 //        String path = "images/" + current.format(format);
             // 현재 StandardServletMultipartResolver 사용 시 전체 경로가 아니면 파일 복사 시 오류가 발생함
-            String path = "C:\\smart505\\bmn_project\\src\\main\\resources\\static\\images\\" + current.format(format);
+            String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images" + current.format(format);
             // 자바의 File 클래스 객체 생성, 위에서 생성한 경로로 생성
             File file = new File(path);
 

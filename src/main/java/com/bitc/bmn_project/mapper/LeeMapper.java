@@ -52,8 +52,11 @@ public interface LeeMapper {
     CeoDTO ceoInfo(int ceoIdx) throws Exception;
 
     void myPageCeoStoreUpdate(CeoDTO ceo) throws Exception;
+<<<<<<< HEAD
 
     List<CustomerDTO> myPageCeoFollowerList(String ceoStore) throws Exception;
 
     void myPageCeoFollowerDelete(String ceoStore, int customerIdx) throws Exception;
+=======
+>>>>>>> ezbranch
 }

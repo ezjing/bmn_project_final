@@ -30,14 +30,16 @@
                 else {
                     // alert("통신 good");
                     $.ajax({
-                        url: "/bmn/reservationCeo/reservationCeoTimeInfo",
+                        url: "/bmn/reservationCeo/timeInfo",
                         type: "POST",
                         data: {reservationDate: reservationDate, ceoIdx: ceoIdx, reservationTime: selTime},
                         success: function (data) {
                             // alert("ajax 통신 성공.");
+                            const customerName = data.customerName;
                             const reservationPeople = data.reservationPeople;
                             const reservationContents = data.reservationContents;
 
+                            $("#customerName").val(customerName);
                             $("#reservationPeople").val(reservationPeople);
                             $("#reservationContents").val(reservationContents);
 
@@ -143,7 +145,7 @@
                 const ceoIdx = $("#ceoIdx").val();
 
                 $.ajax({
-                    url: "/bmn/reservationCeo/reservationCeoDateInfo",    // 주소 수정!!!!!!!!!!  (로그인 구현 후 타임리프로 히든태그 값 주기)
+                    url: "/bmn/reservationCeo/dateInfo",    // 주소 수정!!!!!!!!!!  (로그인 구현 후 타임리프로 히든태그 값 주기)
                     type: "POST",
                     data: {reservationDate: reservationDate, ceoIdx: ceoIdx},
                     success: function (data) {  // data = dateList
@@ -261,9 +263,12 @@
         <div class="row">
             <div class="col-2">
                 <div class="border">
-                    <label for="reservationPeople" class="form-label">예약 인원</label>
+                    <p class="text-center mt-2 mb-4"><b>예약 정보 확인</b></p>
+                    <label for="customerName" class="form-label">예약자</label>
+                    <input type="text" class="form-control" id="customerName" name="customerName" readonly>
+                    <label for="reservationPeople" class="form-label mt-5">예약 인원</label>
                     <input type="text" class="form-control" id="reservationPeople" name="reservationPeople" readonly>
-                    <label for="reservationContents" class="form-label">상세 내용</label>
+                    <label for="reservationContents" class="form-label mt-5">상세 내용</label>
                     <input type="text" class="form-control" id="reservationContents" name="reservationContents" readonly>
                 </div>
             </div>

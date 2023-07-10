@@ -43,7 +43,7 @@
 
 
                 if (reservationPeople == "" || reservationDate == "" || selTime == "") {    // 상세내용만 생략 가능
-                    alert("예약 정보를 모두 입력하세요.")
+                    alert("예약 정보를 모두 입력하세요.");
                 }
                 else {
                     // 모달에 데이터 집어넣기
@@ -61,10 +61,10 @@
                 $("#method").val("POST");
                 const form = $("#form")[0];
 
-                const ceoIdx = $("#ceoIdx").val();
-                const customerIdx = $("#customerIdx").val();
+                // const ceoIdx = $("#ceoIdx").val();
+                // const customerIdx = $("#customerIdx").val();
 
-                form.action = "/bmn/reservationCus/ceoIdx=" + ceoIdx + "/customerIdx=" + customerIdx;
+                form.action = "/bmn/reservationCus/insertReservation";
                 form.submit();
             });
 
@@ -74,7 +74,7 @@
                 const ceoIdx = $("#ceoIdx").val();
 
                 $.ajax({
-                    url: "/bmn/reservationCus/ceoIdx=" + ceoIdx,    // 로그인 구현 후 타임리프로 히든태그 값 주기
+                    url: "/bmn/reservationCus/dateInfo",    // 로그인 구현 후 타임리프로 히든태그 값 주기
                     type: "POST",
                     data: {reservationDate: reservationDate, ceoIdx: ceoIdx},
                     success: function (data) {
@@ -238,7 +238,9 @@
             <div class="col-2">
                 <div class="border">
                     <p class="text-center mt-2 mb-4"><b>예약 정보 입력</b></p>
-                    <label for="reservationPeople" class="form-label">예약 인원</label>
+                    <label for="customerName" class="form-label">예약자</label>
+                    <input type="text" class="form-control" id="customerName" name="customerName" value="테스터2" th:value="|${session.user.customerName}|" readonly>
+                    <label for="reservationPeople" class="form-label mt-5">예약 인원</label>
                     <select class="form-select" id="reservationPeople" name="reservationPeople">
                         <option value="1" selected>1 명</option>
                         <option value="2">2 명</option>
@@ -310,7 +312,6 @@
                         <button class="btn btn-secondary mx-5" type="button" style="width: 6em; height: 3em;" id="cancel">취소</button>
                         <button class="btn btn-primary mx-5" type="button" style="width: 6em; height: 3em;" id="check">확인</button>
                         <input type="hidden" id="customerIdx" name="customerIdx" value="2" th:value="${session.user.customerIdx}">
-                        <input type="hidden" id="customerName" name="customerName" value="테스터2" th:value="|${session.user.customerName}|">
                         <input type="hidden" id="ceoIdx" name="ceoIdx" value="2" th:value="${ceoIdx}">
                         <input type="hidden" id="ceoStore" name="ceoStore" value="테스트가게" th:value="${ceoStore}">
                     </div>

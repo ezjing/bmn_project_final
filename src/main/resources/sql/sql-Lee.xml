@@ -155,6 +155,7 @@
         ceo_lon = #{ceoLon}
         WHERE ceo_idx = #{ceoIdx}
     </update>
+<<<<<<< HEAD
     
 <!--    사장 마이페이지 팔로워 리스트 가져오기-->
     <select id="myPageCeoFollowerList" parameterType="String" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
@@ -177,5 +178,7 @@
         WHERE
             customer_idx = #{customerIdx}
     </update>
+=======
+>>>>>>> ezbranch
 </mapper>
 

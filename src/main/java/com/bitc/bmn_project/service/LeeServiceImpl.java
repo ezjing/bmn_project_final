@@ -126,6 +126,7 @@ public class LeeServiceImpl implements LeeService{
 
         return leeMapper.ceoInfo(ceo.getCeoIdx());
     }
+<<<<<<< HEAD
 
     @Override
     public List<CustomerDTO> myPageCeoFollowerList(String ceoStore) throws Exception {
@@ -137,4 +138,6 @@ public class LeeServiceImpl implements LeeService{
     public void myPageCeoFollowerDelete(String ceoStore, int customerIdx) throws Exception {
         leeMapper.myPageCeoFollowerDelete(ceoStore, customerIdx);
     }
+=======
+>>>>>>> ezbranch
 }

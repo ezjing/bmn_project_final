@@ -194,8 +194,10 @@ public class SimController {
 
     @RequestMapping(value = "/bmn/ceoStore/popup", method = RequestMethod.GET)
     public String doPopup() throws Exception {
+
         return "addrPopup";
     }
+
 
     @RequestMapping(value = "/bmn/ceoStore", method = RequestMethod.POST)
     public ModelAndView doPopupCallback(
@@ -226,9 +228,12 @@ public class SimController {
             @RequestParam("lnbrSlno") String lnbrSlno,
             @RequestParam("emdNo") String emdNo,
             @RequestParam("entX") String entX,
-            @RequestParam("entY") String entY
+            @RequestParam("entY") String entY,
+            HttpServletRequest req
     ) throws Exception {
+
         ModelAndView mv = new ModelAndView("addrPopup");
+
 
         mv.addObject("inputYn", inputYn);
         mv.addObject("roadFullAddr", roadFullAddr);

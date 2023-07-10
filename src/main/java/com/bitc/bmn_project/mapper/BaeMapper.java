@@ -26,7 +26,7 @@ public interface BaeMapper {
 
   void answerQuestion(QuestionDTO questionDTO) throws Exception;
 
-  void updateCeoTpFollows(int followCnt, int ceoIdx) throws Exception;
+  void updateCeoTpFollows(@Param("followCnt") int followCnt, @Param("ceoIdx") int ceoIdx) throws Exception;
 
   int getReviewCnt(int ceoIdx) throws Exception;
 
