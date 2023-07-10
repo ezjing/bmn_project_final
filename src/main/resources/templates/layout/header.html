@@ -18,7 +18,12 @@
 
 </head>
 <body>
+
 <header th:fragment="header" class="container-fluid mt-lg-3">
+    <!-- 사장님으로 로그인 시 등급별로 UI, 루트 조정
+    미인증 등급 ->  1 / 마이페이지, 내 가게 등록 버튼(/ceoStore)로 보내주기
+    인증 등급 ->  2 / 마이페이지 / session.ceo.ceoIdx 받아와서 내가 바로가기 버튼
+    -->
     <div class="row bg-light ">
         <div class="col-sm-2">
             <nav class="navbar">
@@ -28,33 +33,70 @@
             </nav>
         </div>
         <div class="col-sm-6 input-group pt-3 pb-3 w-50">
-            <input th:value="${keyWorld}" id="keyword-val" name="keyword-val" type="search" class="form-control me-3" placeholder="식당,메뉴,주소명을 입력해주세요">
+            <input th:value="${keyWorld}" id="keyword-val" name="keyword-val" type="search" class="form-control me-3"
+                   placeholder="식당,메뉴,주소명을 입력해주세요">
             <a class="btn btn-primary mx-auto" onclick="foodSearch()">검색</a>
         </div>
 
         <div class="col-sm-4 btn-group justify-content-center">
-            <!-- 로그인 시 사장님/회원님 환영합니다 메시지 구현, 타임리프 오류해결 필요  -->
-            <div class="fs-3"  th:if="${not #strings.isEmpty(session.user)}">
-                <a href="/bmn/logOut" id="logout-btn" class="btn btn-primary me-3">로그아웃</a>
-                <!--                <p th:unless="${#strings.isEmpty(session.user.customerId)}" th:text="|${session.user.customerNick}님 환영합니다.|"></p>-->
-                <p th:unless="${#strings.isEmpty(session.user.ceoId)}" th:text="|${session.user.ceoStore}사장님 환영합니다.|"></p>
-            </div>
+            <div class="col-sm-4 btn-group justify-content-center">
+                <!-- 로그인 시 사장님/회원님 환영합니다 메시지 구현, 타임리프 오류해결 필요  -->
+                <div class="fs-3" th:if="${not #strings.isEmpty(session.user)}">
+                    <a href="/bmn/logOut" id="logout-btn" class="btn btn-primary me-3">로그아웃</a>
 
-            <div class="fs-3" th:unless="${not #strings.isEmpty(session.user)}">
-                <button type="button" id="login-btn" class="btn btn-primary me-3" data-bs-toggle="modal"
-                        data-bs-target="#modal-login">로그인
-                </button>
-            </div>
-            <div class="fs-3 d-grid">
-                <a href="/bmn/signUp/customer" class="btn btn-primary flex-fill mx-1 mt-3">손님 회원가입</a>
-                <a href="/bmn/signUp/ceo" class="btn btn-success flex-fill mx-1 mt-3">사장님 회원가입</a>
-            </div>
-            <div class="fs-3" th:if="${not #strings.isEmpty(session.user)}">
-                <a href="/bmn/myPageCus" class="btn btn-primary">마이 페이지</a>
-                <!--  사장님 계정 로그인 시 가게등록하기 버튼 추가, 무조건 페이지 연동까지 구현하기  -->
-                <!--  사장님 계정 로그인 시 내 가게로 가기 버튼 추가(viewDetail 연결)  -->
+                    <p th:if="${session.user == 'customer'}" th:text="|${session.customer.customerNick}님 환영합니다.|"></p>
+                    <p th:if="${session.user == 'ceo'}" th:text="|${session.ceo.ceoStore}사장님 환영합니다.|"></p>
+                    <!-- 가게 등록안한 사장은 null 값이 반환됨 수정 필요-->
+                    <p th:if="${session.user == 'admin'}">관리자님 환영합니다.</p>
+                </div>
+
+                <div class="fs-3" th:unless="${not #strings.isEmpty(session.user)}">
+                    <button type="button" id="login-btn" class="btn btn-primary me-3" data-bs-toggle="modal"
+                            data-bs-target="#modal-login">로그인
+                    </button>
+                    <div class="fs-3 d-grid">
+                        <a href="/bmn/signUp/customer" class="btn btn-primary flex-fill mx-1 mt-3">손님 회원가입</a>
+                        <a href="/bmn/signUp/ceo" class="btn btn-success flex-fill mx-1 mt-3">사장님 회원가입</a>
+                    </div>
+                </div>
+
+                <!--            <div class="fs-3"><button type="submit" class="btn btn-primary">회원가입</button></div>-->
+                <div class="fs-3" th:if="${session.user == 'customer'}">
+                    <a href="/bmn/myPageCus" class="btn btn-primary">마이 페이지</a>
+                    <!--  사장님 계정 로그인 시 가게등록하기 버튼 추가, 무조건 페이지 연동까지 구현하기  -->
+                    <!--  사장님 계정 로그인 시 내 가게로 가기 버튼 추가(viewDetail 연결)  -->
+                </div>
+                <div class="fs-3" th:if="${session.user == 'ceo'}">
+                    <a href="/bmn/myPageCeo" class="btn btn-primary">마이 페이지</a>
+                </div>
+                <div class="fs-3" th:if="${session.user == 'admin'}">
+                        <!-- 관리자 페이지 루트 넣어주기-->
+                    <a href="/bmn/" class="btn btn-primary">마이 페이지</a>
+                </div>
             </div>
         </div>
+
+        <!--            &lt;!&ndash; 로그인 시 사장님/회원님 환영합니다 메시지 구현, 타임리프 오류해결 필요  &ndash;&gt;-->
+        <!--            <div class="fs-3"  th:if="${not #strings.isEmpty(session.user)}">-->
+        <!--                <a href="/bmn/logOut" id="logout-btn" class="btn btn-primary me-3">로그아웃</a>-->
+        <!--                &lt;!&ndash;                <p th:unless="${#strings.isEmpty(session.user.customerId)}" th:text="|${session.user.customerNick}님 환영합니다.|"></p>&ndash;&gt;-->
+        <!--                <p th:unless="${#strings.isEmpty(session.user.ceoId)}" th:text="|${session.user.ceoStore}사장님 환영합니다.|"></p>-->
+        <!--            </div>-->
+
+        <!--            <div class="fs-3" th:unless="${not #strings.isEmpty(session.user)}">-->
+        <!--                <button type="button" id="login-btn" class="btn btn-primary me-3" data-bs-toggle="modal"-->
+        <!--                        data-bs-target="#modal-login">로그인-->
+        <!--                </button>-->
+        <!--            </div>-->
+
+        <!--            <div class="fs-3" th:if="${not #strings.isEmpty(session.user)}">-->
+        <!--                <a href="/bmn/myPageCus" class="btn btn-primary">마이 페이지</a>-->
+        <!--                &lt;!&ndash;  사장님 계정 로그인 시 가게등록하기 버튼 추가, 무조건 페이지 연동까지 구현하기  &ndash;&gt;-->
+        <!--                &lt;!&ndash;  사장님 계정 로그인 시 내 가게로 가기 버튼 추가(viewDetail 연결)  &ndash;&gt;-->
+        <!--            </div>-->
+
+
+    </div>
     </div>
 </header>
 </body>

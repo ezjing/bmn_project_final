@@ -82,6 +82,7 @@
     </script>
 </head>
 <body>
+<div th:replace="~{/layout/header :: header}"></div>
 <div class="container-sm my-4">
     <div class="col-sm-8 mx-auto">
         <form name="form" id="form" action="/bmn/review/write" method="post" class="form-control"
@@ -136,37 +137,37 @@
                         <div class="d-flex justify-content-around">
                             <div class="form-check px-auto">
                                 <input class="form-check-input" type="checkbox" id="review-tag1" name="reviewTag1" value="Y">
-                                <label class="form-check-label" for="review-tag1">태그1</label>
+                                <label class="form-check-label" for="review-tag1">맛</label>
                             </div>
                             <div class="form-check px-auto">
                                 <input class="form-check-input" type="checkbox" id="review-tag2" name="reviewTag2" value="Y">
-                                <label class="form-check-label" for="review-tag2">태그2</label>
+                                <label class="form-check-label" for="review-tag2">만족도</label>
                             </div>
                             <div class="form-check px-auto">
                                 <input class="form-check-input" type="checkbox" id="review-tag3" name="reviewTag3" value="Y">
-                                <label class="form-check-label" for="review-tag3">태그3</label>
+                                <label class="form-check-label" for="review-tag3">서비스</label>
                             </div>
                             <div class="form-check px-auto">
                                 <input class="form-check-input" type="checkbox" id="review-tag4" name="reviewTag4" value="Y">
-                                <label class="form-check-label" for="review-tag4">태그4</label>
+                                <label class="form-check-label" for="review-tag4">음식량</label>
                             </div>
                         </div>
                         <div class="d-flex justify-content-around">
                             <div class="form-check px-auto">
                                 <input class="form-check-input" type="checkbox" id="review-tag5" name="reviewTag5" value="Y">
-                                <label class="form-check-label" for="review-tag5">태그5</label>
+                                <label class="form-check-label" for="review-tag5">청결도</label>
                             </div>
                             <div class="form-check px-auto">
                                 <input class="form-check-input" type="checkbox" id="review-tag6" name="reviewTag6" value="Y">
-                                <label class="form-check-label" for="review-tag6">태그6</label>
+                                <label class="form-check-label" for="review-tag6">가격</label>
                             </div>
                             <div class="form-check px-auto">
                                 <input class="form-check-input" type="checkbox" id="review-tag7" name="reviewTag7" value="Y">
-                                <label class="form-check-label" for="review-tag7">태그7</label>
+                                <label class="form-check-label" for="review-tag7">메뉴</label>
                             </div>
                             <div class="form-check px-auto">
                                 <input class="form-check-input" type="checkbox" id="review-tag8" name="reviewTag8" value="Y">
-                                <label class="form-check-label" for="review-tag8">태그8</label>
+                                <label class="form-check-label" for="review-tag8">분위기</label>
                             </div>
                         </div>
                     </div>
@@ -175,13 +176,8 @@
                     <div class="my-2 mx-0 d-flex justify-content-end">
                         <input type="hidden" th:value="${ceoIdx}" name="ceoIdx">
                         <input type="hidden" th:value="${ceoStore}" name="ceoStore">
-<<<<<<< HEAD:src/main/resources/templates/review.html
-                        <input type="text" th:value="${session.user.customerIdx}" name="customerIdx">
-                        <input type="text" th:value="${session.user.customerNick}" name="customerNick">
-=======
                         <input type="hidden" th:value="${session.customer.getCustomerIdx}" name="customerIdx">
                         <input type="hidden" th:value="${session.customer.getCustomerNick}" name="customerNick">
->>>>>>> origin/usbranch2:src/main/resources/templates/review/review.html
                         <button type="button" class="btn btn-secondary" onclick="reviewCancel()">취소</button>
                         <button type="submit" class="btn btn-primary opacity-75 ms-3" id="submit">작성</button>
                     </div>

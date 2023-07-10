@@ -82,7 +82,7 @@
                     },
                     success: function (data) {
                         $('#home').empty();
-                        let otp = null;
+                        let otp = '';
                         for (let i = 0; i < data.length; i++) {
                             otp += '<div class="list-group">' +
                                 '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
@@ -117,7 +117,7 @@
                 },
                 success:function(data){
                     $('#home').empty();
-                    let otp = null;
+                    let otp = '';
                     for (let i = 0; i < data.length; i++) {
                         otp += '<div class="list-group">' +
                             '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
@@ -151,7 +151,7 @@
                 },
                 success:function(data){
                     $('#home').empty();
-                    let otp = null;
+                    let otp = '';
                     for (let i = 0; i < data.length; i++) {
                         otp += '<div class="list-group">' +
                             '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
@@ -291,6 +291,7 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <p th:if="${#lists.size(storeList)} > 0" class="fs-5 fw-bold">#평점 순</p>
+                    <!--                    -->
                     <div class="list-group" th:if="${#lists.size(storeList)} > 0" th:each="item : ${storeList}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}" class="list-group-item list-group-item-action">
                             <div>

@@ -93,10 +93,6 @@ public class SimController {
             // 3-2 로그인 성공 우수회원
             case 1, 2 -> {
                 customer = simService.getCustomerInfo(userId);
-<<<<<<< HEAD
-=======
-                System.out.println(customer);
->>>>>>> origin/usbranch2
                 session.setAttribute("user", "customer");
                 session.setAttribute("customer", customer);
                 session.removeAttribute("failMsg");
@@ -145,10 +141,19 @@ public class SimController {
     }
 
     @RequestMapping(value = "/bmn/signUp/customer/signUp", method = RequestMethod.POST)
-    public String doSignUpCustomerProcess(CustomerDTO customer) throws Exception {
+    public String doSignUpCustomerProcess(
+            CustomerDTO customer,
+            HttpServletRequest req) throws Exception {
 
-        System.out.println(customer);
+
+        HttpSession session = req.getSession();
+        session.setAttribute("user","customer");
+        session.setAttribute("customer",customer);
+        session.setMaxInactiveInterval(3600);
+
         simService.signUpCustomer(customer);
+
+
 
 // 나중에 메인페이지
         return "redirect:/bmn/bmnMain";
@@ -161,7 +166,15 @@ public class SimController {
     }
 
     @RequestMapping(value = "/bmn/signUp/ceo/signUp", method = RequestMethod.POST)
-    public String doSignUpCeoProcess(CeoDTO ceo) throws Exception {
+    public String doSignUpCeoProcess(
+            CeoDTO ceo,
+            HttpServletRequest req) throws Exception {
+
+        HttpSession session = req.getSession();
+        session.setAttribute("user","ceo");
+        session.setAttribute("ceo",ceo);
+        session.setMaxInactiveInterval(3600);
+
 
         simService.signUpCeo(ceo);
 
@@ -194,12 +207,8 @@ public class SimController {
 
     @RequestMapping(value = "/bmn/ceoStore/popup", method = RequestMethod.GET)
     public String doPopup() throws Exception {
-<<<<<<< HEAD
 
-        return "addrPopup";
-=======
         return "signUp/addrPopup";
->>>>>>> origin/usbranch2
     }
 
 
@@ -235,13 +244,8 @@ public class SimController {
             @RequestParam("entY") String entY,
             HttpServletRequest req
     ) throws Exception {
-<<<<<<< HEAD
 
-        ModelAndView mv = new ModelAndView("addrPopup");
-=======
         ModelAndView mv = new ModelAndView("signUp/addrPopup");
->>>>>>> origin/usbranch2
-
 
         mv.addObject("inputYn", inputYn);
         mv.addObject("roadFullAddr", roadFullAddr);
@@ -281,21 +285,18 @@ public class SimController {
                              @RequestParam("ceoThumbnailImgFile") MultipartFile thumbnail,
                              @RequestParam(value = "files", required = false) List<MultipartFile> files
     ) throws Exception {
-        System.out.println(store);
-        System.out.println(mainImage);
-        System.out.println(thumbnail);
-        System.out.println(files);
 
         simService.addStore(store, mainImage, thumbnail, files);
+
         return "redirect:/bmn/bmnMain";
     }
 
-    @RequestMapping(value = "/bmn/review/ceoIdx={ceoIdx}", method = RequestMethod.GET)
+    @RequestMapping(value = "/bmn/review/{ceoIdx}", method = RequestMethod.GET)
     public ModelAndView doReview(
             @PathVariable("ceoIdx") int ceoIdx
     ) throws Exception {
 
-        ModelAndView mv = new ModelAndView("review");
+        ModelAndView mv = new ModelAndView("review/review");
 
         String ceoStore = simService.getStoreName(ceoIdx);
         mv.addObject("ceoStore", ceoStore);

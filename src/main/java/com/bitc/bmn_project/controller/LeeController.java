@@ -227,7 +227,7 @@ public class LeeController {
         customer = leeService.myPageCusChange(customer);
         // 변경된 세션값 입력
         HttpSession session = req.getSession();
-        session.setAttribute("user", customer);
+        session.setAttribute("customer", customer);
 
         return "myPage/myPageCus";
     }
@@ -291,6 +291,7 @@ public class LeeController {
         // 세션값 다 지우기
         HttpSession session = req.getSession();
         session.removeAttribute("user");
+        session.removeAttribute("ceo");
         return "redirect:/bmn/bmnMain";
     }
 
@@ -300,7 +301,7 @@ public class LeeController {
         ceo = leeService.myPageCeoUpdate(ceo);
         // 변경된 세션값 입력
         HttpSession session = req.getSession();
-        session.setAttribute("user", ceo);
+        session.setAttribute("ceo", ceo);
 
         return "redirect:/bmn/myPageCeo";
     }
@@ -379,12 +380,11 @@ public class LeeController {
 
     @RequestMapping(value = "/bmn/myPageCeo", method = RequestMethod.PUT)
     public String myPageCeoStoreUpdate(CeoDTO ceo, HttpServletRequest req) throws Exception {
-        System.out.println("컨트롤러 도착");
 
         ceo = leeService.myPageCeoStoreUpdate(ceo);
 
         HttpSession session = req.getSession();
-        session.setAttribute("user", ceo);
+        session.setAttribute("ceo", ceo);
 
         return "redirect:/bmn/myPageCeo";
     }

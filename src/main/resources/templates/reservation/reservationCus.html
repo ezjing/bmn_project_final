@@ -230,7 +230,7 @@
 
 </head>
 <body>
-<header th:replace="~{layout/header :: header}"></header>
+<div th:replace="~{/layout/header :: header}"></div>
 
 <main class="container-sm" id="main">
     <form action="" method="POST" id="form">
@@ -239,7 +239,7 @@
                 <div class="border">
                     <p class="text-center mt-2 mb-4"><b>예약 정보 입력</b></p>
                     <label for="customerName" class="form-label">예약자</label>
-                    <input type="text" class="form-control" id="customerName" name="customerName" value="테스터2" th:value="|${session.user.customerName}|" readonly>
+                    <input type="text" class="form-control" id="customerName" name="customerName" value="테스터2" th:value="|${session.customer.customerName}|" readonly>
                     <label for="reservationPeople" class="form-label mt-5">예약 인원</label>
                     <select class="form-select" id="reservationPeople" name="reservationPeople">
                         <option value="1" selected>1 명</option>
@@ -311,7 +311,7 @@
                     <div class="d-flex justify-content-center">
                         <button class="btn btn-secondary mx-5" type="button" style="width: 6em; height: 3em;" id="cancel">취소</button>
                         <button class="btn btn-primary mx-5" type="button" style="width: 6em; height: 3em;" id="check">확인</button>
-                        <input type="hidden" id="customerIdx" name="customerIdx" value="2" th:value="${session.user.customerIdx}">
+                        <input type="hidden" id="customerIdx" name="customerIdx" value="2" th:value="${session.customer.customerIdx}">
                         <input type="hidden" id="ceoIdx" name="ceoIdx" value="2" th:value="${ceoIdx}">
                         <input type="hidden" id="ceoStore" name="ceoStore" value="테스트가게" th:value="${ceoStore}">
                     </div>
@@ -341,7 +341,7 @@
                         <tbody id="tbody">
                         <tr>
                             <th class="py-4 text-center" style="background-color: #D7D8DAFF">예약자</th>
-                            <td class="py-4 ps-2" id="resvCustomerName" th:text="|${session.user.customerName}|">이지원</td>
+                            <td class="py-4 ps-2" id="resvCustomerName" th:text="|${session.customer.customerName}|">이지원</td>
                             <td></td>
                             <td></td>
                         </tr>

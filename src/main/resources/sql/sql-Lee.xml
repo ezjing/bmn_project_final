@@ -67,7 +67,7 @@
         WHERE customer_idx = #{customerIdx}
     </update>
     <select id="myPageReview" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReviewDTO">
-        SELECT ceo_idx, ceo_store, review_contents, review_score, review_date
+        SELECT ceo_idx, ceo_store, review_contents, review_title, review_score, review_date
         FROM java505_team3_db.customer_tp U
         JOIN java505_team3_db.review_tp V
         ON U.customer_idx = V.customer_idx

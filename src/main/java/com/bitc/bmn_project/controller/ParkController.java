@@ -33,12 +33,13 @@ public class ParkController {
         List<CeoDTO> scorePlacingList = mainService.scorePlacingLists();
         List<CeoDTO> followPlacingList = mainService.followPlacingLists();
 
-        CustomerDTO customer = new CustomerDTO();
-        CeoDTO ceo = new CeoDTO();
-        HttpSession session = req.getSession();
 
-        customer.setCustomerNick((String) session.getAttribute("customerNick"));
-        ceo.setCeoStore((String) session.getAttribute("ceoStore"));
+
+//        CustomerDTO customer = new CustomerDTO();
+//        CeoDTO ceo = new CeoDTO();
+//        HttpSession session = req.getSession();
+//        customer.setCustomerNick((String) session.getAttribute("customerNick"));
+//        ceo.setCeoStore((String) session.getAttribute("ceoStore"));
 
         // 평점순 List
         mv.addObject("scorePlacingList",scorePlacingList);
@@ -52,7 +53,8 @@ public class ParkController {
         mv.addObject("selectCFood",selectCFood);
         // 양식 List
         mv.addObject("selectWFood",selectWFood);
-        mv.addObject("ceo", ceo);
+
+//        mv.addObject("ceo", ceo);
         return mv;
     }
 
