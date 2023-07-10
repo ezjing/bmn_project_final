@@ -4,6 +4,8 @@ import com.bitc.bmn_project.DTO.CeoDTO;
 import com.bitc.bmn_project.DTO.CustomerDTO;
 import com.bitc.bmn_project.DTO.ReviewDTO;
 import com.bitc.bmn_project.DTO.ReviewTagDTO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -38,4 +40,17 @@ public interface SimService {
     int getReviewIdx() throws Exception;
 
     void reviewWriteTag(ReviewTagDTO reviewTag) throws Exception;
+
+    List<CeoDTO> getStoreList() throws Exception;
+
+    void storeApprove(int targetIdx, String mode) throws Exception;
+
+    Page<CustomerDTO> getCustomerList(int pageNum) throws Exception;
+
+    void changeCustomerGrade(int targetIdx, int grade) throws Exception;
+
+
+    void customerBan(int targetIdx) throws Exception;
+
+//    Page<CustomerDTO> getPageList(int pageNum) throws Exception;
 }

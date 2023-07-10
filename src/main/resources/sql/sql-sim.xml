@@ -109,7 +109,8 @@
 
     <!-- 리뷰 작성 -->
     <insert id="reviewWrite" parameterType="com.bitc.bmn_project.DTO.ReviewDTO">
-        INSERT INTO review_tp(customer_idx, customer_nick, ceo_idx, ceo_store, review_title, review_contents, review_img,
+        INSERT INTO review_tp(customer_idx, customer_nick, ceo_idx, ceo_store, review_title, review_contents,
+        review_img,
         review_date, review_score)
         VALUES(#{customerIdx},
         #{customerNick},
@@ -127,8 +128,54 @@
     </select>
     <!-- 리뷰 작성 태그 -->
     <insert id="reviewWriteTag" parameterType="com.bitc.bmn_project.DTO.ReviewTagDTO">
-        INSERT INTO review_tag_tp(review_idx, review_tag2, review_tag3, review_tag4, review_tag5, review_tag6, review_tag7, review_tag8)
-        VALUES(#{reviewIdx}, #{review_tag2}, #{review_tag3}, #{review_tag4}, #{review_tag5}, #{review_tag6}, #{review_tag7}, #{review_tag8})
+        INSERT INTO review_tag_tp(review_idx, review_tag1, review_tag2, review_tag3, review_tag4, review_tag5,
+        review_tag6, review_tag7, review_tag8)
+        VALUES(#{reviewIdx}, #{reviewTag1}, #{reviewTag2}, #{reviewTag3}, #{reviewTag4}, #{reviewTag5}, #{reviewTag6},
+        #{reviewTag7}, #{reviewTag8})
     </insert>
 
+    <!-- 관리자 페이지 - 가게 리스트 출력 -->
+    <!-- 가게 등급 -> 1: 등록 요청된 가게 / 2: 승인된 가게 / 0: 승인 거부된 가게-->
+    <select id="getStoreList" resultType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_name, ceo_store, ceo_main_menu, ceo_category
+        FROM ceo_tp
+        WHERE ceo_grade = 1
+    </select>
+    <!-- 관리자 페이지 - 승인/거부 절차 -->
+    <update id="storeApprove" parameterType="map">
+        UPDATE ceo_tp
+        SET ceo_grade = #{mode}
+        WHERE ceo_idx = ${targetIdx}
+    </update>
+    <!-- 관리자 페이지 - 회원 리스트 출력(리뷰 작성 수, 댓글 작성 수 포함) -->
+    <select id="getCustomerList" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
+        SELECT c.customer_idx, c.customer_id, c.customer_name, c.customer_nick,
+        c.customer_gender, c.customer_age,
+        length(c.customer_follow) - length(REPLACE(c.customer_follow,',','')) as customer_follow,
+        c.customer_grade, c.customer_join_dt, c.customer_ban, IFNULL(r.cnt, 0) as customer_review_count,
+        IFNULL(com.cnt, 0) as customer_comment_count
+        FROM customer_tp c LEFT OUTER JOIN (SELECT customer_idx, count(review_idx) as cnt FROM review_tp GROUP BY customer_idx) As r
+        ON c.customer_idx = r.customer_idx LEFT OUTER JOIN (SELECT customer_idx, count(comment_idx) as cnt FROM comment_tp GROUP BY customer_idx) As com
+        ON c.customer_idx = com.customer_idx
+        WHERE c.customer_ban = "N" AND c.customer_grade != 10
+        ORDER BY customer_idx DESC
+    </select>
+    <!-- 페이징 -->
+    <select id="getPageList" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
+        SELECT *
+        FROM customer_tp
+        WHERE customer_ban = "N"
+    </select>
+    <!-- 관리자 페이지 - 회원 등급 변경-->
+    <update id="changeCustomerGrade" parameterType="map">
+        UPDATE customer_tp
+        SET customer_grade = ${grade}
+        WHERE customer_idx = ${targetIdx}
+    </update>
+    <!-- 관리자 페이지 - 회원 영구 정지-->
+    <update id="customerBan" parameterType="int">
+        UPDATE customer_tp
+        SET customer_ban = "Y"
+        WHERE customer_idx = ${targetIdx}
+    </update>
 </mapper>

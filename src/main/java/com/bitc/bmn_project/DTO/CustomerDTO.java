@@ -12,6 +12,8 @@ public class CustomerDTO {
     private String customerGender;
     private int customerAge;
     private String customerFollow;
+    private int customerReviewCount;
+    private int customerCommentCount;
     private int customerGrade;
     private String customerBan;
     private String customerJoinDt;

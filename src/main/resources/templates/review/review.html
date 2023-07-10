@@ -41,6 +41,17 @@
             }
         }
 
+        function doSubmit() {
+            const target = "review-tag"
+            for (let i = 1; i < 9; i++) {
+                let targetTagName = target + i;
+                let targetTag = document.getElementById(targetTagName);
+                if (targetTag.checked !== true){
+                    targetTag.value = "N";
+                    targetTag.setAttribute("checked", "checked");
+                }
+            }
+        }
 
 
         $(document).ready(function () {
@@ -49,6 +60,9 @@
 
             // 서브밋 시 스마트 에디터의 밸류 확인
             $("#submit").on("click", function () {
+                // 체크 안된 리뷰 널처리
+                doSubmit();
+
                 console.log($("#reviewContents").val());
 
                 oEditors.getById["reviewContents"].exec("UPDATE_CONTENTS_FIELD", []);
@@ -121,37 +135,37 @@
 
                         <div class="d-flex justify-content-around">
                             <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag1" name="reviewTag1">
+                                <input class="form-check-input" type="checkbox" id="review-tag1" name="reviewTag1" value="Y">
                                 <label class="form-check-label" for="review-tag1">태그1</label>
                             </div>
                             <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag2" name="reviewTag2">
+                                <input class="form-check-input" type="checkbox" id="review-tag2" name="reviewTag2" value="Y">
                                 <label class="form-check-label" for="review-tag2">태그2</label>
                             </div>
                             <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag3" name="reviewTag3">
+                                <input class="form-check-input" type="checkbox" id="review-tag3" name="reviewTag3" value="Y">
                                 <label class="form-check-label" for="review-tag3">태그3</label>
                             </div>
                             <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag4" name="reviewTag4">
+                                <input class="form-check-input" type="checkbox" id="review-tag4" name="reviewTag4" value="Y">
                                 <label class="form-check-label" for="review-tag4">태그4</label>
                             </div>
                         </div>
                         <div class="d-flex justify-content-around">
                             <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag5" name="reviewTag5">
+                                <input class="form-check-input" type="checkbox" id="review-tag5" name="reviewTag5" value="Y">
                                 <label class="form-check-label" for="review-tag5">태그5</label>
                             </div>
                             <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag6" name="reviewTag6">
+                                <input class="form-check-input" type="checkbox" id="review-tag6" name="reviewTag6" value="Y">
                                 <label class="form-check-label" for="review-tag6">태그6</label>
                             </div>
                             <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag7" name="reviewTag7">
+                                <input class="form-check-input" type="checkbox" id="review-tag7" name="reviewTag7" value="Y">
                                 <label class="form-check-label" for="review-tag7">태그7</label>
                             </div>
                             <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag8" name="reviewTag8">
+                                <input class="form-check-input" type="checkbox" id="review-tag8" name="reviewTag8" value="Y">
                                 <label class="form-check-label" for="review-tag8">태그8</label>
                             </div>
                         </div>
@@ -161,8 +175,13 @@
                     <div class="my-2 mx-0 d-flex justify-content-end">
                         <input type="hidden" th:value="${ceoIdx}" name="ceoIdx">
                         <input type="hidden" th:value="${ceoStore}" name="ceoStore">
+<<<<<<< HEAD:src/main/resources/templates/review.html
                         <input type="text" th:value="${session.user.customerIdx}" name="customerIdx">
                         <input type="text" th:value="${session.user.customerNick}" name="customerNick">
+=======
+                        <input type="hidden" th:value="${session.customer.getCustomerIdx}" name="customerIdx">
+                        <input type="hidden" th:value="${session.customer.getCustomerNick}" name="customerNick">
+>>>>>>> origin/usbranch2:src/main/resources/templates/review/review.html
                         <button type="button" class="btn btn-secondary" onclick="reviewCancel()">취소</button>
                         <button type="submit" class="btn btn-primary opacity-75 ms-3" id="submit">작성</button>
                     </div>

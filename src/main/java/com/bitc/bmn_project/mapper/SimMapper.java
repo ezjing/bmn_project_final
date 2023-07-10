@@ -4,8 +4,12 @@ import com.bitc.bmn_project.DTO.CeoDTO;
 import com.bitc.bmn_project.DTO.CustomerDTO;
 import com.bitc.bmn_project.DTO.ReviewDTO;
 import com.bitc.bmn_project.DTO.ReviewTagDTO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface SimMapper {
@@ -39,4 +43,17 @@ public interface SimMapper {
     int getReviewIdx() throws Exception;
 
     void reviewWriteTag(ReviewTagDTO reviewTag) throws Exception;
+
+    List<CeoDTO> getStoreList() throws Exception;
+
+    void storeApprove(int targetIdx, int mode) throws Exception;
+
+    Page<CustomerDTO> getCustomerList() throws Exception;
+
+    void changeCustomerGrade(int targetIdx, int grade) throws Exception;
+
+    void customerBan(int targetIdx) throws Exception;
+
+
+//    Page<CustomerDTO> getPageList() throws Exception;
 }
