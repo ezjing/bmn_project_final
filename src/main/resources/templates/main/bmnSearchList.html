@@ -94,7 +94,7 @@
                                                 '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
                                             '</div>'+
                                             '<div>' +
-                                                '<p  class="fw-bold fs-3 text-secondary" >'+data[i].ceoStore+'</p>' +
+                                                '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
                                                 '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
                                                 '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
                                                 '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
@@ -313,15 +313,15 @@
                     <div class="list-group" th:if="${#lists.size(storeList)} > 0" th:each="item : ${storeList}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}" class="list-group-item list-group-item-action">
                             <div>
-                                <div class="float-start d-grid w-75">
+                                <div class="float-start d-grid w-100">
                                     <img th:src="${item.getCeoMenuImg1()}"
                                          class="img-thumbnail rounded-2 w-50 h-100 d-block">
                                 </div>
                                 <div>
-                                    <p class="fw-bold fs-4 text-secondary" th:text="${item.getCeoStore()}"></p>
-                                    <p class="fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>
-                                    <p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p> <!-- 평점 -->
-                                    <p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span></p> <!-- 팔로우 수 -->
+                                    <p class="mb-2 fw-bold fs-4 text-black" th:text="${item.getCeoStore()}"></p>
+                                    <p class="mb-2 fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>
+                                    <p class="mb-2 text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p> <!-- 평점 -->
+                                    <p class="mb-2 text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span></p> <!-- 팔로우 수 -->
                                 </div>
                             </div>
                         </a>
