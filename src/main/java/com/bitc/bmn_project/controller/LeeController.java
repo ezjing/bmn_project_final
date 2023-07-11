@@ -393,8 +393,8 @@ public class LeeController {
     public ModelAndView myPageAdmView() throws Exception {
         ModelAndView mv = new ModelAndView("myPage/myPageAdm");
 
-        leeService.customerList();
-        leeService.ceoList();
+//        leeService.customerList();
+//        leeService.ceoList();
         return mv;
     }
 }
