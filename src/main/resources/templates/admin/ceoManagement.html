@@ -85,8 +85,7 @@
                     <td th:if="${item.ceoCategory == '02'}" th:text="중식"></td>
                     <td th:if="${item.ceoCategory == '03'}" th:text="양식"></td>
                     <td th:if="${item.ceoCategory == '04'}" th:text="일식"></td>
-                    <td th:if="${item.ceoCategory == '05'}" th:text="주점"></td>
-                    <td th:unless="${item.ceoCategory == '01' || item.ceoCategory == '02' || item.ceoCategory == '03' || item.ceoCategory == '04' || item.ceoCategory == '05'}"
+                    <td th:unless="${item.ceoCategory == '01' || item.ceoCategory == '02' || item.ceoCategory == '03' || item.ceoCategory == '04'}"
                         th:text="${item.ceoCategory}"></td>
                     <td>
                         <!-- update 문-->

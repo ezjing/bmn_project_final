@@ -21,7 +21,7 @@ public class LoginCheck implements HandlerInterceptor {
         // 화면 출력용
         System.out.println("========== Interceptor 동작 =========");
         // 세션에 저장된 정보 가져오기
-        String userId = (String) session.getAttribute("userId");
+        String userId = (String) session.getAttribute("user");
         System.out.println(userId);
 
         // 세션 정보로 로그인 상태 확인
@@ -29,10 +29,12 @@ public class LoginCheck implements HandlerInterceptor {
             // 비 로그인 상태
             System.out.println("\n***** Interceptor *****");
             System.out.println("비 로그인 상태");
-            System.out.println((String) session.getAttribute("userId"));
-
+            System.out.println((String) session.getAttribute("user"));
+            // failMsg 세션으로 전달
+            session.setAttribute("failMsg", "로그인 후 이용해주시기 바랍니다.");
+            session.setMaxInactiveInterval(1);
             // 메인 페이지로 리다이렉트
-            resp.sendRedirect("/bmn/login");
+            resp.sendRedirect("/bmn/bmnMain");
             // 인터셉터를 통과하지 못했으므로 false를 리턴, 원하는 컨트롤러에 접근 불가능
             return false;
         }

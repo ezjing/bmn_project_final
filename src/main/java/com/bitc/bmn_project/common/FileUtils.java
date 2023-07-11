@@ -33,14 +33,15 @@ public class FileUtils {
         // 현재 타임존을 기준으로 하여 현재 시간을 가져오기
         ZonedDateTime current = ZonedDateTime.now();
 
-        // 경로 생성, 현재 타임존 기준 시간을 패턴에 맞게 설정하여 출력
-//        String path = "images/" + current.format(format);
-        // 현재 StandardServletMultipartResolver 사용 시 전체 경로가 아니면 파일 복사 시 오류가 발생함
-
-
         // *** 실제 경로 설정 ***
 //        String path = "C:/smart505/bmn_project/src/main/resources/static/images/" + current.format(format);
+
+        // DB에 저장할 경로
         String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+
+        // 프로젝트에 포함시킬 경로
+//        String path2 = "C:/smart505/bmn_project/src/main/resources/static/images/" + current.format(format);
+
         // 자바의 File 클래스 객체 생성, 위에서 생성한 경로로 생성
         File file = new File(path);
 
@@ -51,7 +52,6 @@ public class FileUtils {
         }
 
         // 업로드된 파일 정보에서 파일 이름 목록 가져옴
-
         String newFileName = null; // 새 파일명을 저장할 변수
         String originalFileExtension = null; // 원본 파일의 확장자명을 저장할 변수
         String contentType = uploadFile.getContentType(); // 파일의 확장자명을 저장할 변수
@@ -116,12 +116,13 @@ public class FileUtils {
             // 현재 타임존을 기준으로 하여 현재 시간을 가져오기
             ZonedDateTime current = ZonedDateTime.now();
 
-            // 경로 생성, 현재 타임존 기준 시간을 패턴에 맞게 설정하여 출력
-//        String path = "images/" + current.format(format);
-            // 현재 StandardServletMultipartResolver 사용 시 전체 경로가 아니면 파일 복사 시 오류가 발생함
-
-//            String path = "C:/smart505/bmn_project/src/main/resources/static/images/" + current.format(format);
+            // DB에 저장할 경로
             String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+
+            // 프로젝트에 포함시킬 경로
+//            String path2 = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+
+
             // 자바의 File 클래스 객체 생성, 위에서 생성한 경로로 생성
             File file = new File(path);
 
