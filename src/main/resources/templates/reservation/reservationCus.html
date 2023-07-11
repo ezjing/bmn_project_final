@@ -11,9 +11,7 @@
             crossorigin="anonymous"></script>
 
     <style>
-        input:disabled {    /* 왜안되지 */
-            background: #198754;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
     </style>
     <script>
         let selTime = "";
@@ -66,6 +64,7 @@
 
                 form.action = "/bmn/reservationCus/insertReservation";
                 form.submit();
+                alert("예약 신청이 완료되었습니다.");
             });
 
             $("#reservationDate").on("change", function () {

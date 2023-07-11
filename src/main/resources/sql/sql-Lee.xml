@@ -48,7 +48,7 @@
     </delete>
 
     <select id="myPageReservation" parameterType="int" resultType="com.bitc.bmn_project.DTO.ReservationDTO">
-        SELECT R.ceo_store, reservation_date, reservation_time, reservation_stat
+        SELECT ceo_idx, R.ceo_store, reservation_date, reservation_time, reservation_stat
         FROM java505_team3_db.customer_tp U
         JOIN java505_team3_db.reservation_tp R
         ON U.customer_idx = R.customer_idx
@@ -100,6 +100,7 @@
         SELECT ceo_idx, customer_name, reservation_people, reservation_contents, reservation_date, reservation_time, reservation_stat
         FROM reservation_tp
         WHERE ceo_idx = #{ceoIdx}
+        ORDER BY reservation_date DESC, reservation_time DESC
     </select>
     <!--    사장 마이페이지 팔로워 리스트 가져오기-->
     <select id="myPageCeoFollowerList" parameterType="String" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
@@ -112,7 +113,6 @@
         LIKE
         concat('%',#{ceoStore},'%')
     </select>
-
     <!--    사장 마이페이지 팔로워 삭제하기-->
     <update id="myPageCeoFollowerDelete" parameterType="map">
         UPDATE
@@ -126,11 +126,13 @@
         SELECT ceo_idx, customer_nick, review_title, review_score, review_date
         FROM review_tp
         WHERE ceo_idx = #{ceoIdx}
+        ORDER BY review_date DESC
     </select>
     <select id="myPageCeoQuestion" parameterType="int" resultType="com.bitc.bmn_project.DTO.QuestionDTO">
         SELECT ceo_idx, customer_nick, question_title, question_date, question_complete
         FROM question_tp
         WHERE ceo_idx = #{ceoIdx}
+        ORDER BY question_date DESC
     </select>
     <delete id="myPageCeoOut">
         DELETE FROM ceo_tp

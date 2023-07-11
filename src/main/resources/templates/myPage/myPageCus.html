@@ -11,7 +11,7 @@
             crossorigin="anonymous"></script>
 
     <style>
-
+        @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
     </style>
     <script>
         function events() {
@@ -76,6 +76,7 @@
                         }
                         else {
                             for (let i = 0; i < data.length; i++) {
+                                const ceoIdx = data[i].ceoIdx;
                                 const ceoStore = data[i].ceoStore;
                                 const reservationDate = data[i].reservationDate;
                                 const reservationTime = data[i].reservationTime;
@@ -90,9 +91,9 @@
 
                                 tbody =
                                     "<tr>\n" +
-                                    "    <td>" + ceoStore + "</td>\n" +
+                                    "    <td><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-decoration-none'>" + ceoStore + "</a></td>\n" +
                                     "    <td>" + reservationDate + "</td>\n" +
-                                    "    <td>" + reservationTime + "</td>\n" +
+                                    "    <td>" + reservationTime + ":00</td>\n" +
                                     "    <td>" + reservationStat + "</td>\n" +
                                     "</tr>";
 

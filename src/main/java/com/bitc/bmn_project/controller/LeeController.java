@@ -388,4 +388,13 @@ public class LeeController {
 
         return "redirect:/bmn/myPageCeo";
     }
+
+    @RequestMapping(value = "/bmn/myPageAdm", method = RequestMethod.GET)
+    public ModelAndView myPageAdmView() throws Exception {
+        ModelAndView mv = new ModelAndView("myPage/myPageAdm");
+
+        leeService.customerList();
+        leeService.ceoList();
+        return mv;
+    }
 }
