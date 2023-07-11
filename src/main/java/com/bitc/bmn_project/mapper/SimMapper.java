@@ -54,6 +54,8 @@ public interface SimMapper {
 
     void customerBan(int targetIdx) throws Exception;
 
+    int isBanned(String userId) throws Exception;
+
 
 //    Page<CustomerDTO> getPageList() throws Exception;
 }

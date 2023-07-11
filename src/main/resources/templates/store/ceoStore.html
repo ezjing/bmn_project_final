@@ -89,6 +89,18 @@
                 }
             }
 
+            const session = $("#session-check").text();
+
+            if (session !== "ceo") {
+                alert('사장님만 열람 가능한 페이지입니다.');
+                location.href = "bmn/bmnMain"
+            }
+
+            // 페이지 로드 됐을떄 텍스트를 한번에 못 읽어 오길래 값이 비엇을 경우 리로드 시켜줌
+            if (session === "") {
+                location.reload();
+            }
+
             const ceoStore = $("#ceo-store");
             const ceoCategory = $("#ceo-category");
             let ceoCallNumber = $("#ceo-call-number");
@@ -279,12 +291,14 @@
     </script>
 </head>
 <body>
+<div id="session-check" th:if="${session.user != 'ceo'}" th:text="${session.user}" hidden="hidden"></div>
 <div class="container-sm my-4">
     <div class="col-sm-10 mx-auto">
         <form name="form" id="form" action="/bmn/ceoStore/addStore" method="post" class="form-control valida"
               enctype="multipart/form-data"
               novalidate>
             <h2 class="text-center my-4">가게 등록</h2>
+            <a href="/bmn/bmnMain">메인으로</a>
             <div>
                 <!-- 정보 입력 -->
                 <div class="row">

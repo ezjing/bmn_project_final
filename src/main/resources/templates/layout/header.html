@@ -66,8 +66,8 @@
                         </div>
                     </div>
                     <div th:if="${session.user == 'admin'}">
+                        <a href="/bmn/admin/customerManagement" class="btn btn-outline-dark">관리페이지(회원)</a>
                         <a href="/bmn/admin/ceoManagement" class="btn btn-outline-dark">관리페이지(식당)</a>
-                        <a href="/bmn/admin/customerManagement" class="btn btn-outline-dark">관리페이지(식당)</a>
                     </div>
                     <a href="/bmn/logOut" id="logout-btn" class="btn btn-outline-dark ms-2">로그아웃</a>
                 </div>

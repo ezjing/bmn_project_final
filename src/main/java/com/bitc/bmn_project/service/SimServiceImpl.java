@@ -165,5 +165,10 @@ public class SimServiceImpl implements SimService {
         simMapper.customerBan(targetIdx);
     }
 
+    @Override
+    public int isBanned(String userId) throws Exception {
+        return simMapper.isBanned(userId);
+    }
+
 
 }

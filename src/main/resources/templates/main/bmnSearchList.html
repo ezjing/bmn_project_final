@@ -60,17 +60,17 @@
                 selectedEls.forEach((el) => {
                     result += el.value + ' ';
                 });
-                // // 출력
-                // document.getElementById('result').innerText
-                //     = result;
-                //
-                // // 이용자 층 필터 블록 부분
-                // let checkArr = document.querySelectorAll('input[name="checkBoxAge"]:checked');
-                // let customAge = [];
-                //
-                // for (let i = 0; i < checkArr.length; i++) {
-                //     customAge.push(checkArr[i].value);
-                // }
+                // 출력
+                document.getElementById('result').innerText
+                    = result;
+
+                // 이용자 층 필터 블록 부분
+                let checkArr = document.querySelectorAll('input[name="checkBoxAge"]:checked');
+                let customAge = [];
+
+                for (let i = 0; i < checkArr.length; i++) {
+                    customAge.push(checkArr[i].value);
+                }
 
                 console.log('chk++arrycheck::' + customAge);
 
@@ -308,55 +308,90 @@
 
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <p th:if="${#lists.size(storeList)} > 0" class="fs-5 fw-bold">#평점 순</p>
+                    <p th:if="${#lists.size(storeList)} > 0" class="mt-4 fs-5 fw-bold">#평점 순</p>
                     <!--                    -->
                     <div class="list-group" th:if="${#lists.size(storeList)} > 0" th:each="item : ${storeList}">
-                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}" class="list-group-item list-group-item-action">
-                            <div>
-                                <div class="float-start d-grid w-100">
-                                    <img th:src="${item.getCeoMenuImg1()}"
-                                         class="img-thumbnail rounded-2 w-50 h-100 d-block">
+                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}" class="list-group-item list-group-item-action mb-5">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="float-start d-grid w-100">
+                                        <img th:src="${item.getCeoMenuImg1()}"
+                                             class="img-thumbnail rounded-2 w-100 h-100 d-block">
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="mb-2 fw-bold fs-4 text-black" th:text="${item.getCeoStore()}"></p>
-                                    <p class="mb-2 fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>
-                                    <p class="mb-2 text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p> <!-- 평점 -->
-                                    <p class="mb-2 text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span></p> <!-- 팔로우 수 -->
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="list-group" th:if="${#lists.size(storeList)} == 0">
-                        <p class="fs-5 fw-bold">#검색 결과가 없습니다.</p>
-                    </div>
-                </div>
+                                <div class="col-1"></div>
+                                <div class="col-3">
+                                    <div class="pt-4">
+                                        <p class="mb-2 fw-bold fs-4 text-black" th:text="${item.getCeoStore()}"></p>
+                                        <p class="mb-4 fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>
+                                        <p class="mb-4 text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p> <!-- 평점 -->
+                                        <p class="mb-4 text-secondary">
+                                            <i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span>
+<!--                                        <i class="bi bi-chat-right-text ms-4 me-1" style="color:saddlebrown"></i><span class="text-secondary" th:text="${item.getReviewCnt()}"></span>-->
+                                        </p> <!-- 팔로우 수 -->
 
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <p class="fs-5 fw-bold" th:if="${#lists.size(reviewCntList)} > 0">#리뷰 많은 순</p>
-                    <div class="list-group" th:if="${#lists.size(reviewCntList)} > 0" th:each="item : ${reviewCntList}">
-                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}"
-                           class="list-group-item list-group-item-action">
-                            <div>
-                                <div class="float-start d-grid w-75">
-                                    <img th:src="${item.getCeoMenuImg1()}"
-                                         class="img-thumbnail rounded-2 w-50 h-100 d-block">
-                                </div>
-                                <div>
-                                    <p class="fw-bold fs-4 text-secondary" th:text="${item.getCeoStore()}"></p>
-                                    <p class="fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>
-                                    <p class="text-secondary"><i class="bi bi-chat-right-text me-1" style="color:saddlebrown"></i><span th:text="${item.getReviewCnt()}"></span></p>
-                                    <p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p>
-                                    <p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span></p>
+                                    </div>
                                 </div>
                             </div>
                         </a>
                     </div>
                     <div class="list-group" th:if="${#lists.size(reviewCntList)} == 0">
-                        <p class="fs-5 fw-bold">#검색 결과가 없습니다.</p>
+                        <p class="mt-4 fs-5 fw-bold">#검색 결과가 없습니다.</p>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <p class="mt-4 fs-5 fw-bold" th:if="${#lists.size(reviewCntList)} > 0">#리뷰 많은 순</p>
+                    <div class="list-group" th:if="${#lists.size(reviewCntList)} > 0" th:each="item : ${reviewCntList}">
+                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}" class="list-group-item list-group-item-action mb-5">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="float-start d-grid w-100">
+                                        <img th:src="${item.getCeoMenuImg1()}"
+                                             class="img-thumbnail rounded-2 w-100 h-100 d-block">
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-3">
+                                    <div class="pt-4">
+                                        <p class="mb-2 fw-bold fs-4 text-black" th:text="${item.getCeoStore()}"></p>
+                                        <p class="mb-4 fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>
+                                        <p class="mb-4 text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p> <!-- 평점 -->
+                                        <p class="mb-4 text-secondary">
+                                            <i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span>
+                                            <i class="bi bi-chat-right-text ms-4 me-1" style="color:saddlebrown"></i><span class="text-secondary" th:text="${item.getReviewCnt()}"></span>
+                                        </p> <!-- 팔로우 수 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+<!--                    <div class="list-group" th:if="${#lists.size(reviewCntList)} > 0" th:each="item : ${reviewCntList}">-->
+<!--                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}"-->
+<!--                           class="list-group-item list-group-item-action">-->
+<!--                            <div class="row">-->
+<!--                                <div class="col">-->
+<!--                                    <div class="float-start d-grid w-75">-->
+<!--                                        <img th:src="${item.getCeoMenuImg1()}"-->
+<!--                                             class="img-thumbnail rounded-2 w-50 h-100 d-block">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div>-->
+<!--                                    <p class="fw-bold fs-4 text-secondary" th:text="${item.getCeoStore()}"></p>-->
+<!--                                    <p class="fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>-->
+<!--                                    <p class="text-secondary"><i class="bi bi-chat-right-text me-1" style="color:saddlebrown"></i><span th:text="${item.getReviewCnt()}"></span></p>-->
+<!--                                    <p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p>-->
+<!--                                    <p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span></p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </a>-->
+<!--                    </div>-->
+                    <div class="list-group" th:if="${#lists.size(reviewCntList)} == 0">
+                        <p class="mt-4 fs-5 fw-bold">#검색 결과가 없습니다.</p>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                    <p class="fs-5 fw-bold" th:if="${#lists.size(followList)} > 0">#팔로우 순</p>
+                    <p class="mt-4 fs-5 fw-bold" th:if="${#lists.size(followList)} > 0">#팔로우 순</p>
                     <div class="list-group" th:if="${#lists.size(followList)} > 0" th:each="item : ${followList}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}"
                            class="list-group-item list-group-item-action">

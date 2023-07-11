@@ -52,5 +52,7 @@ public interface SimService {
 
     void customerBan(int targetIdx) throws Exception;
 
+    int isBanned(String userId) throws Exception;
+
 //    Page<CustomerDTO> getPageList(int pageNum) throws Exception;
 }

@@ -75,6 +75,15 @@ public class SimController {
             return "redirect:" + returnUrl;
         }
 
+        int isBanned = simService.isBanned(userId);
+        if (isBanned == 1) {
+            session.setAttribute("failMsg", "영구정지 된 아이디입니다.");
+            session.setMaxInactiveInterval(1);
+            return "redirect:" + returnUrl;
+        }
+
+
+
         //
         // 2-1-1. 손님 DB에 데이터 존재하는지 확인
         // 2-1-2. 관리자인지 확인()
