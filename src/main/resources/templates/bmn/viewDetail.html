@@ -244,6 +244,7 @@
     }
     
     
+    
     $(document).ready(function () {
       // ajax 페이징처리 함수로 페이지 로딩될때 pageNum이 1이 되도록 하는 함수 실행
       pagination(1);
@@ -599,7 +600,7 @@
       <div class="col-sm-8 mx-auto">
         <div class="border rounded-2 p-3">
           <p th:text="${ceoDto.ceoStore}" class="fw-bold fs-2 d-inline">가게 이름</p>
-          <button class="btn btn-outline-primary d-inline mb-3" id="btn-follow">#팔로우
+          <button class="btn btn-outline-secondary d-inline ms-3 mb-3" id="btn-follow">#팔로우
             <span th:text="${followCnt}" id="follow-cnt">3</span>
           </button>
           <input type="hidden" id="ceoStore" th:value="${ceoDto.ceoStore}">
@@ -607,17 +608,17 @@
           <!--          <input type="hidden" id="customerIdx" th:value="${session.customerIdx}">--><br><br>
           
           <!--          1,2,3,4 한일중양 표현-->
-          <span th:if="${ceoDto.ceoCategory} == 01" class="rounded-5 border border-primary p-3 me-3">한식</span>
-          <span th:if="${ceoDto.ceoCategory} == 02" class="rounded-5 border border-primary p-3 me-3">일식</span>
-          <span th:if="${ceoDto.ceoCategory} == 03" class="rounded-5 border border-primary p-3 me-3">중식</span>
-          <span th:if="${ceoDto.ceoCategory} == 04" class="rounded-5 border border-primary p-3 me-3">양식</span>
-          <span th:text="|평점 : ${ceoDto.ceoScore}점|" class="rounded-5 border border-primary p-3"
+          <span th:if="${ceoDto.ceoCategory} == 01" class="rounded-5 border border-dark p-3 me-3">한식</span>
+          <span th:if="${ceoDto.ceoCategory} == 02" class="rounded-5 border border-dark p-3 me-3">일식</span>
+          <span th:if="${ceoDto.ceoCategory} == 03" class="rounded-5 border border-dark p-3 me-3">중식</span>
+          <span th:if="${ceoDto.ceoCategory} == 04" class="rounded-5 border border-dark p-3 me-3">양식</span>
+          <span th:text="|평점 : ${ceoDto.ceoScore}점|" class="rounded-5 border border-dark p-3"
                 style="width: 100px"></span>
-          <span th:text="|리뷰 : ${reviewCnt}개|" class="rounded-5 border border-primary p-3 ms-3"></span>
+          <span th:text="|리뷰 : ${reviewCnt}개|" class="rounded-5 border border-dark p-3 ms-3"></span>
           <div class="row">
-            <div class="card mt-5" style="width: 40rem;">
-              <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|" class="card-img-top" alt="등록된 이미지가 없습니다."
-                   style="width: 400px;" height="300px;">
+            <div class="card mt-5" style="width: 25rem;">
+              <img th:src="|/bmn/getImage?path=${ceoDto.ceoThumbnailImg}|" class="card-img-top w-100 py-3"
+                   alt="등록된 이미지가 없습니다.">
             </div>
           
           </div>
@@ -634,20 +635,21 @@
           </p>
           <input type="hidden" id="ceo-full-address" th:value="${ceoDto.ceoFullAddress}">
           <p style="margin-bottom: 0px"><strong>대표메뉴</strong></p>
-          <div class="card">
-            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMainImg}|" alt="등록된 이미지가 없습니다."
-                 style="width:300px; height: 200px">
+          <div class="card" style="width: 25rem">
+            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMainImg}|" alt="등록된 이미지가 없습니다." class="w-100">
             <div class="card-body">
-              <p th:text="${ceoDto.ceoMainMenu != null} ? ${ceoDto.ceoMainMenu} : '[등록된 정보가 없습니다.]'"></p>
+              <p th:text="${ceoDto.ceoMainMenu != null} ? ${ceoDto.ceoMainMenu} : '[등록된 정보가 없습니다.]'"
+                 style="margin-bottom: 0px"></p>
             </div>
           </div>
-          <button class="btn btn-outline-primary my-3" data-bs-toggle="collapse" data-bs-target="#detail-menu">상세 메뉴 확인하기
+          <button class="btn btn-outline-dark my-3" data-bs-toggle="collapse" data-bs-target="#detail-menu">상세 메뉴 확인하기
           </button>
           <div class="collapse" id="detail-menu">
             <div class="row my-2">
               <div class="col-4">
-                <div class="card m-1">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|" alt="등록된 이미지가 없습니다.">
+                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg1)}">
+                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|"
+                       alt="등록된 이미지가 없습니다.">
                   <div class="card-body">
                     <p th:text="${ceoDto.ceoDetailMenu1 != null} ? ${ceoDto.ceoDetailMenu1} : '[등록된 정보가 없습니다.]'"
                        style="margin-bottom: 0px">상세메뉴1 </p>
@@ -655,7 +657,7 @@
                 </div>
               </div>
               <div class="col-4">
-                <div class="card m-1">
+                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg2)}">
                   <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg2}|" alt="등록된 이미지가 없습니다.">
                   <div class="card-body">
                     <p th:text="${ceoDto.ceoDetailMenu2 != null} ? ${ceoDto.ceoDetailMenu2} : '[등록된 정보가 없습니다.]'"
@@ -664,7 +666,7 @@
                 </div>
               </div>
               <div class="col-4">
-                <div class="card m-1">
+                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg3)}">
                   <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg3}|" alt="등록된 이미지가 없습니다.">
                   <div class="card-body">
                     <p th:text="${ceoDto.ceoDetailMenu3 != null} ? ${ceoDto.ceoDetailMenu3} : '[등록된 정보가 없습니다.]'"
@@ -675,7 +677,7 @@
             </div>
             <div class="row my-2">
               <div class="col-4">
-                <div class="card m-1">
+                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg4)}">
                   <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg4}|" alt="등록된 이미지가 없습니다.">
                   <div class="card-body">
                     <p th:text="${ceoDto.ceoDetailMenu4 != null} ? ${ceoDto.ceoDetailMenu4} : '[등록된 정보가 없습니다.]'"
@@ -684,7 +686,7 @@
                 </div>
               </div>
               <div class="col-4">
-                <div class="card m-1">
+                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg5)}">
                   <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg5}|" alt="등록된 이미지가 없습니다.">
                   <div class="card-body">
                     <p th:text="${ceoDto.ceoDetailMenu5 != null} ? ${ceoDto.ceoDetailMenu5} : '[등록된 정보가 없습니다.]'"
@@ -693,7 +695,7 @@
                 </div>
               </div>
               <div class="col-4">
-                <div class="card m-1">
+                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg6)}">
                   <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg6}|" alt="등록된 이미지가 없습니다.">
                   <div class="card-body">
                     <p th:text="${ceoDto.ceoDetailMenu6 != null} ? ${ceoDto.ceoDetailMenu6} : '[등록된 정보가 없습니다.]'"
@@ -728,10 +730,10 @@
             <div class="row">
               <div class="col-sm d-flex align-items-center">
                 <p style="margin-bottom: 0px">식당 평점 : <span th:text="${ceoDto.ceoScore}"
-                                                            class="fw-semibold bg-info rounded p-2"></span></p>
+                                                            class="fw-semibold bg-secondary text-white rounded p-2"></span></p>
               </div>
               <div class="col-sm d-flex justify-content-end">
-                <button type="button" class="btn btn-outline-info m-3" id="customer-grade-check">#리뷰작성
+                <button type="button" class="btn btn-dark m-3" id="customer-grade-check">#리뷰작성
                 </button>
                 <!--                <input type="hidden" id="customer-grade" th:value="${session.user.customerGrade}">-->
               </div>
@@ -758,7 +760,8 @@
                 </div>
                 <div class="row">
                   <div class="col-sm">
-                    <p>리뷰 평점 : <span th:text="${item.reviewScore}" class="bg-info fw-bold rounded p-1"></span></p>
+                    <p>리뷰 평점 :
+                      <span th:text="${item.reviewScore}" class="bg-secondary text-white fw-bold rounded p-1"></span></p>
                   </div>
                   <div class="col-sm d-flex justify-content-end">
                     <p th:text="|${item.reviewDate} 작성|"></p>
@@ -768,42 +771,42 @@
               </div>
               <div class="d-flex ms-3">
                 <div th:if="${item.reviewTag1} == Y" class="mx-1">
-                  <button class="btn btn-outline-primary">맛</button>
+                  <button class="btn btn-outline-dark">맛</button>
                 </div>
                 <div th:unless="${item.reviewTag1} == Y"></div>
                 
                 <div th:if="${item.reviewTag2} == Y" class="mx-1">
-                  <button class="btn btn-outline-primary">만족도</button>
+                  <button class="btn btn-outline-dark">만족도</button>
                 </div>
                 <div th:unless="${item.reviewTag2} == Y"></div>
                 
                 <div th:if="${item.reviewTag3} == Y" class="mx-1">
-                  <button class="btn btn-outline-primary">서비스</button>
+                  <button class="btn btn-outline-dark">서비스</button>
                 </div>
                 <div th:unless="${item.reviewTag3} == Y"></div>
                 
                 <div th:if="${item.reviewTag4} == Y" class="mx-1">
-                  <button class="btn btn-outline-primary">음식량</button>
+                  <button class="btn btn-outline-dark">음식량</button>
                 </div>
                 <div th:unless="${item.reviewTag4} == Y"></div>
                 
                 <div th:if="${item.reviewTag5} == Y" class="mx-1">
-                  <button class="btn btn-outline-primary">대기시간</button>
+                  <button class="btn btn-outline-dark">대기시간</button>
                 </div>
                 <div th:unless="${item.reviewTag5} == Y"></div>
                 
                 <div th:if="${item.reviewTag6} == Y" class="mx-1">
-                  <button class="btn btn-outline-primary">청결도</button>
+                  <button class="btn btn-outline-dark">청결도</button>
                 </div>
                 <div th:unless="${item.reviewTag6} == Y"></div>
                 
                 <div th:if="${item.reviewTag7} == Y" class="mx-1">
-                  <button class="btn btn-outline-primary">분위기</button>
+                  <button class="btn btn-outline-dark">분위기</button>
                 </div>
                 <div th:unless="${item.reviewTag7} == Y"></div>
                 
                 <div th:if="${item.reviewTag8} == Y" class="mx-1">
-                  <button class="btn btn-outline-primary">가격</button>
+                  <button class="btn btn-outline-dark">가격</button>
                 </div>
                 <div th:unless="${item.reviewTag8} == Y"></div>
               </div>
@@ -811,11 +814,11 @@
                 <p th:text="${item.reviewTitle}" class="fw-semibold"></p>
                 <p th:utext="${item.reviewContents}"></p>
                 <div>
-                  <img th:src="|/bmn/getImage?path=${item.reviewImg}|" alt="이미지를 불러올 수 없습니다."
+                  <img th:if="${not #strings.isEmpty(item.reviewImg)}" th:src="|/bmn/getImage?path=${item.reviewImg}|" alt="이미지를 불러올 수 없습니다."
                        style="width: 300px; height: 200px;"> <!-- 경로 이미지 구현 할것 -->
                 </div>
               </div>
-              <button class="btn btn-outline-primary ms-4" data-bs-toggle="collapse" data-bs-target="#commentCollapse"
+              <button class="btn btn-secondary ms-4" data-bs-toggle="collapse" data-bs-target="#commentCollapse"
                       th:attrappend="data-bs-target=${itemStat.index}">
                 <i class="bi bi-chat-left-dots-fill" style="font-size: 20px"></i>
                 <span>댓글 보기</span>
@@ -963,8 +966,7 @@
                  -->
                 </div>
               </div>
-              <button class="btn btn-outline-primary ms-4" data-bs-toggle="collapse" data-bs-target="#commentCollapse2"
-                      th:attrappend="data-bs-target=${itemStat.index}">
+              <button class="btn btn-secondary ms-4" data-bs-toggle="collapse" data-bs-target="#commentCollapse2" th:attrappend="data-bs-target=${itemStat.index}">
                 <i class="bi bi-chat-left-dots-fill" style="font-size: 20px"></i>
                 <span>댓글 보기</span>
               </button>

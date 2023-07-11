@@ -58,6 +58,7 @@ public class ParkController {
         return mv;
     }
 
+    @ResponseBody
     @RequestMapping(value="/bmn/bmnSearchList", method = RequestMethod.GET)
     public ModelAndView searchListGet(
             @RequestParam(value = "keyWorld", required = false) String keyWorld

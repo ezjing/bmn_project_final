@@ -19,71 +19,29 @@
     }
   </style>
   <script>
-  
+    function foodSearch(){
+      let keyWorld = $("#keyword-val").val();
+      console.log(keyWorld);// 값이 들어오는 거 확인함
+      $.ajax({
+        url:"/bmn/bmnSearchList",
+        type: "GET",
+        success:function(){
+          location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+          // alert('접속 성공')
+        },
+        error:function(){
+          alert('접속 실패')
+        }
+      });
+    
+    }
   </script>
 
 </head>
 <body>
 
 <header th:fragment="header" class="container-fluid sticky-top">
-  <!-- 사장님으로 로그인 시 등급별로 UI, 루트 조정
-  미인증 등급 ->  1 / 마이페이지, 내 가게 등록 버튼(/ceoStore)로 보내주기
-  인증 등급 ->  2 / 마이페이지 / session.ceo.ceoIdx 받아와서 내가 바로가기 버튼
-  -->
-<!--  <div class="row bg-light ">-->
-<!--    <div class="col-sm-2">-->
-<!--      <nav class="navbar">-->
-<!--        <a href="/bmn/bmnMain" class="text-decoration-none mx-auto mt-3">-->
-<!--          <span class="navbar-brand fs-1" id="headerFont">밥뭇나</span>-->
-<!--        </a>-->
-<!--      </nav>-->
-<!--    </div>-->
-<!--    <div class="col-sm-6 input-group pt-3 pb-3 w-50">-->
-<!--      <input th:value="${keyWorld}" id="keyword-val" name="keyword-val" type="search" class="form-control me-3"-->
-<!--             placeholder="식당,메뉴,주소명을 입력해주세요">-->
-<!--      <a class="btn btn-primary mx-auto" onclick="foodSearch()">검색</a>-->
-<!--    </div>-->
-<!--    -->
-<!--    <div class="col-sm-4 btn-group justify-content-center">-->
-<!--      <div class="col-sm-4 btn-group justify-content-center">-->
-<!--        &lt;!&ndash; 로그인 시 사장님/회원님 환영합니다 메시지 구현, 타임리프 오류해결 필요  &ndash;&gt;-->
-<!--        <div class="fs-3" th:if="${not #strings.isEmpty(session.user)}">-->
-<!--          <a href="/bmn/logOut" id="logout-btn" class="btn btn-primary me-3">로그아웃</a>-->
-<!--          -->
-<!--          <p th:if="${session.user == 'customer'}" th:text="|${session.customer.customerNick}님 환영합니다.|"></p>-->
-<!--          <p th:if="${session.user == 'ceo'}" th:text="|${session.ceo.ceoStore}사장님 환영합니다.|"></p>-->
-<!--          &lt;!&ndash; 가게 등록안한 사장은 null 값이 반환됨 수정 필요&ndash;&gt;-->
-<!--          <p th:if="${session.user == 'admin'}">관리자님 환영합니다.</p>-->
-<!--        </div>-->
-<!--        -->
-<!--        <div class="fs-3" th:unless="${not #strings.isEmpty(session.user)}">-->
-<!--          <button type="button" id="login-btn" class="btn btn-primary me-3" data-bs-toggle="modal"-->
-<!--                  data-bs-target="#modal-login">로그인-->
-<!--          </button>-->
-<!--          <div class="fs-3 d-grid">-->
-<!--            <a href="/bmn/signUp/customer" class="btn btn-primary flex-fill mx-1 mt-3">손님 회원가입</a>-->
-<!--            <a href="/bmn/signUp/ceo" class="btn btn-success flex-fill mx-1 mt-3">사장님 회원가입</a>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        -->
-<!--        &lt;!&ndash;            <div class="fs-3"><button type="submit" class="btn btn-primary">회원가입</button></div>&ndash;&gt;-->
-<!--        <div class="fs-3" th:if="${session.user == 'customer'}">-->
-<!--          <a href="/bmn/myPageCus" class="btn btn-primary">마이 페이지</a>-->
-<!--          &lt;!&ndash;  사장님 계정 로그인 시 가게등록하기 버튼 추가, 무조건 페이지 연동까지 구현하기  &ndash;&gt;-->
-<!--          &lt;!&ndash;  사장님 계정 로그인 시 내 가게로 가기 버튼 추가(viewDetail 연결)  &ndash;&gt;-->
-<!--        </div>-->
-<!--        <div class="fs-3" th:if="${session.user == 'ceo'}">-->
-<!--          <a href="/bmn/myPageCeo" class="btn btn-primary">마이 페이지</a>-->
-<!--        </div>-->
-<!--        <div class="fs-3" th:if="${session.user == 'admin'}">-->
-<!--          &lt;!&ndash; 관리자 페이지 루트 넣어주기&ndash;&gt;-->
-<!--          <a href="/bmn/" class="btn btn-primary">마이 페이지</a>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-  
-  <div class="row bg-light">
+  <div class="row bg-light py-2">
     <div class="col-sm-3 d-flex align-content-center">
       <nav class="navbar" style="margin-left: 150px">
         <a href="/bmn/bmnMain" class="text-decoration-none">
@@ -126,8 +84,8 @@
             </div>
           </div>
           <div th:if="${session.user == 'admin'}">
+            <a href="/bmn/admin/customerManagement" class="btn btn-outline-dark">관리페이지(회원)</a>
             <a href="/bmn/admin/ceoManagement" class="btn btn-outline-dark">관리페이지(식당)</a>
-            <a href="/bmn/admin/customerManagement" class="btn btn-outline-dark">관리페이지(식당)</a>
           </div>
           <a href="/bmn/logOut" id="logout-btn" class="btn btn-outline-dark ms-2">로그아웃</a>
         </div>
