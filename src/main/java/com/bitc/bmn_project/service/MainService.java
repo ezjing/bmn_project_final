@@ -30,4 +30,6 @@ public interface MainService {
     List<ceoCustomDTO> genderFilterLists(String keyWorld, String genderKey) throws Exception;
 
     List<ceoCustomDTO> categoryFoods(String keyWorld, String categoryFoods) throws Exception;
+
+    List<ReviewCntDto> reviewCntOuterLists(String keyWorld) throws Exception;
 }

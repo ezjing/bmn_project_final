@@ -42,5 +42,7 @@ public interface MainMapper {
 
     List<ceoCustomDTO> categoryFoods(@Param("keyWorld") String keyWorld,@Param("categoryFoods") String categoryFoods) throws Exception;
 
+    List<ReviewCntDto> reviewCntOuterLists(String keyWorld) throws Exception;
+
     ;
 }
