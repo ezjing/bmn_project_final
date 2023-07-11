@@ -96,7 +96,7 @@
             (A.ceo_store LIKE CONCAT('%',#{keyWorld},'%') OR A.ceo_main_menu LIKE CONCAT('%',#{keyWorld},'%')  OR A.ceo_city_address LIKE CONCAT('%',#{keyWorld},'%') )
         GROUP BY A.ceo_idx;
     </select>
-
+    <!--  리뷰 순 검색결과 SELECT 문(outer join)  -->
     <select id="reviewCntOuterLists" parameterType="com.bitc.bmn_project.DTO.ReviewCntDto">
         SELECT
         A.ceo_idx, A.ceo_menu_img1, A.ceo_store, A.ceo_score, A.ceo_follow_cnt, A.ceo_main_menu, A.ceo_city_address

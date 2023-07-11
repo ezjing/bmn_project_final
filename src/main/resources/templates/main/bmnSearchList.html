@@ -329,27 +329,7 @@
                                             <i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span>
 <!--                                        <i class="bi bi-chat-right-text ms-4 me-1" style="color:saddlebrown"></i><span class="text-secondary" th:text="${item.getReviewCnt()}"></span>-->
                                         </p> <!-- 팔로우 수 -->
-
-<<<<<<< HEAD
                                     </div>
-=======
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <p class="fs-5 fw-bold" th:if="${#lists.size(reviewCntList)} > 0">#리뷰 많은 순</p>
-                    <div class="list-group" th:if="${#lists.size(reviewCntList)} > 0" th:each="item : ${reviewCntList}">
-                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}"
-                           class="list-group-item list-group-item-action">
-                            <div>
-                                <div class="col-sm-4 float-start d-grid w-75">
-                                    <img th:src="${item.getCeoMenuImg1()}"
-                                         class="img-thumbnail rounded-2 w-50 h-100 d-block">
-                                </div>
-                                <div cl>
-                                    <p class="fw-bold fs-4 text-secondary" th:text="${item.getCeoStore()}"></p>
-                                    <p class="fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>
-                                    <p class="text-secondary"><i class="bi bi-chat-right-text me-1" style="color:saddlebrown"></i><span th:text="${item.getReviewCnt()}"></span></p>
-                                    <p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p>
-                                    <p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span></p>
->>>>>>> origin/yutibranch
                                 </div>
                             </div>
                         </a>
