@@ -62,102 +62,105 @@
 </head>
 <body>
 <div th:replace="~{/layout/header :: header}"></div>
+
 <!-- 세션확인으로 관리자만 접속 가능-->
 <div id="session-check" th:text="${session.user}" hidden="hidden"></div>
 
-<div class="container-sm my-5">
-    <div class="row">
-        <div class="col mx-auto">
-            <h2 class="text-center">회원 관리</h2>
-            <table class="table text-center">
-                <colgroup>
-                    <col width="9%">
-                    <col width="20%">
-                    <col width="5%">
-                    <col width="6%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>회원 ID</th>
-                    <th>회원명(회원 닉네임)</th>
-                    <th>성별</th>
-                    <th>연령대</th>
-                    <th>가입일</th>
-                    <th>팔로우 수</th>
-                    <th>작성한 리뷰 수</th>
-                    <th>작성한 댓글 수</th>
-                    <th>회원 등급</th>
-                    <th>회원 차단</th>
-                </tr>
-                </thead>
-                <tbody>
+<div th:fragment="cusMan">
+    <div class="container-sm my-5">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <h2 class="text-center">회원 관리</h2>
+                <table class="table text-center">
+                    <colgroup>
+                        <col width="9%">
+                        <col width="20%">
+                        <col width="5%">
+                        <col width="6%">
+                        <col width="10%">
+                        <col width="10%">
+                        <col width="10%">
+                        <col width="10%">
+                        <col width="10%">
+                        <col width="10%">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>회원 ID</th>
+                        <th>회원명(회원 닉네임)</th>
+                        <th>성별</th>
+                        <th>연령대</th>
+                        <th>가입일</th>
+                        <th>팔로우 수</th>
+                        <th>작성한 리뷰 수</th>
+                        <th>작성한 댓글 수</th>
+                        <th>회원 등급</th>
+                        <th>회원 차단</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                <!-- 관리자 계정을 걸러주기 위한 id 부여-->
-                <tr th:if="${customerList.getTotal()} > 0" th:each="item : ${customerList.getList()}"
-                    th:id="|gradeIs${itemStat.current. customerGrade}|">
+                    <!-- 관리자 계정을 걸러주기 위한 id 부여-->
+                    <tr th:if="${customerList.getTotal()} > 0" th:each="item : ${customerList.getList()}"
+                        th:id="|gradeIs${itemStat.current. customerGrade}|">
 
-                    <td th:text="${item.customerId}"></td>
-                    <td th:text="|${item.customerName}(${item.customerNick})|"></td>
-                    <td th:if="${item.customerGender == 'M'}">남성</td>
-                    <td th:if="${item.customerGender == 'F'}">여성</td>
-                    <td th:text="${item.customerAge}"></td>
-                    <td th:text="${item.customerJoinDt}"></td>
-                    <td th:text="${item.customerFollow}"></td>
-                    <td th:text="${item.customerReviewCount}"></td>
-                    <td th:text="${item.customerCommentCount}"></td>
-                    <td>
-                        <!-- 등급조정, 차단을 수행하는 폼-->
-                        <form action="/bmn/admin/customerManagement" method="POST" th:id="|form${itemStat.count}|">
-                            <input type="hidden" th:value="${item.customerIdx}" name="targetIdx">
-                            <select th:if="${item.customerGrade == 1}" class="form-select"
-                                    th:onchange="|changeGrade(this.value, ${itemStat.count})|" name="grade">
-                                <option selected value="1">일반회원</option>
-                                <option value="2">우수회원</option>
-                            </select>
-                            <select th:if="${item.customerGrade == 2}" class="form-select"
-                                    th:onchange="|changeGrade(this.value, ${itemStat.count})|" name="grade">
-                                <option value="1">일반회원</option>
-                                <option selected value="2">우수회원</option>
-                            </select>
-                        </form>
-                    </td>
-                    <td>
-                        <!-- update 문-->
-                        <button id="btn-ban" onclick="ban(this.value)" class="btn btn-danger opacity-75"
-                                th:value="${item.customerIdx}">차단
-                        </button>
-                    </td>
-                </tr>
-                <tr th:unless="${customerList.getTotal()} > 0">
-                    <td colspan="9" class="py-4"><h3>등록 요청된 가게가 없습니다.</h3></td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="my-3">
-                <ul class="pagination justify-content-center">
-                    <!-- 이전 페이지 버튼-->
-                    <li class="page-item" th:classappend="${customerList.getPrePage() == 0} ? 'disabled'">
-                        <a href="#" class="page-link" th:href="@{/bmn/amdin/customerManagement(pageNum=${customerList.getPrePage()})}">&laquo;</a>
-                    </li>
-                    <!-- 네비게이션 버튼-->
-                    <li class="page-item"
-                        th:each="page : ${#numbers.sequence(customerList.getNavigateFirstPage(), customerList.getNavigateLastPage())}"
-                        th:classappend="${page == customerList.getPageNum()} ? 'active'">
-                        <a href="#" class="page-link"
-                           th:text="${page}"
-                           th:href="@{/bmn/admin/customerManagement(pageNum=${page})}">1</a>
-                    </li>
-                    <!-- 다음 페이지 버튼-->
-                    <li class="page-item" th:classappend="${customerList.getNextPage() == 0} ? 'disabled'">
-                        <a href="#" class="page-link" th:href="@{/bmn/admin/customerManagement(pageNum=${customerList.getNextPage()})}">&raquo;</a>
-                    </li>
-                </ul>
+                        <td th:text="${item.customerId}"></td>
+                        <td th:text="|${item.customerName}(${item.customerNick})|"></td>
+                        <td th:if="${item.customerGender == 'M'}">남성</td>
+                        <td th:if="${item.customerGender == 'F'}">여성</td>
+                        <td th:text="${item.customerAge}"></td>
+                        <td th:text="${item.customerJoinDt}"></td>
+                        <td th:text="${item.customerFollow}"></td>
+                        <td th:text="${item.customerReviewCount}"></td>
+                        <td th:text="${item.customerCommentCount}"></td>
+                        <td>
+                            <!-- 등급조정, 차단을 수행하는 폼-->
+                            <form action="/bmn/admin/customerManagement" method="POST" th:id="|form${itemStat.count}|">
+                                <input type="hidden" th:value="${item.customerIdx}" name="targetIdx">
+                                <select th:if="${item.customerGrade == 1}" class="form-select"
+                                        th:onchange="|changeGrade(this.value, ${itemStat.count})|" name="grade">
+                                    <option selected value="1">일반회원</option>
+                                    <option value="2">우수회원</option>
+                                </select>
+                                <select th:if="${item.customerGrade == 2}" class="form-select"
+                                        th:onchange="|changeGrade(this.value, ${itemStat.count})|" name="grade">
+                                    <option value="1">일반회원</option>
+                                    <option selected value="2">우수회원</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>
+                            <!-- update 문-->
+                            <button id="btn-ban" onclick="ban(this.value)" class="btn btn-danger opacity-75"
+                                    th:value="${item.customerIdx}">차단
+                            </button>
+                        </td>
+                    </tr>
+                    <tr th:unless="${customerList.getTotal()} > 0">
+                        <td colspan="9" class="py-4"><h3>등록 요청된 가게가 없습니다.</h3></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="my-3">
+                    <ul class="pagination justify-content-center">
+                        <!-- 이전 페이지 버튼-->
+                        <li class="page-item" th:classappend="${customerList.getPrePage() == 0} ? 'disabled'">
+                            <a href="#" class="page-link" th:href="@{/bmn/myPageAdm(pageNum=${customerList.getPrePage()})}">&laquo;</a>
+                        </li>
+                        <!-- 네비게이션 버튼-->
+                        <li class="page-item"
+                            th:each="page : ${#numbers.sequence(customerList.getNavigateFirstPage(), customerList.getNavigateLastPage())}"
+                            th:classappend="${page == customerList.getPageNum()} ? 'active'">
+                            <a href="#" class="page-link"
+                               th:text="${page}"
+                               th:href="@{/bmn/myPageAdm(pageNum=${page})}">1</a>
+                        </li>
+                        <!-- 다음 페이지 버튼-->
+                        <li class="page-item" th:classappend="${customerList.getNextPage() == 0} ? 'disabled'">
+                            <a href="#" class="page-link" th:href="@{/bmn/myPageAdm(pageNum=${customerList.getNextPage()})}">&raquo;</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

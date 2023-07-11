@@ -1,6 +1,7 @@
 package com.bitc.bmn_project.mapper;
 
 import com.bitc.bmn_project.DTO.*;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,4 +57,20 @@ public interface LeeMapper {
     CeoDTO ceoInfo(int ceoIdx) throws Exception;
 
     void myPageCeoStoreUpdate(CeoDTO ceo) throws Exception;
+
+    int customer1stList() throws Exception;
+
+    int customer2ndList() throws Exception;
+
+    int customerList() throws Exception;
+
+    int ceo1stList() throws Exception;
+
+    int ceo2ndList() throws Exception;
+
+    int ceoList() throws Exception;
+
+    List<CeoDTO> getStoreList() throws Exception;
+
+    Page<CustomerDTO> getCustomerList() throws Exception;
 }

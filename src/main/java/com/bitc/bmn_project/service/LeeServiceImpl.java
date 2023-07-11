@@ -2,6 +2,8 @@ package com.bitc.bmn_project.service;
 
 import com.bitc.bmn_project.DTO.*;
 import com.bitc.bmn_project.mapper.LeeMapper;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -137,4 +139,47 @@ public class LeeServiceImpl implements LeeService{
 
         return leeMapper.ceoInfo(ceo.getCeoIdx());
     }
+
+    @Override
+    public int customer1stList() throws Exception {
+        return leeMapper.customer1stList();
+    }
+
+    @Override
+    public int customer2ndList() throws Exception {
+        return leeMapper.customer2ndList();
+    }
+
+    @Override
+    public int customerList() throws Exception {
+        return leeMapper.customerList();
+    }
+
+    @Override
+    public int ceo1stList() throws Exception {
+        return leeMapper.ceo1stList();
+    }
+
+    @Override
+    public int ceo2ndList() throws Exception {
+        return leeMapper.ceo2ndList();
+    }
+
+    @Override
+    public int ceoList() throws Exception {
+        return leeMapper.ceoList();
+    }
+
+    @Override
+    public List<CeoDTO> getStoreList() throws Exception {
+        return leeMapper.getStoreList();
+    }
+
+    @Override
+    public Page<CustomerDTO> getCustomerList(int pageNum) throws Exception {
+        PageHelper.startPage(pageNum, 10);
+
+        return leeMapper.getCustomerList();
+    }
+
 }

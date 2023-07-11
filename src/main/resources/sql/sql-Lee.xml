@@ -178,5 +178,46 @@
         ceo_lon = #{ceoLon}
         WHERE ceo_idx = #{ceoIdx}
     </update>
+    <select id="customer1stList" resultType="int">
+        SELECT COUNT(customer_idx) AS customer_cnt FROM customer_tp WHERE customer_grade = 1
+    </select>
+    <select id="customer2ndList" resultType="int">
+        SELECT COUNT(customer_idx) AS customer_cnt FROM customer_tp WHERE customer_grade = 2
+    </select>
+    <select id="customerList" resultType="int">
+        SELECT COUNT(customer_idx) AS customer_cnt FROM customer_tp WHERE customer_grade = 1 OR 2
+    </select>
+    <select id="ceo1stList" resultType="int">
+        SELECT COUNT(ceo_idx) AS ceo_cnt FROM ceo_tp WHERE ceo_grade = 1
+    </select>
+    <select id="ceo2ndList" resultType="int">
+        SELECT COUNT(ceo_idx) AS ceo_cnt FROM ceo_tp WHERE ceo_grade = 2
+    </select>
+    <select id="ceoList" resultType="int">
+        SELECT COUNT(ceo_idx) AS ceo_cnt FROM ceo_tp WHERE ceo_grade = 1 OR 2
+    </select>
+
+    <!-- 관리자 페이지 - 가게 리스트 출력 -->
+    <!-- 가게 등급 -> 1: 등록 요청된 가게 / 2: 승인된 가게 / 0: 승인 거부된 가게-->
+    <select id="getStoreList" resultType="com.bitc.bmn_project.DTO.CeoDTO">
+        SELECT ceo_idx, ceo_name, ceo_store, ceo_main_menu, ceo_category
+        FROM ceo_tp
+        WHERE ceo_grade = 1
+    </select>
+    <!-- 관리자 페이지 - 회원 리스트 출력(리뷰 작성 수, 댓글 작성 수 포함) -->
+    <select id="getCustomerList" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
+        SELECT c.customer_idx, c.customer_id, c.customer_name, c.customer_nick,
+        c.customer_gender, c.customer_age,
+        length(c.customer_follow) - length(REPLACE(c.customer_follow,',','')) as customer_follow,
+        c.customer_grade, c.customer_join_dt, c.customer_ban, IFNULL(r.cnt, 0) as customer_review_count,
+        IFNULL(com.cnt, 0) as customer_comment_count
+        FROM customer_tp c LEFT OUTER JOIN (SELECT customer_idx, count(review_idx) as cnt FROM review_tp GROUP BY
+        customer_idx) As r
+        ON c.customer_idx = r.customer_idx LEFT OUTER JOIN (SELECT customer_idx, count(comment_idx) as cnt FROM
+        comment_tp GROUP BY customer_idx) As com
+        ON c.customer_idx = com.customer_idx
+        WHERE c.customer_ban = "N" AND c.customer_grade != 10
+        ORDER BY customer_idx DESC
+    </select>
 </mapper>
 

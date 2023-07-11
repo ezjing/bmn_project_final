@@ -2,6 +2,7 @@ package com.bitc.bmn_project.controller;
 
 import com.bitc.bmn_project.DTO.*;
 import com.bitc.bmn_project.service.LeeService;
+import com.github.pagehelper.PageInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -390,11 +391,31 @@ public class LeeController {
     }
 
     @RequestMapping(value = "/bmn/myPageAdm", method = RequestMethod.GET)
-    public ModelAndView myPageAdmView() throws Exception {
+    public ModelAndView myPageAdmView(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum) throws Exception {
         ModelAndView mv = new ModelAndView("myPage/myPageAdm");
 
-//        leeService.customerList();
-//        leeService.ceoList();
+        int customer1st = leeService.customer1stList();
+        int customer2nd = leeService.customer2ndList();
+        int customer = leeService.customerList();
+
+        int ceo1st = leeService.ceo1stList();
+        int ceo2nd = leeService.ceo2ndList();
+        int ceo = leeService.ceoList();
+
+        List<CeoDTO> storeList = leeService.getStoreList();
+        PageInfo<CustomerDTO> customerList = new PageInfo<>(leeService.getCustomerList(pageNum), 3);
+
+        mv.addObject("storeList", storeList);
+        mv.addObject("customerList", customerList);
+
+        mv.addObject("customer1st", customer1st);
+        mv.addObject("customer2nd", customer2nd);
+        mv.addObject("customer", customer);
+
+        mv.addObject("ceo1st", ceo1st);
+        mv.addObject("ceo2nd", ceo2nd);
+        mv.addObject("ceo", ceo);
+
         return mv;
     }
 }

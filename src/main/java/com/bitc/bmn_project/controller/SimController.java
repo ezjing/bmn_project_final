@@ -384,7 +384,7 @@ public class SimController {
 
         simService.storeApprove(targetIdx, mode);
 
-        return "redirect:/bmn/admin/ceoManagement";
+        return "redirect:/bmn/myPageAdm";
     }
 
     @RequestMapping(value = "/bmn/admin/customerManagement", method = RequestMethod.GET)
@@ -412,7 +412,7 @@ public class SimController {
         simService.changeCustomerGrade(targetIdx, grade);
 
 
-        return "redirect:" + returnUrl;
+        return "redirect:/bmn/myPageAdm";
     }
 
     @RequestMapping("/bmn/admin/customerManagement/ban")
@@ -422,7 +422,7 @@ public class SimController {
 
         simService.customerBan(targetIdx);
 
-        return "redirect:/bmn/admin/customerManagement";
+        return "redirect:/bmn/myPageAdm";
     }
 
 

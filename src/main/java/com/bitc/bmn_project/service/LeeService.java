@@ -1,6 +1,7 @@
 package com.bitc.bmn_project.service;
 
 import com.bitc.bmn_project.DTO.*;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 
@@ -48,4 +49,20 @@ public interface LeeService {
     CeoDTO myPageCeoUpdate(CeoDTO ceo) throws Exception;
 
     CeoDTO myPageCeoStoreUpdate(CeoDTO ceo) throws Exception;
+
+    int customer1stList() throws Exception;
+
+    int customer2ndList() throws Exception;
+
+    int customerList() throws Exception;
+
+    int ceo1stList() throws Exception;
+
+    int ceo2ndList() throws Exception;
+
+    int ceoList() throws Exception;
+
+    List<CeoDTO> getStoreList() throws Exception;
+
+    Page<CustomerDTO> getCustomerList(int pageNum) throws Exception;
 }

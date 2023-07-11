@@ -46,11 +46,11 @@ public interface SimMapper {
 
     List<CeoDTO> getStoreList() throws Exception;
 
-    void storeApprove(int targetIdx, int mode) throws Exception;
+    void storeApprove(@Param("targetIdx") int targetIdx, @Param("mode") int mode) throws Exception;
 
     Page<CustomerDTO> getCustomerList() throws Exception;
 
-    void changeCustomerGrade(int targetIdx, int grade) throws Exception;
+    void changeCustomerGrade(@Param("targetIdx") int targetIdx, @Param("grade") int grade) throws Exception;
 
     void customerBan(int targetIdx) throws Exception;
 
