@@ -203,37 +203,37 @@
                 <div class="mt-3">
                     <span href="#" class="text-decoration-none text-dark ms-2">이용자 층</span>
                     <div class="form-check ms-4">
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
                                value="10" id="teenagerCheck">
                         <label class="form-check-label" for="teenagerCheck">
                             10대
                         </label>
                         <br>
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
                                value="20" id="twenitesCheck">
                         <label class="form-check-label" for="twenitesCheck">
                             20대
                         </label>
                         <br>
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
                                value="30" id="thiritesCheck">
                         <label class="form-check-label" for="thiritesCheck">
                             30대
                         </label>
                         <br>
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
                                value="40" id="fortiesCheck">
                         <label class="form-check-label" for="fortiesCheck">
                             40대
                         </label>
                         <br>
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
                                value="50" id="FiftiesCheck">
                         <label class="form-check-label" for="FiftiesCheck">
                             50대
                         </label>
                         <br>
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="checkbox"
+                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
                                value="60" id="SixtiesCheck">
                         <label class="form-check-label" for="SixtiesCheck">
                             60대 이상
@@ -330,7 +330,26 @@
 <!--                                        <i class="bi bi-chat-right-text ms-4 me-1" style="color:saddlebrown"></i><span class="text-secondary" th:text="${item.getReviewCnt()}"></span>-->
                                         </p> <!-- 팔로우 수 -->
 
+<<<<<<< HEAD
                                     </div>
+=======
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <p class="fs-5 fw-bold" th:if="${#lists.size(reviewCntList)} > 0">#리뷰 많은 순</p>
+                    <div class="list-group" th:if="${#lists.size(reviewCntList)} > 0" th:each="item : ${reviewCntList}">
+                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}"
+                           class="list-group-item list-group-item-action">
+                            <div>
+                                <div class="col-sm-4 float-start d-grid w-75">
+                                    <img th:src="${item.getCeoMenuImg1()}"
+                                         class="img-thumbnail rounded-2 w-50 h-100 d-block">
+                                </div>
+                                <div cl>
+                                    <p class="fw-bold fs-4 text-secondary" th:text="${item.getCeoStore()}"></p>
+                                    <p class="fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>
+                                    <p class="text-secondary"><i class="bi bi-chat-right-text me-1" style="color:saddlebrown"></i><span th:text="${item.getReviewCnt()}"></span></p>
+                                    <p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p>
+                                    <p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span></p>
+>>>>>>> origin/yutibranch
                                 </div>
                             </div>
                         </a>

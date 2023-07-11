@@ -70,6 +70,9 @@ public class ParkController {
         List<CeoDTO> storeList = mainService.storeLists(keyWorld);
         // 리뷰 순 검색 리스트
         List<ReviewCntDto> reviewCntList = mainService.reviewCntLists(keyWorld);
+        List<ReviewCntDto> reviewCntOuterList = mainService.reviewCntOuterLists(keyWorld);
+
+//        reviewCntList.add((ReviewCntDto) reviewCntOuterList);
         // 팔로우 순위 검색 리스트
         List<CeoDTO> followList = mainService.followLists(keyWorld);
 
@@ -80,7 +83,8 @@ public class ParkController {
         // 전체 카테로기 클릭 시
 
         mv.addObject("storeList",storeList);
-        mv.addObject("reviewCntList",reviewCntList);
+        mv.addObject("reviewCntList", reviewCntList);
+        mv.addObject("reviewCntList", reviewCntOuterList);
         mv.addObject("followList",followList);
         mv.addObject("keyWorld",keyWorld);
         return mv;

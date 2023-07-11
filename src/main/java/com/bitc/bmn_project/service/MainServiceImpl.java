@@ -91,4 +91,9 @@ public class MainServiceImpl implements MainService{
     public List<ceoCustomDTO> categoryFoods(String keyWorld, String categoryFoods) throws Exception {
         return mainMapper.categoryFoods(keyWorld,categoryFoods);
     }
+
+    @Override
+    public List<ReviewCntDto> reviewCntOuterLists(String keyWorld) throws Exception {
+        return mainMapper.reviewCntOuterLists(keyWorld);
+    }
 }
