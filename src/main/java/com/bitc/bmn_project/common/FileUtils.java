@@ -40,7 +40,7 @@ public class FileUtils {
 
         // *** 실제 경로 설정 ***
 //        String path = "C:/smart505/bmn_project/src/main/resources/static/images/" + current.format(format);
-        String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+        String path = "C:/bitc/최수열 선생님/소스코드/Springboot/bmn_project_final/src/main/resources/static/images" + current.format(format);
         // 자바의 File 클래스 객체 생성, 위에서 생성한 경로로 생성
         File file = new File(path);
 
@@ -121,7 +121,7 @@ public class FileUtils {
             // 현재 StandardServletMultipartResolver 사용 시 전체 경로가 아니면 파일 복사 시 오류가 발생함
 
 //            String path = "C:/smart505/bmn_project/src/main/resources/static/images/" + current.format(format);
-            String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+            String path = "C:/bitc/최수열 선생님/소스코드/Springboot/bmn_project_final/src/main/resources/static/images" + current.format(format);
             // 자바의 File 클래스 객체 생성, 위에서 생성한 경로로 생성
             File file = new File(path);
 

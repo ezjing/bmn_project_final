@@ -1,542 +1,557 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>상세보기 페이지</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-            crossorigin="anonymous"></script>
-    <script type="text/javascript"
-            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=92vw1jqd4q"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
-
-        #headerFont {
-            font-family: 'Black Han Sans', sans-serif;
-            font-weight: 900;
-        }
-
-        #map1 {
-            width: 100%;
-            height: 200px;
-        }
-
-        #map2 {
-            width: 1100px;
-            height: 600px;
-        }
-
-        #left-remote {
-            position: fixed;
-            top: 80px;
-            width: 220px;
-        }
-
-        #right-remote {
-            position: fixed;
-            top: 80px;
-            right: 15%;
-            width: 220px;
-
-        }
-    </style>
-
-    <script>
-        function pagination(pageNum) {
-            const ceoIdx = $("#ceoIdx").val();
-            const sessionCeoIdx = $("#ceo-idx").val();
-
-            $.ajax({
-                url: "/bmn/questionPaging",
-                type: "GET",
-                data: {ceoIdx: ceoIdx, pageNum: pageNum},
-                success: function (data) {
-                    const qList = $("#q-list");
-                    qList.empty();
-
-                    let html = "";
-
-                    if (data.list.length > 0) {
-                        for (let i = 0; i < data.list.length; i++) {
-                            let questionIdx = data.list[i].questionIdx;
-                            let questionComplete = data.list[i].questionComplete;
-                            let questionTitle = data.list[i].questionTitle;
-                            let customerNick = data.list[i].customerNick;
-                            let questionDate = data.list[i].questionDate;
-                            let questionContents = data.list[i].questionContents;
-                            let answerContents = data.list[i].answerContents;
-                            let answerDate = data.list[i].answerDate;
-
-                            const divRow =
-                                $("<div class=\"row text-center border border-top-0\"></div>");
-
-                            const divCol11 = $("<div class=\"col-sm-1\">");
-                            const pQuestionIdx = $("<p class=\"mt-3\">" + questionIdx + "</p>");
-
-                            const divCol21 = $("<div class=\"col-sm-2\"></div>");
-                            const pQuestionComplete = $("<p class=\"mt-3\">" + questionComplete + "</p>");
-
-                            // 답변유무에 따른 차이
-                            if (questionComplete == "답변완료") {
-                                pQuestionComplete.addClass("text-muted");
-                            } else {
-                                pQuestionComplete.addClass("fw-bold");
-                            }
-
-                            const divCol5 = $("<div class=\"col-sm-5 d-flex align-items-center\"></div>");
-                            const aQuestionTitle = $("<a href=\"#question-detail" + i +
-                                "\" class=\"text-decoration-none text-black question-active\" data-bs-toggle=\"collapse\">" +
-                                questionTitle + "</a>");
-
-                            const divCol22 = $("<div class=\"col-sm-2\"></div>");
-                            const pCustomerNick = $("<p class=\"mt-3\">" + customerNick + "</p>");
-
-                            const divCol23 = $("<div class=\"col-sm-2\"></div>");
-                            const pQuestionDate = $("<p class=\"mt-3\">" + questionDate + "</p>");
-
-
-                            const divCollapse = $("<div class='collapse' id='question-detail" + i + "'></div>");
-
-                            const divRow2 = $("<div class=\"row border border-top-0\"></div>");
-                            const divCol24 = $("<div class=\"col-sm-2\"></div>");
-                            const pQuestion = $("<p class=\"m-3\">[문의내용]</p>");
-                            const divCol10 = $("<div class=\"col-sm-10\"></div>");
-                            const pQuestionContents = $("<p class=\"m-3\">" + questionContents + "</p>");
-
-                            // 답변 유무에 따른 if문
-                            // 답변 있을 때 구현될 태그
-                            const divRow3 = $("<div class=\"row border border-top-0\"></div>");
-                            const divCol25 = $("<div class=\"col-sm-2\"></div>");
-                            const pAnswer = $("<p class=\"m-3\">[답변내용]</p>");
-
-                            const divCol8 = $("<div class=\"col-sm-8\"></div>");
-                            const pAnswerContents = $("<p class=\"m-3\">" + answerContents + "</p>");
-
-                            const divCol26 = $("<div class=\"col-sm-2\"></div>");
-                            const pAnswerDate = $("<p class=\"m-3\">" + answerDate + "</p>");
-
-                            // 답변 없을 때 + 사장 일 때 구현될 태그
-                            const form = $("<form method=\"post\" class=\"row border border-top-0\"></form>");
-
-                            const divCol27 = $("<div class=\"col-sm-2\"></div>");
-                            const pAnswer2 = $("<p class=\"m-3\">[답변내용]</p>");
-
-                            const divCol9 = $("<div class=\"col-sm-9 d-flex align-items-center\"></div>");
-                            const input = $("<input type=\"text\" class=\"form-control answerContents\" name=\"answerContents\">");
-
-                            const divCol12 = $("<div class=\"col-sm-1\"></div>");
-                            const button = $("<button type=\"button\" class=\"btn btn-question-answer\"></button>");
-                            const icon = $("<i class=\"bi bi-pencil-square\" style=\"font-size:2rem\"></i>");
-                            const inputHidden = $("<input type=\"hidden\" class=\"questionIdx\" name=\"questionIdx\"" +
-                                "value='" + questionIdx + "'>");
-
-                            qList.append(divRow);
-
-                            divRow.append(divCol11);
-                            divCol11.append(pQuestionIdx);
-
-                            divRow.append(divCol21);
-                            divCol21.append(pQuestionComplete);
-
-                            divRow.append(divCol5);
-                            divCol5.append(aQuestionTitle);
-
-                            divRow.append(divCol22);
-                            divCol22.append(pCustomerNick);
-
-                            divRow.append(divCol23);
-                            divCol23.append(pQuestionDate);
-
-
-                            qList.append(divCollapse);
-
-                            divCollapse.append(divRow2);
-                            divRow2.append(divCol24);
-                            divCol24.append(pQuestion);
-                            divRow2.append(divCol10);
-                            divCol10.append(pQuestionContents);
-
-                            if (answerContents != null) {
-                                divCollapse.append(divRow3);
-                                divRow3.append(divCol25);
-                                divCol25.append(pAnswer);
-
-                                divRow3.append(divCol8);
-                                divCol8.append(pAnswerContents);
-
-                                divRow3.append(divCol26);
-                                divCol26.append(pAnswerDate);
-                            } else {
-                                // 해당 식당 사장님계정 일때
-                                if (sessionCeoIdx != null && sessionCeoIdx == ceoIdx) {
-                                    divCollapse.append(form);
-
-                                    form.append(divCol27);
-                                    divCol27.append(pAnswer2);
-
-                                    form.append(divCol9);
-                                    divCol9.append(input);
-
-                                    form.append(divCol12);
-                                    divCol12.append(button);
-                                    button.append(icon);
-
-                                    form.append(inputHidden);
-                                }
-                            }
-                        }
-                        // pagination(1) 함수가 ajax로 비동기 방식이기 때문에 자바스크립트에서의 클릭이벤트가 실행 될 시점에는 ajax로 받은 html 리스트 태그(즉, btn-question-answer)를 못 찾음
-                        // 따라서 ajax로 받은 html 리스트가 로딩이 끝났을 시점에서 클릭이벤트를 동작시키는 함수를 호출해야 함
-                        questionAnswer();
-                    } else {
-                        html =
-                            "            <div class=\"border border-top-0\">\n" +
-                            "              <p class=\"text-center pt-3\">등록된 문의 글이 없습니다.</p>\n" +
-                            "            </div>";
-                        qList.append(html);
-                    }
-
-
-                    // 페이징 버튼 구현
-                    const paginationAjax = $("#paginationAjax");
-
-                    paginationAjax.empty();
-
-                    const paginationPrev = $("<li class=\"page-item\"></li>");
-                    data.prePage == 0 ? paginationPrev.addClass("disabled") : paginationPrev.removeClass("disabled");
-
-                    const paginationPrevLink = $("<button class=\"page-link\" onclick='pagination(" + data.prePage +
-                        ")'>&laquo;</button>");
-                    paginationPrev.append(paginationPrevLink);
-                    paginationAjax.append(paginationPrev);
-
-                    for (let i = 0; i < data.navigatepageNums.length; i++) {
-                        const paginationBtnNum = $("<li class=\"page-item\"></li>");
-
-                        data.pageNum == data.navigatepageNums[i] ? paginationBtnNum.addClass("active") :
-                            paginationBtnNum.removeClass("active");
-
-                        const paginationBtnNumLink = $("<button class='page-link' onclick='pagination(" +
-                            data.navigatepageNums[i] + ")'></button>");
-                        paginationBtnNumLink.append(data.navigatepageNums[i]);
-                        paginationBtnNum.append(paginationBtnNumLink);
-                        paginationAjax.append(paginationBtnNum);
-                    }
-
-                    const paginationNext = $("<li class=\"page-item\"></li>");
-                    data.nextPage == 0 ? paginationNext.addClass("disabled") : paginationNext.removeClass("disabled");
-
-                    const paginationNextLink =
-                        $("<button class=\"page-link\" onclick=\"pagination(" + data.nextPage + ")\">&raquo;</button>");
-                    paginationNext.append(paginationNextLink);
-                    paginationAjax.append(paginationNext);
-
-                },
-
-                error: function (request, status, error) {
-                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+  <meta charset="UTF-8">
+  <title>상세보기 페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+          crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=92vw1jqd4q"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+    
+    #headerFont {
+      font-family: 'Black Han Sans', sans-serif;
+      font-weight: 900;
+    }
+    
+    #map1 {
+      width: 100%;
+      height: 200px;
+    }
+    
+    #map2 {
+      width: 1100px;
+      height: 600px;
+    }
+    
+    #left-remote {
+      position: fixed;
+      top: 125px;
+      width: 220px;
+    }
+    
+    #right-remote {
+      position: fixed;
+      top: 125px;
+      right: 15%;
+      width: 220px;
+      
+    }
+  </style>
+  
+  <script>
+    function pagination(pageNum) {
+      const ceoIdx = $("#ceoIdx").val();
+      const sessionCeoIdx = $("#ceo-idx").val();
+      
+      $.ajax({
+        url: "/bmn/questionPaging",
+        type: "GET",
+        data: {ceoIdx: ceoIdx, pageNum: pageNum},
+        success: function (data) {
+          const qList = $("#q-list");
+          qList.empty();
+          
+          let html = "";
+          
+          if (data.list.length > 0) {
+            for (let i = 0; i < data.list.length; i++) {
+              let questionIdx = data.list[i].questionIdx;
+              let questionComplete = data.list[i].questionComplete;
+              let questionTitle = data.list[i].questionTitle;
+              let customerNick = data.list[i].customerNick;
+              let questionDate = data.list[i].questionDate;
+              let questionContents = data.list[i].questionContents;
+              let answerContents = data.list[i].answerContents;
+              let answerDate = data.list[i].answerDate;
+              
+              const divRow =
+                $("<div class=\"row text-center border border-top-0\"></div>");
+              
+              const divCol11 = $("<div class=\"col-sm-1\">");
+              const pQuestionIdx = $("<p class=\"mt-3\">" + questionIdx + "</p>");
+              
+              const divCol21 = $("<div class=\"col-sm-2\"></div>");
+              const pQuestionComplete = $("<p class=\"mt-3\">" + questionComplete + "</p>");
+              
+              // 답변유무에 따른 차이
+              if (questionComplete == "답변완료") {
+                pQuestionComplete.addClass("text-muted");
+              } else {
+                pQuestionComplete.addClass("fw-bold");
+              }
+              
+              const divCol5 = $("<div class=\"col-sm-5 d-flex align-items-center\"></div>");
+              const aQuestionTitle = $("<a href=\"#question-detail" + i +
+                "\" class=\"text-decoration-none text-black question-active\" data-bs-toggle=\"collapse\">" +
+                questionTitle + "</a>");
+              
+              const divCol22 = $("<div class=\"col-sm-2\"></div>");
+              const pCustomerNick = $("<p class=\"mt-3\">" + customerNick + "</p>");
+              
+              const divCol23 = $("<div class=\"col-sm-2\"></div>");
+              const pQuestionDate = $("<p class=\"mt-3\">" + questionDate + "</p>");
+              
+              
+              const divCollapse = $("<div class='collapse' id='question-detail" + i + "'></div>");
+              
+              const divRow2 = $("<div class=\"row border border-top-0\"></div>");
+              const divCol24 = $("<div class=\"col-sm-2\"></div>");
+              const pQuestion = $("<p class=\"m-3\">[문의내용]</p>");
+              const divCol10 = $("<div class=\"col-sm-10\"></div>");
+              const pQuestionContents = $("<p class=\"m-3\">" + questionContents + "</p>");
+              
+              // 답변 유무에 따른 if문
+              // 답변 있을 때 구현될 태그
+              const divRow3 = $("<div class=\"row border border-top-0\"></div>");
+              const divCol25 = $("<div class=\"col-sm-2\"></div>");
+              const pAnswer = $("<p class=\"m-3\">[답변내용]</p>");
+              
+              const divCol8 = $("<div class=\"col-sm-8\"></div>");
+              const pAnswerContents = $("<p class=\"m-3\">" + answerContents + "</p>");
+              
+              const divCol26 = $("<div class=\"col-sm-2\"></div>");
+              const pAnswerDate = $("<p class=\"m-3\">" + answerDate + "</p>");
+              
+              // 답변 없을 때 + 사장 일 때 구현될 태그
+              const form = $("<form method=\"post\" class=\"row border border-top-0\"></form>");
+              
+              const divCol27 = $("<div class=\"col-sm-2\"></div>");
+              const pAnswer2 = $("<p class=\"m-3\">[답변내용]</p>");
+              
+              const divCol9 = $("<div class=\"col-sm-9 d-flex align-items-center\"></div>");
+              const input = $("<input type=\"text\" class=\"form-control answerContents\" name=\"answerContents\">");
+              
+              const divCol12 = $("<div class=\"col-sm-1\"></div>");
+              const button = $("<button type=\"button\" class=\"btn btn-question-answer\"></button>");
+              const icon = $("<i class=\"bi bi-pencil-square\" style=\"font-size:2rem\"></i>");
+              const inputHidden = $("<input type=\"hidden\" class=\"questionIdx\" name=\"questionIdx\"" +
+                "value='" + questionIdx + "'>");
+              
+              qList.append(divRow);
+              
+              divRow.append(divCol11);
+              divCol11.append(pQuestionIdx);
+              
+              divRow.append(divCol21);
+              divCol21.append(pQuestionComplete);
+              
+              divRow.append(divCol5);
+              divCol5.append(aQuestionTitle);
+              
+              divRow.append(divCol22);
+              divCol22.append(pCustomerNick);
+              
+              divRow.append(divCol23);
+              divCol23.append(pQuestionDate);
+              
+              
+              qList.append(divCollapse);
+              
+              divCollapse.append(divRow2);
+              divRow2.append(divCol24);
+              divCol24.append(pQuestion);
+              divRow2.append(divCol10);
+              divCol10.append(pQuestionContents);
+              
+              if (answerContents != null) {
+                divCollapse.append(divRow3);
+                divRow3.append(divCol25);
+                divCol25.append(pAnswer);
+                
+                divRow3.append(divCol8);
+                divCol8.append(pAnswerContents);
+                
+                divRow3.append(divCol26);
+                divCol26.append(pAnswerDate);
+              } else {
+                // 해당 식당 사장님계정 일때
+                if (sessionCeoIdx != null && sessionCeoIdx == ceoIdx) {
+                  divCollapse.append(form);
+                  
+                  form.append(divCol27);
+                  divCol27.append(pAnswer2);
+                  
+                  form.append(divCol9);
+                  divCol9.append(input);
+                  
+                  form.append(divCol12);
+                  divCol12.append(button);
+                  button.append(icon);
+                  
+                  form.append(inputHidden);
                 }
-            });
-        }
-
-
-        $(document).ready(function () {
-            // ajax 페이징처리 함수로 페이지 로딩될때 pageNum이 1이 되도록 하는 함수 실행
-            pagination(1);
-
-            const lat = $("#ceo-lat").val();
-            const lon = $("#ceo-lon").val();
-
-            var mapOptions = {
-                center: new naver.maps.LatLng(lat, lon),
-                zoom: 15
+              }
             }
-
-            var map1 = new naver.maps.Map('map1', mapOptions);
-
-            var marker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(lat, lon),
-                map: map1
-            });
-
-            // var mapOptions2 = {
-            //   center: new naver.maps.LatLng(37.3595704, 127.105399),
-            //   zoom: 20
-            // }
-            // var map2 = naver.maps.Map('map2', mapOptions2);
-            //
-            // var marker2 = new naver.maps.Marker({
-            //   position: new naver.maps.LatLng(37.3595704, 127.105399),
-            //   map: map2
-            // });
-
-            // 식당 팔로우 수 조회
-            $("#btn-follow").on('click', function () {
-                const ceoStore = $("#ceoStore").val();
-                const ceoIdx = $("#ceoIdx").val();
-                const customerIdx = $("#customer-idx").val();
-                const sessionCeoIdx = $("#ceo-idx").val();
-
-
-                // 손님
-                if (customerIdx != null) {
-                    $.ajax({
-                        url: "/bmn/updateFollow",
-                        type: "PUT",
-                        data: {ceoIdx: ceoIdx, ceoStore: ceoStore, customerIdx: customerIdx},
-                        success: function (data) {
-                            if (data != null) {
-                                $("#follow-cnt").html("<span>" + data + "</span>");
-                            }
-                        },
-                        error: function () {
-                            alert("ajax 통신 중 오류 발생!!");
-                        }
-                    });
-                }
-                // 손님 아닌 경우
-                else {
-                    if (sessionCeoIdx != null) {
-                        alert("손님 회원만 가능한 서비스입니다.");
-                    } else {
-                        alert("로그인이 필요한 서비스입니다.");
-                    }
-                }
-
-            });
-
-            // 리뷰작성 클릭시 우수회원만 가능하도록 하는 기능
-            $("#customer-grade-check").on('click', function () {
-                const customerGrade = $("#customer-grade").val();
-                const ceoIdx = $("#ceoIdx").val();
-
-                if (customerGrade == 2) {
-                    location.href = "/bmn/review/" + ceoIdx;
-                } else {
-                    alert("우수 회원부터 리뷰 작성이 가능합니다.");
-                }
-            });
-
-            // 문의 글에 답변 달기(사장님만 가능)
-            // id값으로 하게되면 반복되는 리스트 형태로, id가 겹치는 문제 발생하기 때문에 class타입 선택자 사용
-            $(".btn-question-answer").on('click', function () {
-                // $(this)로 반복되는 버튼 중에 클릭한 버튼을 가져옴
-                // parent() : 부모 태그 가져옴
-                // childern("클래스명") : 자식태그중 "클래스명"을 가진 태그 가져옴
-
-                const frm = $(this).parent().parent();
-                const questionIdx = frm.children(".questionIdx").val();
-                const answerContents = frm.find(".answerContents").val();
-
-                if (answerContents == null || answerContents == "") {
-                    alert("답변 내용을 입력해주세요");
-                } else {
-                    $.ajax({
-                        url: "/bmn/updateAnswer",
-                        type: "PUT",
-                        data: {questionIdx: questionIdx, answerContents: answerContents},
-                        success: function (data) {
-                            alert(data);
-                            location.reload(); // location.reload() 하게 되면 페이지 다시 불러옴
-                        },
-                        error: function () {
-                            alert("ajax 오류발생");
-                        }
-                    });
-                }
-            });
-
-            // 관리자 리뷰 삭제 버튼
-            $(".btn-review-delete").on('click', function () {
-                if (!confirm("해당 리뷰를 정말 삭제하시겠습니까?")) {
-                    location.reload();
-                } else {
-                    const reviewIdx = $(this).val();
-
-                    $.ajax({
-                        url: "/bmn/reviewDelete",
-                        type: "DELETE",
-                        data: {reviewIdx: reviewIdx},
-                        success: function (data) {
-                            location.reload();
-                        },
-                        error: function () {
-                            alert("ajax 통신 실패");
-                        }
-                    });
-                }
-            });
-
-            // 리뷰에 댓글 달기
-            $(".btn-review-comment").on('click', function () {
-                const frm = $(this).parent().parent();
-                const reviewIdx = frm.children(".review-idx").val();
-                let customerIdx = $("#customer-idx").val();
-                let customerNick = $("#customer-nick").val();
-                const sessionCeoIdx = $("#ceo-idx").val();
-                let commentContents = frm.find(".commentContents").val();
-                const ceoIdx = $("#ceoIdx").val();
-
-                if (customerIdx != null) {
-                    if (commentContents == null || commentContents == "") {
-                        alert("댓글 내용을 입력해주세요");
-                    } else {
-                        $.ajax({
-                            url: "/bmn/commentInsert",
-                            type: "POST",
-                            data: {
-                                reviewIdx: reviewIdx, customerIdx: customerIdx, commentContents: commentContents,
-                                ceoIdx: ceoIdx, customerNick: customerNick
-                            },
-                            success: function (data) {
-                                location.reload();
-                            },
-                            error: function () {
-                                alert("ajax 통신 실패");
-                            }
-                        });
-                    }
-                } else {
-                    if (sessionCeoIdx != null && sessionCeoIdx == ceoIdx) {
-                        if (commentContents == null || commentContents == '') {
-                            alert("댓글 내용을 입력해주세요");
-                        } else {
-                            customerIdx = 0;
-                            customerNick = '사장님';
-                            $.ajax({
-                                url: "/bmn/commentInsert",
-                                type: "POST",
-                                data: {
-                                    reviewIdx: reviewIdx, customerIdx: customerIdx, commentContents: commentContents,
-                                    ceoIdx: ceoIdx, customerNick: customerNick
-                                },
-                                success: function (data) {
-                                    location.reload();
-                                },
-                                error: function () {
-                                    alert("ajax 통신 실패");
-                                }
-                            });
-                        }
-                    } else {
-                        alert("로그인이 필요한 서비스입니다.");
-                    }
-                }
-            });
-
-            // 리뷰에 달린 댓글 삭제하기
-            $(".btn-comment-delete").on('click', function () {
-                if (!confirm("해당 댓글을 정말 삭제하시겠습니까?")) {
-                    location.reload();
-                } else {
-                    const commentIdx = $(this).val();
-
-                    $.ajax({
-                        url: "/bmn/commentDelete",
-                        type: "PUT",
-                        data: {commentIdx: commentIdx},
-                        success: function (data) {
-                            location.reload();
-                        },
-                        error: function () {
-                            alert("ajax 통신 오류 발생");
-                        }
-                    })
-                }
-
-            })
-
-            // 문의하기 빈칸 없애기
-            $("#btn-question").on('click', function () {
-                const sessionCeoIdx = $("#ceo-idx").val();
-                const customerIdx = $("#customer-idx").val();
-                const questionTitle = $('#question-title').val();
-                const questionContents = $('#question-contents').val();
-                const frm = $("#question-form");
-                if (customerIdx != null) {
-                    if (questionTitle == null || questionTitle == "") {
-                        alert("문의 글 제목을 입력하세요");
-                    } else {
-                        if (questionContents == null || questionContents == "") {
-                            alert("문의 글 내용을 입력하세요");
-                        } else {
-                            frm.submit();
-                        }
-                    }
-                } else {
-                    if (sessionCeoIdx != null) {
-                        alert("손님 회원만 이용가능한 서비스입니다.")
-                    } else {
-                        alert("로그인이 필요한 서비스입니다.");
-                    }
-                }
-            });
-
-
-            // 로그인하기
-            // let msg = document.getElementById("sessionMsg");
-            // if (msg.textContent.length > 0) {
-            //   alert(msg.textContent);
-            // }
-
-            const btn = document.getElementById("submit-btn");
-            const frm = document.getElementById("form");
-            btn.addEventListener("click", function () {
-                let userId = document.getElementById("user-id").value;
-                let userPw = document.getElementById("user-pw").value;
-                if (userId === "" || userId == null) {
-                    // 아이디를 미입력시
-                    alert('아이디를 입력해주세요');
-                } else if (userId !== "" && userPw === "") {
-                    // 아이디만 입력시
-                    alert('비밀번호를 입력해주세요');
-                } else {
-                    // 서브밋
-                    frm.submit();
-                }
-            });
-
-
-        });
-
-
-        // ajax로 받은 html 태그의(문의게시판 리스트) 로딩 끝난 시점에서 호출되는 클릭이벤트 재생성 함수
-        function questionAnswer() {
-            $(".btn-question-answer").off('click'); // 기존의 클릭이벤트 제거(중복 방지 차원)
-
-            // 새롭게 생성하는 클릭이벤트
-            $(".btn-question-answer").on('click', function () {
-                // $(this)로 반복되는 버튼 중에 클릭한 버튼을 가져옴
-                // parent() : 부모 태그 가져옴
-                // childern("클래스명") : 자식태그중 "클래스명"을 가진 태그 가져옴
-
-                const frm = $(this).parent().parent();
-                const questionIdx = frm.children(".questionIdx").val();
-                const answerContents = frm.find(".answerContents").val();
-
-                if (answerContents == null || answerContents == "") {
-                    alert("답변 내용을 입력해주세요");
-                } else {
-                    $.ajax({
-                        url: "/bmn/updateAnswer",
-                        type: "PUT",
-                        data: {questionIdx: questionIdx, answerContents: answerContents},
-                        success: function (data) {
-                            location.reload(); // location.reload() 하게 되면 페이지 다시 불러옴
-                        },
-                        error: function () {
-                            alert("ajax 오류발생");
-                        }
-                    });
-                }
-            });
+            // pagination(1) 함수가 ajax로 비동기 방식이기 때문에 자바스크립트에서의 클릭이벤트가 실행 될 시점에는 ajax로 받은 html 리스트 태그(즉, btn-question-answer)를 못 찾음
+            // 따라서 ajax로 받은 html 리스트가 로딩이 끝났을 시점에서 클릭이벤트를 동작시키는 함수를 호출해야 함
+            questionAnswer();
+          } else {
+            html =
+              "            <div class=\"row border border-top-0\">\n" +
+              "              <p class=\"text-center pt-3\">등록된 문의 글이 없습니다.</p>\n" +
+              "            </div>";
+            qList.append(html);
+          }
+          
+          
+          // 페이징 버튼 구현
+          const paginationAjax = $("#paginationAjax");
+          
+          paginationAjax.empty();
+          
+          const paginationPrev = $("<li class=\"page-item\"></li>");
+          data.prePage == 0 ? paginationPrev.addClass("disabled") : paginationPrev.removeClass("disabled");
+          
+          const paginationPrevLink = $("<button class=\"page-link\" onclick='pagination(" + data.prePage +
+            ")'>&laquo;</button>");
+          paginationPrev.append(paginationPrevLink);
+          paginationAjax.append(paginationPrev);
+          
+          for (let i = 0; i < data.navigatepageNums.length; i++) {
+            const paginationBtnNum = $("<li class=\"page-item\"></li>");
+            
+            data.pageNum == data.navigatepageNums[i] ? paginationBtnNum.addClass("active") :
+              paginationBtnNum.removeClass("active");
+            
+            const paginationBtnNumLink = $("<button class='page-link' onclick='pagination(" +
+              data.navigatepageNums[i] + ")'></button>");
+            paginationBtnNumLink.append(data.navigatepageNums[i]);
+            paginationBtnNum.append(paginationBtnNumLink);
+            paginationAjax.append(paginationBtnNum);
+          }
+          
+          const paginationNext = $("<li class=\"page-item\"></li>");
+          data.nextPage == 0 ? paginationNext.addClass("disabled") : paginationNext.removeClass("disabled");
+          
+          const paginationNextLink =
+            $("<button class=\"page-link\" onclick=\"pagination(" + data.nextPage + ")\">&raquo;</button>");
+          paginationNext.append(paginationNextLink);
+          paginationAjax.append(paginationNext);
+          
+        },
+        
+        error: function (request, status, error) {
+          alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
-    </script>
+      });
+    }
+    
+    
+    $(document).ready(function () {
+      // ajax 페이징처리 함수로 페이지 로딩될때 pageNum이 1이 되도록 하는 함수 실행
+      pagination(1);
+      
+      const lat = $("#ceo-lat").val();
+      const lon = $("#ceo-lon").val();
+      
+      var mapOptions = {
+        center: new naver.maps.LatLng(lat, lon),
+        zoom: 15
+      }
+      
+      var map1 = new naver.maps.Map('map1', mapOptions);
+      
+      var marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(lat, lon),
+        map: map1
+      });
+      
+      // var mapOptions2 = {
+      //   center: new naver.maps.LatLng(37.3595704, 127.105399),
+      //   zoom: 20
+      // }
+      // var map2 = naver.maps.Map('map2', mapOptions2);
+      //
+      // var marker2 = new naver.maps.Marker({
+      //   position: new naver.maps.LatLng(37.3595704, 127.105399),
+      //   map: map2
+      // });
+      
+      // 식당 팔로우 수 조회
+      $("#btn-follow").on('click', function () {
+        const ceoStore = $("#ceoStore").val();
+        const ceoIdx = $("#ceoIdx").val();
+        const customerIdx = $("#customer-idx").val();
+        const sessionCeoIdx = $("#ceo-idx").val();
+        const adminCheck = $("#admin-check").val();
+        
+        
+        // 손님
+        if (customerIdx != null) {
+          $.ajax({
+            url: "/bmn/updateFollow",
+            type: "PUT",
+            data: {ceoIdx: ceoIdx, ceoStore: ceoStore, customerIdx: customerIdx},
+            success: function (data) {
+              if (data != null) {
+                $("#follow-cnt").html("<span>" + data + "</span>");
+              }
+            },
+            error: function () {
+              alert("ajax 통신 중 오류 발생!!");
+            }
+          });
+        }
+        // 손님 아닌 경우
+        else {
+          if (sessionCeoIdx != null) {
+            alert("손님 회원만 가능한 서비스입니다.");
+          } else if (adminCheck == 'admin') {
+            alert("손님 회원만 가능한 서비스입니다.");
+          } else {
+            alert("로그인이 필요한 서비스입니다.");
+          }
+        }
+      });
+      
+      // 우수회원 리뷰작성
+      $("#customer-grade-check").on('click', function () {
+        const customerGrade = $("#customer-grade").val();
+        const ceoIdx = $("#ceoIdx").val();
+        
+        if (customerGrade == 2) {
+          location.href = "/bmn/review/" + ceoIdx;
+        }
+        else if (customerGrade == 1) {
+          alert("우수 회원부터 리뷰 작성이 가능합니다.");
+        }
+        else {
+          alert("회원만 이용 가능한 서비스입니다.");
+        }
+      });
+      
+      // 문의 글에 답변 달기(사장님만 가능)
+      // id값으로 하게되면 반복되는 리스트 형태로, id가 겹치는 문제 발생하기 때문에 class타입 선택자 사용
+      $(".btn-question-answer").on('click', function () {
+        // $(this)로 반복되는 버튼 중에 클릭한 버튼을 가져옴
+        // parent() : 부모 태그 가져옴
+        // childern("클래스명") : 자식태그중 "클래스명"을 가진 태그 가져옴
+        
+        const frm = $(this).parent().parent();
+        const questionIdx = frm.children(".questionIdx").val();
+        const answerContents = frm.find(".answerContents").val();
+        
+        if (answerContents == null || answerContents == "") {
+          alert("답변 내용을 입력해주세요");
+        } else {
+          $.ajax({
+            url: "/bmn/updateAnswer",
+            type: "PUT",
+            data: {questionIdx: questionIdx, answerContents: answerContents},
+            success: function (data) {
+              alert(data);
+              location.reload(); // location.reload() 하게 되면 페이지 다시 불러옴
+            },
+            error: function () {
+              alert("ajax 오류발생");
+            }
+          });
+        }
+      });
+      
+      // 관리자 리뷰 삭제 버튼
+      $(".btn-review-delete").on('click', function () {
+        if (!confirm("해당 리뷰를 정말 삭제하시겠습니까?")) {
+          location.reload();
+        } else {
+          const reviewIdx = $(this).val();
+          
+          $.ajax({
+            url: "/bmn/reviewDelete",
+            type: "DELETE",
+            data: {reviewIdx: reviewIdx},
+            success: function (data) {
+              location.reload();
+            },
+            error: function () {
+              alert("ajax 통신 실패");
+            }
+          });
+        }
+      });
+      
+      // 리뷰에 댓글 달기
+      $(".btn-review-comment").on('click', function () {
+        const adminCheck = $("#admin-check").val();
+        const frm = $(this).parent().parent();
+        const reviewIdx = frm.children(".review-idx").val();
+        let customerIdx = $("#customer-idx").val();
+        let customerNick = $("#customer-nick").val();
+        const sessionCeoIdx = $("#ceo-idx").val();
+        let commentContents = frm.find(".commentContents").val();
+        const ceoIdx = $("#ceoIdx").val();
+        
+        if (customerIdx != null) {
+          if (commentContents == null || commentContents == "") {
+            alert("댓글 내용을 입력해주세요");
+          }
+          else {
+            $.ajax({
+              url: "/bmn/commentInsert",
+              type: "POST",
+              data: {
+                reviewIdx: reviewIdx, customerIdx: customerIdx, commentContents: commentContents,
+                ceoIdx: ceoIdx, customerNick: customerNick
+              },
+              success: function (data) {
+                location.reload();
+              },
+              error: function () {
+                alert("ajax 통신 실패");
+              }
+            });
+          }
+        }
+        else {
+          if (sessionCeoIdx != null && sessionCeoIdx == ceoIdx) {
+            if (commentContents == null || commentContents == '') {
+              alert("댓글 내용을 입력해주세요");
+            }
+            else {
+              customerIdx = 0;
+              customerNick = '사장님';
+              $.ajax({
+                url: "/bmn/commentInsert",
+                type: "POST",
+                data: {
+                  reviewIdx: reviewIdx, customerIdx: customerIdx, commentContents: commentContents,
+                  ceoIdx: ceoIdx, customerNick: customerNick
+                },
+                success: function (data) {
+                  location.reload();
+                },
+                error: function () {
+                  alert("ajax 통신 실패");
+                }
+              });
+            }
+          }
+          else {
+            if (sessionCeoIdx != ceoIdx) {
+              alert("식당 사장님만 작성할 수 있습니다.");
+            }
+            else {
+              alert("로그인이 필요한 서비스입니다.");
+            }
+          }
+        }
+      });
+      
+      // 리뷰에 달린 댓글 삭제하기
+      $(".btn-comment-delete").on('click', function () {
+        if (!confirm("해당 댓글을 정말 삭제하시겠습니까?")) {
+          location.reload();
+        } else {
+          const commentIdx = $(this).val();
+          
+          $.ajax({
+            url: "/bmn/commentDelete",
+            type: "PUT",
+            data: {commentIdx: commentIdx},
+            success: function (data) {
+              location.reload();
+            },
+            error: function () {
+              alert("ajax 통신 오류 발생");
+            }
+          })
+        }
+        
+      })
+      
+      // 문의하기 빈칸 없애기
+      $("#btn-question").on('click', function () {
+        const sessionCeoIdx = $("#ceo-idx").val();
+        const customerIdx = $("#customer-idx").val();
+        const questionTitle = $('#question-title').val();
+        const questionContents = $('#question-contents').val();
+        const frm = $("#question-form");
+        if (customerIdx != null) {
+          if (questionTitle == null || questionTitle == "") {
+            alert("문의 글 제목을 입력하세요");
+          } else {
+            if (questionContents == null || questionContents == "") {
+              alert("문의 글 내용을 입력하세요");
+            } else {
+              frm.submit();
+            }
+          }
+        } else {
+          if (sessionCeoIdx != null) {
+            alert("손님 회원만 이용가능한 서비스입니다.")
+          } else {
+            alert("로그인이 필요한 서비스입니다.");
+          }
+        }
+      });
+      
+      
+      // 로그인하기
+      // let msg = document.getElementById("sessionMsg");
+      // if (msg.textContent.length > 0) {
+      //   alert(msg.textContent);
+      // }
+      
+      const btn = document.getElementById("submit-btn");
+      const frm = document.getElementById("form");
+      btn.addEventListener("click", function () {
+        let userId = document.getElementById("user-id").value;
+        let userPw = document.getElementById("user-pw").value;
+        if (userId === "" || userId == null) {
+          // 아이디를 미입력시
+          alert('아이디를 입력해주세요');
+        } else if (userId !== "" && userPw === "") {
+          // 아이디만 입력시
+          alert('비밀번호를 입력해주세요');
+        } else {
+          // 서브밋
+          frm.submit();
+        }
+      });
+      
+      
+    });
+    
+    
+    // ajax로 받은 html 태그의(문의게시판 리스트) 로딩 끝난 시점에서 호출되는 클릭이벤트 재생성 함수
+    function questionAnswer() {
+      $(".btn-question-answer").off('click'); // 기존의 클릭이벤트 제거(중복 방지 차원)
+      
+      // 새롭게 생성하는 클릭이벤트
+      $(".btn-question-answer").on('click', function () {
+        // $(this)로 반복되는 버튼 중에 클릭한 버튼을 가져옴
+        // parent() : 부모 태그 가져옴
+        // childern("클래스명") : 자식태그중 "클래스명"을 가진 태그 가져옴
+        
+        const frm = $(this).parent().parent();
+        const questionIdx = frm.children(".questionIdx").val();
+        const answerContents = frm.find(".answerContents").val();
+        
+        if (answerContents == null || answerContents == "") {
+          alert("답변 내용을 입력해주세요");
+        } else {
+          $.ajax({
+            url: "/bmn/updateAnswer",
+            type: "PUT",
+            data: {questionIdx: questionIdx, answerContents: answerContents},
+            success: function (data) {
+              location.reload(); // location.reload() 하게 되면 페이지 다시 불러옴
+            },
+            error: function () {
+              alert("ajax 오류발생");
+            }
+          });
+        }
+      });
+    }
+  </script>
 </head>
 <body>
 <!-- 일단 grade가 2인 가게들만 열람 가능 / 관리자만 grade가 1인 가게들 열람 가능 -->
@@ -546,777 +561,757 @@
 <!--<p th:text="${session.customer.customerIdx}"></p>-->
 <!--<p th:text="${session.customer.customerNick}"></p>-->
 <main>
-    <div class="container" id="container">
-        <div class="row">
-            <!--        왼쪽 리모컨-->
-            <div class="col-sm-2 d-grid" id="left-remote">
-                <!--          지도-->
-                <div class="border my-2" data-bs-toggle="modal" data-bs-target="#map-modal" id="map1"></div>
-                <input type="hidden" id="ceo-lat" th:value="${ceoDto.ceoLat}">
-                <input type="hidden" id="ceo-lon" th:value="${ceoDto.ceoLon}">
-                <div th:if="${not #strings.isEmpty(session.user)}">
-                    <div th:if="${session.user == 'customer'}" class="d-grid">
-                        <a th:href="@{/bmn/reservationCus(ceoIdx=${ceoDto.ceoIdx}, ceoStore=${ceoDto.ceoStore})}"
-                           class="btn btn-secondary my-2">식당 예약하기</a>
-                    </div>
-                    <div th:if="${session.user == 'ceo'}" class="d-grid">
-                        <a th:href="@{/bmn/reservationCeo(ceoIdx=${ceoDto.ceoIdx}, ceoStore=${ceoDto.ceoStore})}"
-                           class="btn btn-secondary my-2">예약 확인</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-8"></div>
-            <!--        오른쪽 리모컨-->
-            <div class="col-sm-2" id="right-remote">
-                <div class="border rounded-2 text-center d-flex flex-column my-2">
-                    <a href="#" class="my-2"><i class="bi bi-arrow-up-circle-fill"
-                                                style="font-size: 20px; color: tomato"></i></a>
-                    <a class="btn mb-2" href="#toReview">#리뷰</a>
-                    <a class="btn mb-2" href="#toQuestion">#문의</a>
-                    <a href="#toFooter" class="mb-2"><i class="bi bi-arrow-down-circle-fill"
-                                                        style="font-size: 20px; color: tomato"></i></a>
-                    <!--          <a href="/bmn/review/ceoIdx=" th:attrappend="href=${ceoDto.ceoIdx}" class="btn mb-2">리뷰 쓰기</a>-->
-                </div>
-            </div>
+  <div class="container" id="container">
+    <div class="row">
+      <!--        왼쪽 리모컨-->
+      <div class="col-sm-2 d-grid" id="left-remote">
+        <!--          지도-->
+        <div class="border my-2" data-bs-toggle="modal" data-bs-target="#map-modal" id="map1"></div>
+        <input type="hidden" id="ceo-lat" th:value="${ceoDto.ceoLat}">
+        <input type="hidden" id="ceo-lon" th:value="${ceoDto.ceoLon}">
+        <div th:if="${not #strings.isEmpty(session.user)}">
+          <div th:if="${session.user == 'customer'}" class="d-grid">
+            <a th:href="@{/bmn/reservationCus(ceoIdx=${ceoDto.ceoIdx}, ceoStore=${ceoDto.ceoStore})}"
+               class="btn btn-secondary my-2">식당 예약하기</a>
+          </div>
+          <div th:if="${session.user == 'ceo'}" class="d-grid">
+            <a th:href="@{/bmn/reservationCeo(ceoIdx=${ceoDto.ceoIdx}, ceoStore=${ceoDto.ceoStore})}"
+               class="btn btn-secondary my-2">예약 확인</a>
+          </div>
         </div>
-
-        <!--      가게 정보-->
-        <div class="row my-4">
-            <div class="col-sm-8 mx-auto">
-                <div class="border rounded-2 p-3">
-                    <p th:text="${ceoDto.ceoStore}" class="fw-bold fs-2 d-inline">가게 이름</p>
-                    <button class="btn btn-outline-primary d-inline mb-3" id="btn-follow">#팔로우
-                        <span th:text="${followCnt}" id="follow-cnt">3</span>
-                    </button>
-                    <input type="hidden" id="ceoStore" th:value="${ceoDto.ceoStore}">
-                    <input type="hidden" id="ceoIdx" th:value="${ceoDto.ceoIdx}">
-                    <!--          <input type="hidden" id="customerIdx" th:value="${session.customerIdx}">-->
-                    <br><br>
-
-                    <!--          1,2,3,4 한일중양 표현-->
-                    <span th:if="${ceoDto.ceoCategory} == 01" class="rounded-5 border border-primary p-3 me-3">한식</span>
-                    <span th:if="${ceoDto.ceoCategory} == 02" class="rounded-5 border border-primary p-3 me-3">일식</span>
-                    <span th:if="${ceoDto.ceoCategory} == 03" class="rounded-5 border border-primary p-3 me-3">중식</span>
-                    <span th:if="${ceoDto.ceoCategory} == 04" class="rounded-5 border border-primary p-3 me-3">양식</span>
-                    <span th:text="|평점 : ${ceoDto.ceoScore}점|" class="rounded-5 border border-primary p-3"
-                          style="width: 100px"></span>
-                    <span th:text="|리뷰 : ${reviewCnt}개|" class="rounded-5 border border-primary p-3 ms-3"></span>
+      </div>
+      <div class="col-sm-8"></div>
+      <!--        오른쪽 리모컨-->
+      <div class="col-sm-2" id="right-remote">
+        <div class="border rounded-2 text-center d-flex flex-column my-2">
+          <a href="#" class="my-2"><i class="bi bi-arrow-up-circle-fill" style="font-size: 20px; color: tomato"></i></a>
+          <a class="btn mb-2" href="#toReview">#리뷰</a>
+          <a class="btn mb-2" href="#toQuestion">#문의</a>
+          <a href="#toFooter" class="mb-2"><i class="bi bi-arrow-down-circle-fill"
+                                              style="font-size: 20px; color: tomato"></i></a>
+          <!--          <a href="/bmn/review/ceoIdx=" th:attrappend="href=${ceoDto.ceoIdx}" class="btn mb-2">리뷰 쓰기</a>-->
+        </div>
+      </div>
+    </div>
+    
+    <!--      가게 정보-->
+    <div class="row my-4">
+      <div class="col-sm-8 mx-auto">
+        <div class="border rounded-2 p-3">
+          <p th:text="${ceoDto.ceoStore}" class="fw-bold fs-2 d-inline">가게 이름</p>
+          <button class="btn btn-outline-primary d-inline mb-3" id="btn-follow">#팔로우
+            <span th:text="${followCnt}" id="follow-cnt">3</span>
+          </button>
+          <input type="hidden" id="ceoStore" th:value="${ceoDto.ceoStore}">
+          <input type="hidden" id="ceoIdx" th:value="${ceoDto.ceoIdx}">
+          <!--          <input type="hidden" id="customerIdx" th:value="${session.customerIdx}">--><br><br>
+          
+          <!--          1,2,3,4 한일중양 표현-->
+          <span th:if="${ceoDto.ceoCategory} == 01" class="rounded-5 border border-primary p-3 me-3">한식</span>
+          <span th:if="${ceoDto.ceoCategory} == 02" class="rounded-5 border border-primary p-3 me-3">일식</span>
+          <span th:if="${ceoDto.ceoCategory} == 03" class="rounded-5 border border-primary p-3 me-3">중식</span>
+          <span th:if="${ceoDto.ceoCategory} == 04" class="rounded-5 border border-primary p-3 me-3">양식</span>
+          <span th:text="|평점 : ${ceoDto.ceoScore}점|" class="rounded-5 border border-primary p-3"
+                style="width: 100px"></span>
+          <span th:text="|리뷰 : ${reviewCnt}개|" class="rounded-5 border border-primary p-3 ms-3"></span>
+          <div class="row">
+            <div class="card mt-5" style="width: 40rem;">
+              <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|" class="card-img-top" alt="등록된 이미지가 없습니다."
+                   style="width: 400px;" height="300px;">
+            </div>
+          
+          </div>
+        </div>
+        <div class="border rounded-2 my-3 p-2">
+          <p><strong>식당명 : </strong>
+            <span th:text="${ceoDto.ceoStore != null} ? ${ceoDto.ceoStore} : '[등록된 정보가 없습니다.]'"></span>
+          </p>
+          <p><strong>위치 : </strong>
+            <span th:text="${ceoDto.ceoCityAddress != null} ? ${ceoDto.ceoCityAddress} : '[등록된 정보가 없습니다.]'"></span>
+          </p>
+          <p><strong>상세주소 : </strong>
+            <span th:text="${ceoDto.ceoFullAddress != null} ? ${ceoDto.ceoFullAddress} : '[등록된 정보가 없습니다.]'"></span>
+          </p>
+          <input type="hidden" id="ceo-full-address" th:value="${ceoDto.ceoFullAddress}">
+          <p style="margin-bottom: 0px"><strong>대표메뉴</strong></p>
+          <div class="card">
+            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMainImg}|" alt="등록된 이미지가 없습니다."
+                 style="width:300px; height: 200px">
+            <div class="card-body">
+              <p th:text="${ceoDto.ceoMainMenu != null} ? ${ceoDto.ceoMainMenu} : '[등록된 정보가 없습니다.]'"></p>
+            </div>
+          </div>
+          <button class="btn btn-outline-primary my-3" data-bs-toggle="collapse" data-bs-target="#detail-menu">상세 메뉴 확인하기
+          </button>
+          <div class="collapse" id="detail-menu">
+            <div class="row my-2">
+              <div class="col-4">
+                <div class="card m-1">
+                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|" alt="등록된 이미지가 없습니다.">
+                  <div class="card-body">
+                    <p th:text="${ceoDto.ceoDetailMenu1 != null} ? ${ceoDto.ceoDetailMenu1} : '[등록된 정보가 없습니다.]'"
+                       style="margin-bottom: 0px">상세메뉴1 </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="card m-1">
+                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg2}|" alt="등록된 이미지가 없습니다.">
+                  <div class="card-body">
+                    <p th:text="${ceoDto.ceoDetailMenu2 != null} ? ${ceoDto.ceoDetailMenu2} : '[등록된 정보가 없습니다.]'"
+                       style="margin-bottom: 0px">상세메뉴2 </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="card m-1">
+                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg3}|" alt="등록된 이미지가 없습니다.">
+                  <div class="card-body">
+                    <p th:text="${ceoDto.ceoDetailMenu3 != null} ? ${ceoDto.ceoDetailMenu3} : '[등록된 정보가 없습니다.]'"
+                       style="margin-bottom: 0px">상세메뉴3 </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row my-2">
+              <div class="col-4">
+                <div class="card m-1">
+                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg4}|" alt="등록된 이미지가 없습니다.">
+                  <div class="card-body">
+                    <p th:text="${ceoDto.ceoDetailMenu4 != null} ? ${ceoDto.ceoDetailMenu4} : '[등록된 정보가 없습니다.]'"
+                       style="margin-bottom: 0px">상세메뉴4 </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="card m-1">
+                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg5}|" alt="등록된 이미지가 없습니다.">
+                  <div class="card-body">
+                    <p th:text="${ceoDto.ceoDetailMenu5 != null} ? ${ceoDto.ceoDetailMenu5} : '[등록된 정보가 없습니다.]'"
+                       style="margin-bottom: 0px">상세메뉴5 </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="card m-1">
+                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg6}|" alt="등록된 이미지가 없습니다.">
+                  <div class="card-body">
+                    <p th:text="${ceoDto.ceoDetailMenu6 != null} ? ${ceoDto.ceoDetailMenu6} : '[등록된 정보가 없습니다.]'"
+                       style="margin-bottom: 0px">상세메뉴6 </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p style="margin-bottom: 0px"><strong>식당 소개글</strong></p>
+          <p th:utext="${ceoDto.ceoContents != null} ? ${ceoDto.ceoContents} : '[등록된 정보가 없습니다.]'"></p>
+          <p style="margin-bottom: 0px"><strong>영업시간</strong></p>
+          <div th:if="${ceoDto.ceoOpenTime != null}">
+            <div th:if="${ceoDto.ceoClosingTime != null}">
+              <p th:text="${ceoDto.ceoOpenTime} + ' ~ ' + ${ceoDto.ceoClosingTime}"></p>
+            </div>
+          </div>
+          <div th:unless="${ceoDto.ceoOpenTime != null}">
+            <p>[등록된 정보가 없습니다.]</p>
+          </div>
+          <p><strong>연락처 : </strong>
+            <span th:text="${ceoDto.ceoCallNumber != null} ? ${ceoDto.ceoCallNumber} : '[등록된 정보가 없습니다.]'"></span>
+          </p>
+          
+        </div>
+        <br id="toReview">
+        <!--          방문자 리뷰-->
+        <div class="my-5">
+          <h4 class="fw-bold">#방문자 리뷰</h4>
+          <div class="border rounded-5 pt-3 px-3">
+            <p th:text="|총 ${reviewCnt}개의 소중한 리뷰정보가 있습니다.|" class="fw-semibold"></p>
+            <div class="row">
+              <div class="col-sm d-flex align-items-center">
+                <p style="margin-bottom: 0px">식당 평점 : <span th:text="${ceoDto.ceoScore}"
+                                                            class="fw-semibold bg-info rounded p-2"></span></p>
+              </div>
+              <div class="col-sm d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-info m-3" id="customer-grade-check">#리뷰작성
+                </button>
+                <!--                <input type="hidden" id="customer-grade" th:value="${session.user.customerGrade}">-->
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div th:if="${#lists.size(reviewList)} > 0" th:each="item : ${reviewList}">
+            <div class="border rounded-3 my-3 p-3" th:if="${itemStat.index} < 2">
+              <div class="mx-3">
+                <!--              관리자 리뷰 삭제 버튼-->
+                <div class="d-flex justify-content-between">
+                <span>@
+                <span th:text="|${item.customerNick}|" class="fw-bold" style="align-content: center"></span>
+                </span>
+                  <div th:if="${not #strings.isEmpty(session.user)}">
+                    <div th:if="${session.user == 'admin'}">
+                      <button type="button" class="btn btn-secondary mb-2 btn-review-delete"
+                              th:value="${item.reviewIdx}">
+                        <i class="bi bi-trash3" style="font-size: 16px"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!--                <input type="hidden" id="review-idx" th:value="${item.reviewIdx}">-->
+                </div>
+                <div class="row">
+                  <div class="col-sm">
+                    <p>리뷰 평점 : <span th:text="${item.reviewScore}" class="bg-info fw-bold rounded p-1"></span></p>
+                  </div>
+                  <div class="col-sm d-flex justify-content-end">
+                    <p th:text="|${item.reviewDate} 작성|"></p>
+                  </div>
+                </div>
+              
+              </div>
+              <div class="d-flex ms-3">
+                <div th:if="${item.reviewTag1} == Y" class="mx-1">
+                  <button class="btn btn-outline-primary">맛</button>
+                </div>
+                <div th:unless="${item.reviewTag1} == Y"></div>
+                
+                <div th:if="${item.reviewTag2} == Y" class="mx-1">
+                  <button class="btn btn-outline-primary">만족도</button>
+                </div>
+                <div th:unless="${item.reviewTag2} == Y"></div>
+                
+                <div th:if="${item.reviewTag3} == Y" class="mx-1">
+                  <button class="btn btn-outline-primary">서비스</button>
+                </div>
+                <div th:unless="${item.reviewTag3} == Y"></div>
+                
+                <div th:if="${item.reviewTag4} == Y" class="mx-1">
+                  <button class="btn btn-outline-primary">음식량</button>
+                </div>
+                <div th:unless="${item.reviewTag4} == Y"></div>
+                
+                <div th:if="${item.reviewTag5} == Y" class="mx-1">
+                  <button class="btn btn-outline-primary">대기시간</button>
+                </div>
+                <div th:unless="${item.reviewTag5} == Y"></div>
+                
+                <div th:if="${item.reviewTag6} == Y" class="mx-1">
+                  <button class="btn btn-outline-primary">청결도</button>
+                </div>
+                <div th:unless="${item.reviewTag6} == Y"></div>
+                
+                <div th:if="${item.reviewTag7} == Y" class="mx-1">
+                  <button class="btn btn-outline-primary">분위기</button>
+                </div>
+                <div th:unless="${item.reviewTag7} == Y"></div>
+                
+                <div th:if="${item.reviewTag8} == Y" class="mx-1">
+                  <button class="btn btn-outline-primary">가격</button>
+                </div>
+                <div th:unless="${item.reviewTag8} == Y"></div>
+              </div>
+              <div class="m-3 border rounded-3 p-2">
+                <p th:text="${item.reviewTitle}" class="fw-semibold"></p>
+                <p th:utext="${item.reviewContents}"></p>
+                <div>
+                  <img th:src="|/bmn/getImage?path=${item.reviewImg}|" alt="이미지를 불러올 수 없습니다."
+                       style="width: 300px; height: 200px;"> <!-- 경로 이미지 구현 할것 -->
+                </div>
+              </div>
+              <button class="btn btn-outline-primary ms-4" data-bs-toggle="collapse" data-bs-target="#commentCollapse"
+                      th:attrappend="data-bs-target=${itemStat.index}">
+                <i class="bi bi-chat-left-dots-fill" style="font-size: 20px"></i>
+                <span>댓글 보기</span>
+              </button>
+              
+              <hr class="mt-3">
+              
+              <div class="collapse" id="commentCollapse" th:attrappend="id=${itemStat.index}">
+                <div class="m-3 rounded-3 p-2" th:each="comment : ${commentList}"
+                     th:if="${comment.reviewIdx == item.reviewIdx}">
+                  <!--                손님 댓글-->
+                  <div th:if="${comment.customerIdx == 0}">
                     <div class="row">
-                        <div class="card mt-5" style="width: 40rem;">
-                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|" class="card-img-top" alt="등록된 이미지가 없습니다.">
-                        </div>
-                    </div>
-                </div>
-                <div class="border rounded-2 my-3 p-2">
-                    <p th:text="|가게명 : ${ceoDto.ceoStore}|">가게이름</p>
-                    <p th:text="|시군구 : ${ceoDto.ceoCityAddress}|"></p>
-                    <p th:text="|주소 : ${ceoDto.ceoFullAddress}|">주소</p>
-                    <input type="hidden" id="ceo-full-address" th:value="${ceoDto.ceoFullAddress}">
-                    <button class="btn">대표메뉴</button>
-                    <div class="card">
-                        <img th:src="|/bmn/getImage?path=${ceoDto.ceoMainImg}|" alt="등록된 이미지가 없습니다.">
-                        <div class="card-body">
-                            <p th:text="${ceoDto.ceoMainMenu}"></p>
-                        </div>
-                    </div>
-                    <button class="btn btn-outline-primary my-3" data-bs-toggle="collapse"
-                            data-bs-target="#detail-menu">상세 메뉴 확인하기
-                    </button>
-                    <div class="collapse" id="detail-menu">
-                        <div class="row my-2">
-                            <div class="col-4">
-                                <div class="card m-1">
-                                    <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|" alt="등록된 이미지가 없습니다.">
-                                    <div class="card-body">
-                                        <p th:text="${ceoDto.ceoDetailMenu1}" style="margin-bottom: 0px">상세메뉴1</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="card m-1">
-                                    <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg2}|" alt="등록된 이미지가 없습니다.">
-                                    <div class="card-body">
-                                        <p th:text="${ceoDto.ceoDetailMenu2}" style="margin-bottom: 0px">상세메뉴2</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="card m-1">
-                                    <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg3}|" alt="등록된 이미지가 없습니다.">
-                                    <div class="card-body">
-                                        <p th:text="${ceoDto.ceoDetailMenu3}" style="margin-bottom: 0px">상세메뉴3</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-4">
-                                <div class="card m-1">
-                                    <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg4}|" alt="등록된 이미지가 없습니다.">
-                                    <div class="card-body">
-                                        <p th:text="${ceoDto.ceoDetailMenu4}" style="margin-bottom: 0px">상세메뉴4</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="card m-1">
-                                    <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg5}|" alt="등록된 이미지가 없습니다.">
-                                    <div class="card-body">
-                                        <p th:text="${ceoDto.ceoDetailMenu5}" style="margin-bottom: 0px">상세메뉴5</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="card m-1">
-                                    <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg6}|" alt="등록된 이미지가 없습니다.">
-                                    <div class="card-body">
-                                        <p th:text="${ceoDto.ceoDetailMenu6}" style="margin-bottom: 0px">상세메뉴6</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <p>식당 소개글</p>
-                    <p th:utext="${ceoDto.ceoContents}">매장소개</p>
-                    <p th:text="|영업시간 : ${ceoDto.ceoOpenTime}| + '~' + ${ceoDto.ceoClosingTime}">영업시간</p>
-                    <p th:text="|연락처 : ${ceoDto.ceoCallNumber}|">전화번호</p>
-                </div>
-                <br id="toReview">
-                <!--          방문자 리뷰-->
-                <div class="my-5">
-                    <h4 class="fw-bold">#방문자 리뷰</h4>
-                    <div class="border rounded-5 pt-3 px-3">
-                        <p th:text="|총 ${reviewCnt}개의 소중한 리뷰정보가 있습니다.|" class="fw-semibold"></p>
-                        <div class="row">
-                            <div class="col-sm d-flex align-items-center">
-                                <p style="margin-bottom: 0px">식당 평점 : <span th:text="${ceoDto.ceoScore}"
-                                                                            class="fw-semibold"></span></p>
-                            </div>
-                            <div class="col-sm d-flex justify-content-end">
-                                <button type="button" class="btn btn-outline-info m-3" id="customer-grade-check">#리뷰작성
-                                </button>
-                                <!--                <input type="hidden" id="customer-grade" th:value="${session.user.customerGrade}">-->
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div th:if="${#lists.size(reviewList)} > 0" th:each="item : ${reviewList}">
-                        <div class="border rounded-3 my-3 p-3" th:if="${itemStat.index} < 2">
-                            <div class="mx-3">
-                                <!--              관리자 리뷰 삭제 버튼-->
-                                <div class="d-flex justify-content-between">
-                <span>@
-                <span th:text="|${item.customerNick}|" class="fw-bold" style="align-content: center"></span>
-                </span>
-                                    <div th:if="${not #strings.isEmpty(session.user)}">
-                                        <div th:if="${session.user == 'admin'}">
-                                            <button type="button" class="btn btn-secondary mb-2 btn-review-delete"
-                                                    th:value="${item.reviewIdx}">
-                                                <i class="bi bi-trash3" style="font-size: 16px"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!--                <input type="hidden" id="review-idx" th:value="${item.reviewIdx}">-->
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm">
-                                        <p>리뷰 평점 : <span th:text="${item.reviewScore}"
-                                                         class="bg-info fw-bold rounded p-1"></span></p>
-                                    </div>
-                                    <div class="col-sm d-flex justify-content-end">
-                                        <p th:text="|${item.reviewDate} 작성|"></p>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="d-flex ms-3">
-                                <div th:if="${item.reviewTag1} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">맛</button>
-                                </div>
-                                <div th:unless="${item.reviewTag1} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag2} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">만족도</button>
-                                </div>
-                                <div th:unless="${item.reviewTag2} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag3} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">서비스</button>
-                                </div>
-                                <div th:unless="${item.reviewTag3} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag4} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">음식량</button>
-                                </div>
-                                <div th:unless="${item.reviewTag4} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag5} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">대기시간</button>
-                                </div>
-                                <div th:unless="${item.reviewTag5} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag6} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">청결도</button>
-                                </div>
-                                <div th:unless="${item.reviewTag6} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag7} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">분위기</button>
-                                </div>
-                                <div th:unless="${item.reviewTag7} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag8} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">가격</button>
-                                </div>
-                                <div th:unless="${item.reviewTag8} == Y">
-                                </div>
-                            </div>
-                            <div class="m-3 border rounded-3 p-2">
-                                <p th:text="${item.reviewTitle}" class="fw-semibold"></p>
-                                <p th:utext="${item.reviewContents}"></p>
-                                <div>
-                                    <img th:src="|/bmn/getImage?path=${item.reviewImg}|" alt="이미지를 불러올 수 없습니다."
-                                         style="width: 300px; height: 200px;"> <!-- 경로 이미지 구현 할것 -->
-                                </div>
-                            </div>
-                            <button class="btn btn-outline-primary ms-4" data-bs-toggle="collapse"
-                                    data-bs-target="#commentCollapse"
-                                    th:attrappend="data-bs-target=${itemStat.index}">
-                                <i class="bi bi-chat-left-dots-fill" style="font-size: 20px"></i>
-                                <span>댓글 보기</span>
-                            </button>
-
-                            <hr class="mt-3">
-
-                            <div class="collapse" id="commentCollapse" th:attrappend="id=${itemStat.index}">
-                                <div class="m-3 rounded-3 p-2" th:each="comment : ${commentList}"
-                                     th:if="${comment.reviewIdx == item.reviewIdx}">
-                                    <!--                손님 댓글-->
-                                    <div th:if="${comment.customerIdx == 0}">
-                                        <div class="row">
-                                            <div class="col-sm d-flex align-items-center">
+                      <div class="col-sm d-flex align-items-center">
                                                 <span th:text="|${comment.customerNick}|"
                                                       class="fw-bold text-primary"></span>
-                                                <span th:text="|[${comment.commentDate}]|" style="font-size: 14px"
-                                                      class="text-primary"></span>
-                                            </div>
-                                            <div th:if="${not #strings.isEmpty(session.ceo)}"
-                                                 class="col-sm d-flex justify-content-end">
-                                                <button type="button" th:if="${session.ceo.ceoIdx == ceoDto.ceoIdx}"
-                                                        class="btn btn-outline-secondary p-1 my-1 btn-comment-delete"
-                                                        th:value="${comment.commentIdx}">
-                                                    <i class="bi bi-x" style="font-size: 14px"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <input type="text" class="form-control comment-write"
-                                                   th:value="${comment.commentContents}" readonly>
-                                        </div>
-                                    </div>
-                                    <!--                사장님 댓글-->
-                                    <div th:unless="${comment.customerIdx == 0}">
-                                        <div class="row">
-                                            <div class="col-sm d-flex align-items-center">
-                                                <span th:text="|${comment.customerNick}|" class="fw-bold"></span>
-                                                <span th:text="|[${comment.commentDate}]|"
-                                                      style="font-size: 14px"></span>
-                                            </div>
-                                            <div th:if="${not #strings.isEmpty(session.customer)}"
-                                                 class="col-sm d-flex justify-content-end">
-                                                <button type="button"
-                                                        th:if="${session.customer.customerIdx == comment.customerIdx}"
-                                                        class="btn btn-outline-secondary p-1 my-1 btn-comment-delete"
-                                                        th:value="${comment.commentIdx}">
-                                                    <i class="bi bi-x" style="font-size: 14px"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <input type="text" class="form-control comment-write"
-                                                   th:value="${comment.commentContents}" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                <form method="post" class="row mx-3">
-                                    <div class="col-sm-11 d-flex align-items-center">
-                                        <input type="text" class="form-control commentContents" name="commentContents">
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <button type="button" class="btn btn-review-comment">
-                                            <i class="bi bi-pencil-square" style="font-size:2rem"></i>
-                                        </button>
-                                    </div>
-                                    <input type="hidden" class="review-idx" name="reviewIdx"
-                                           th:value="${item.reviewIdx}">
-                                    <!--                <input type="hidden" class="customer-idx" name="customerIdx" th:value="${customerIdx}">-->
-                                </form>
-                            </div>
-                        </div>
-
-                        <!--         ------- 리뷰 2개 이상부터 배치할 곳-------- -->
-
-                        <div class="collapse border rounded-3 my-3 p-3" id="review-more"
-                             th:unless="${itemStat.index} < 2">
-                            <div class="mx-3">
-                                <!--              관리자 리뷰 삭제 버튼-->
-                                <div class="d-flex justify-content-between">
-                <span>@
-                <span th:text="|${item.customerNick}|" class="fw-bold" style="align-content: center"></span>
-                </span>
-                                    <div th:if="${not #strings.isEmpty(session.user)}">
-                                        <div th:if="${session.user == 'admin'}">
-                                            <button type="button" class="btn btn-secondary mb-2 btn-review-delete"
-                                                    th:value="${item.reviewIdx}">
-                                                <i class="bi bi-trash3" style="font-size: 16px"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!--                <input type="hidden" id="review-idx" th:value="${item.reviewIdx}">-->
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm">
-                                        <p>리뷰 평점 : <span th:text="${item.reviewScore}"
-                                                         class="bg-info fw-bold rounded p-1"></span></p>
-                                    </div>
-                                    <div class="col-sm d-flex justify-content-end">
-                                        <p th:text="|${item.reviewDate} 작성|"></p>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="d-flex ms-3">
-                                <div th:if="${item.reviewTag1} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">맛</button>
-                                </div>
-                                <div th:unless="${item.reviewTag1} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag2} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">만족도</button>
-                                </div>
-                                <div th:unless="${item.reviewTag2} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag3} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">서비스</button>
-                                </div>
-                                <div th:unless="${item.reviewTag3} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag4} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">음식량</button>
-                                </div>
-                                <div th:unless="${item.reviewTag4} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag5} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">대기시간</button>
-                                </div>
-                                <div th:unless="${item.reviewTag5} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag6} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">청결도</button>
-                                </div>
-                                <div th:unless="${item.reviewTag6} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag7} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">분위기</button>
-                                </div>
-                                <div th:unless="${item.reviewTag7} == Y">
-                                </div>
-
-                                <div th:if="${item.reviewTag8} == Y" class="mx-1">
-                                    <button class="btn btn-outline-info">가격</button>
-                                </div>
-                                <div th:unless="${item.reviewTag8} == Y">
-                                </div>
-                            </div>
-                            <div class="m-3 border rounded-3 p-2">
-                                <p th:text="${item.reviewTitle}" class="fw-semibold"></p>
-                                <p th:text="${item.reviewContents}"></p>
-                                <div>
-                                    <img th:src="|/bmn/getImage?path=${item.reviewImg}|" alt="이미지를 불러올 수 없습니다."
-                                         style="width: 300px; height: 200px;"> <!--  경로 이미지 구현 할것
-                 -->
-                                </div>
-                            </div>
-                            <button class="btn btn-outline-primary ms-4" data-bs-toggle="collapse"
-                                    data-bs-target="#commentCollapse2"
-                                    th:attrappend="data-bs-target=${itemStat.index}">
-                                <i class="bi bi-chat-left-dots-fill" style="font-size: 20px"></i>
-                                <span>댓글 보기</span>
-                            </button>
-
-                            <hr class="mt-3">
-
-                            <div class="collapse" id="commentCollapse2" th:attrappend="id=${itemStat.index}">
-                                <div class="m-3 rounded-3 p-2" th:each="comment : ${commentList}"
-                                     th:if="${comment.reviewIdx == item.reviewIdx}">
-                                    <!--                손님 댓글-->
-                                    <div th:if="${comment.customerIdx == 0}">
-                                        <div class="row">
-                                            <div class="col-sm d-flex align-items-center">
-                                                <span th:text="|${comment.customerNick}|"
-                                                      class="fw-bold text-primary"></span>
-                                                <span th:text="|[${comment.commentDate}]|" style="font-size: 14px"
-                                                      class="text-primary"></span>
-                                            </div>
-                                            <div th:if="${not #strings.isEmpty(session.ceo)}"
-                                                 class="col-sm d-flex justify-content-end">
-                                                <button type="button" th:if="${session.ceo.ceoIdx == ceoDto.ceoIdx}"
-                                                        class="btn btn-outline-secondary p-1 my-1 btn-comment-delete"
-                                                        th:value="${comment.commentIdx}">
-                                                    <i class="bi bi-x" style="font-size: 14px"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <input type="text" class="form-control comment-write"
-                                                   th:value="${comment.commentContents}" readonly>
-                                        </div>
-                                    </div>
-                                    <!--                사장님 댓글-->
-                                    <div th:unless="${comment.customerIdx == 0}">
-                                        <div class="row">
-                                            <div class="col-sm d-flex align-items-center">
-                                                <span th:text="|${comment.customerNick}|" class="fw-bold"></span>
-                                                <span th:text="|[${comment.commentDate}]|"
-                                                      style="font-size: 14px"></span>
-                                            </div>
-                                            <div th:if="${not #strings.isEmpty(session.customer)}"
-                                                 class="col-sm d-flex justify-content-end">
-                                                <button type="button"
-                                                        th:if="${session.customer.customerIdx == comment.customerIdx}"
-                                                        class="btn btn-outline-secondary p-1 my-1 btn-comment-delete"
-                                                        th:value="${comment.commentIdx}">
-                                                    <i class="bi bi-x" style="font-size: 14px"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <input type="text" class="form-control comment-write"
-                                                   th:value="${comment.commentContents}" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                <form method="post" class="row mx-3">
-                                    <div class="col-sm-11 d-flex align-items-center">
-                                        <input type="text" class="form-control commentContents" name="commentContents">
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <button type="button" class="btn btn-review-comment">
-                                            <i class="bi bi-pencil-square" style="font-size:2rem"></i>
-                                        </button>
-                                    </div>
-                                    <input type="hidden" class="review-idx" name="reviewIdx"
-                                           th:value="${item.reviewIdx}">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border rounded-3 my-3" th:unless="${#lists.size(reviewList)} > 0">
-                        <p class="pt-3 ms-3 text-center">#등록된 리뷰가 없습니다.</p>
-                    </div>
-                    <div class="text-center">
-                        <button class="btn btn-primary fs-4" data-bs-toggle="collapse" data-bs-target="#review-more"
-                                style="width: 200px; height: 70px">리뷰 더보기
+                        <span th:text="|[${comment.commentDate}]|" style="font-size: 14px" class="text-primary"></span>
+                      </div>
+                      <div th:if="${not #strings.isEmpty(session.ceo)}" class="col-sm d-flex justify-content-end">
+                        <button type="button" th:if="${session.ceo.ceoIdx == ceoDto.ceoIdx}"
+                                class="btn btn-outline-secondary p-1 my-1 btn-comment-delete"
+                                th:value="${comment.commentIdx}">
+                          <i class="bi bi-x" style="font-size: 14px"></i>
                         </button>
+                      </div>
                     </div>
-                </div>
-                <br id="toQuestion">
-                <!--          식당 문의-->
-                <div class="my-5">
                     <div class="row">
-                        <div class="col-sm">
-                            <h4 class="fw-bold" id="question-focus">#식당 문의</h4>
-                        </div>
-                        <div class="col-sm d-flex justify-content-end">
-                            <div th:if="${not #strings.isEmpty(session.user)}">
-                                <div th:if="${session.user == 'customer'}">
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse"
-                                            data-bs-target="#write-question-collapse">문의 글 작성하기
-                                        <i class="bi bi-pencil-square ms-2" style="color: black"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div th:unless="${not #strings.isEmpty(session.user)}">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse"
-                                        data-bs-target="#write-question-collapse">문의 글 작성하기
-                                    <i class="bi bi-pencil-square ms-2" style="color: black"></i>
-                                </button>
-                            </div>
-                        </div>
+                      <input type="text" class="form-control comment-write" th:value="${comment.commentContents}"
+                             readonly>
                     </div>
-                    <hr>
-                    <!--              문의게시판 테이블 헤더부분-->
-                    <div class="row text-center border">
-                        <div class="col-sm-1">
-                            <p class="fw-bold mt-3">번호</p>
-                        </div>
-                        <div class="col-sm-2">
-                            <p class="fw-bold mt-3">답변여부</p>
-                        </div>
-                        <div class="col-sm-5">
-                            <p class="fw-bold mt-3">제목</p>
-                        </div>
-                        <div class="col-sm-2">
-                            <p class="fw-bold mt-3">작성자</p>
-                        </div>
-                        <div class="col-sm-2">
-                            <p class="fw-bold mt-3">등록일자</p>
-                        </div>
+                  </div>
+                  <!--                사장님 댓글-->
+                  <div th:unless="${comment.customerIdx == 0}">
+                    <div class="row">
+                      <div class="col-sm d-flex align-items-center">
+                        <span th:text="|${comment.customerNick}|" class="fw-bold"></span>
+                        <span th:text="|[${comment.commentDate}]|" style="font-size: 14px"></span>
+                      </div>
+                      <div th:if="${not #strings.isEmpty(session.customer)}" class="col-sm d-flex justify-content-end">
+                        <button type="button" th:if="${session.customer.customerIdx == comment.customerIdx}"
+                                class="btn btn-outline-secondary p-1 my-1 btn-comment-delete"
+                                th:value="${comment.commentIdx}">
+                          <i class="bi bi-x" style="font-size: 14px"></i>
+                        </button>
+                      </div>
                     </div>
-
-                    <!--          문의게시판 테이블 바디 부분-->
-                    <div id="q-list">
-                        <div th:if="${#lists.size(questionList.getList())}>0"
-                             th:each="item : ${questionList.getList()}">
-                            <div class="row text-center border border-top-0">
-                                <div class="col-sm-1">
-                                    <p class="mt-3" th:text="${item.questionIdx}"></p>
-                                </div>
-                                <div class="col-sm-2">
-                                    <p class="mt-3" th:text="${item.questionComplete}"
-                                       th:attrappend="class=${item.questionComplete == '답변완료' ? ' text-muted' : ' fw-bold'}"></p>
-                                </div>
-                                <div class="col-sm-5 d-flex align-items-center">
-                                    <a href="#question-detail" th:attrappend="href=${itemStat.index}"
-                                       class="text-decoration-none text-black" data-bs-toggle="collapse"
-                                       th:text="${item.questionTitle}"></a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <p class="mt-3" th:text="${item.customerNick}"></p>
-                                </div>
-                                <div class="col-sm-2">
-                                    <p class="mt-3" th:text="${item.questionDate}"></p>
-                                </div>
-                            </div>
-                            <div class="collapse" id="question-detail" th:attrappend="id=${itemStat.index}">
-                                <div class="row border border-top-0">
-                                    <div class="col-sm-2">
-                                        <p class="m-3">[문의내용]</p>
-                                    </div>
-                                    <div class="col-sm-10">
-                                        <p class="m-3" th:text="${item.questionContents}"></p>
-                                    </div>
-                                </div>
-                                <div class="row border border-top-0" th:if="${item.answerContents != null}">
-                                    <div class="col-sm-2">
-                                        <p class="m-3">[답변내용]</p>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <p class="m-3" th:text="${item.answerContents}"></p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <p class="m-3" th:text="${item.answerDate}"></p>
-                                    </div>
-                                </div>
-                                <form method="post" class="row border border-top-0"
-                                      th:unless="${item.answerContents != null}">
-                                    <div class="col-sm-2">
-                                        <p class="m-3">[답변내용]</p>
-                                    </div>
-                                    <div class="col-sm-9 d-flex align-items-center">
-                                        <input type="text" class="form-control answerContents" name="answerContents">
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <button type="button" class="btn">
-                                            <i class="bi bi-pencil-square" style="font-size:2rem"></i>
-                                        </button>
-                                    </div>
-                                    <input type="hidden" class="questionIdx" name="questionIdx"
-                                           th:value="${item.questionIdx}">
-                                    <!--                  <input type="hidden" class="method" name="_method">-->
-                                </form>
-                            </div>
-                        </div>
-                        <div th:unless="${#lists.size(questionList.getList())}>0" class="border rounded-3 my-3">
-                            <p class="text-center pt-3">등록된 문의 글이 없습니다.</p>
-                        </div>
-
+                    <div class="row">
+                      <input type="text" class="form-control comment-write" th:value="${comment.commentContents}"
+                             readonly>
                     </div>
-
-                    <!--          ajax 이용한 페이지 처리 버튼-->
-                    <div class="my-3">
-                        <ul class="pagination d-flex justify-content-end" id="paginationAjax">
-
-                            <!--                이전 페이지 버튼-->
-                            <li class="page-item disabled">
-                                <a href="#" class="page-link">&laquo;</a>
-                            </li>
-
-                            <!--                네비게이션 버튼-->
-                            <li class="page-item">
-                                <a href="#" class="page-link">1</a>
-                            </li>
-
-                            <!--                다음 페이지 버튼 -->
-                            <li class="page-item">
-                                <a href="#" class="page-link">&raquo;</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <br>
-                    <div id="write-question-collapse" class="collapse">
-                        <form action="/bmn/insertQuestion" method="post" id="question-form">
-                            <div class="my-2">
-                                <h4 class="fw-bold">#문의글 작성</h4>
-                                <hr>
-                            </div>
-                            <div class="input-group mb-1">
-                                <span class="input-group-text">글제목</span>
-                                <input type="text" class="form-control" id="question-title" name="questionTitle"
-                                       placeholder="문의 글 제목을 입력해주세요">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-text">글내용</span>
-                                <textarea class="form-control" rows="5" id="question-contents" name="questionContents"
-                                          placeholder="문의 하실 내용을 입력해주세요"></textarea>
-                            </div>
-
-                            <div class="d-flex justify-content-end my-2">
-                                <button type="button" class="btn btn-outline-secondary" id="btn-question">작성하기
-                                    <i class="bi bi-pencil-square ms-2" style="color: black"></i>
-                                </button>
-                                <!--  제목, 내용 null 시 알람 출력 + 사장님 로그인 시 문의하기칸 안보이게 + 문의 답변은 자기 가게에만 + 사장님만 문의 답변 가능  -->
-                            </div>
-                            <!--              히든 데이터 영역-->
-                            <input type="hidden" name="ceoIdx" th:value="${ceoDto.ceoIdx}">
-                            <input type="hidden" name="ceoStore" th:value="${ceoDto.ceoStore}">
-                            <div th:if="${not #strings.isEmpty(session.user)}">
-                                <div th:if="${session.user == 'customer'}">
-                                    <input type="hidden" name="customerIdx" th:value="${session.customer.customerIdx}">
-                                    <input type="hidden" name="customerNick"
-                                           th:value="${session.customer.customerNick}">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                  </div>
                 </div>
+                <hr>
+                <form method="post" class="row mx-3">
+                  <div class="col-sm-11 d-flex align-items-center">
+                    <input type="text" class="form-control commentContents" name="commentContents">
+                  </div>
+                  <div class="col-sm-1">
+                    <button type="button" class="btn btn-review-comment">
+                      <i class="bi bi-pencil-square" style="font-size:2rem"></i>
+                    </button>
+                  </div>
+                  <input type="hidden" class="review-idx" name="reviewIdx" th:value="${item.reviewIdx}">
+                  <!--                <input type="hidden" class="customer-idx" name="customerIdx" th:value="${customerIdx}">-->
+                </form>
+              </div>
             </div>
-        </div>
-    </div>
-
-    <!--  모달 로그인 팝업창-->
-    <div class="modal fade" id="modal-login">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            
+            <!--         ------- 리뷰 2개 이상부터 배치할 곳-------- -->
+            
+            <div class="collapse border rounded-3 my-3 p-3" id="review-more" th:unless="${itemStat.index} < 2">
+              <div class="mx-3">
+                <!--              관리자 리뷰 삭제 버튼-->
+                <div class="d-flex justify-content-between">
+                <span>@
+                <span th:text="|${item.customerNick}|" class="fw-bold" style="align-content: center"></span>
+                </span>
+                  <div th:if="${not #strings.isEmpty(session.user)}">
+                    <div th:if="${session.user == 'admin'}">
+                      <button type="button" class="btn btn-secondary mb-2 btn-review-delete"
+                              th:value="${item.reviewIdx}">
+                        <i class="bi bi-trash3" style="font-size: 16px"></i>
+                      </button>
                     </div>
-                    <h2 class="modal-title text-center my-4">로그인</h2>
-
-                    <form action="/bmn/login" class="form-control" method="post" id="form">
-                        <div class="my-3 p-2">
-                            <label for="user-id" class="form-label">아이디</label>
-                            <input type="text" class="form-control" id="user-id" name="userId">
-                        </div>
-                        <div class="my-3 p-2">
-                            <label for="user-pw" class="form-label">비밀번호</label>
-                            <input type="password" class="form-control" id="user-pw" name="userPw">
-                        </div>
-                        <div class="my-4 d-grid gap-3">
-                            <button type="button" class="btn btn-primary" id="submit-btn">로그인</button>
-                            <div class="my-2 d-flex">
-                                <a href="/bmn/signUp/customer" class="btn btn-secondary flex-fill mx-1">손님 회원가입</a>
-                                <a href="/bmn/signUp/ceo" class="btn btn-secondary flex-fill mx-1">사장님 회원가입</a>
-                            </div>
-                        </div>
-                    </form>
+                  </div>
+                  <!--                <input type="hidden" id="review-idx" th:value="${item.reviewIdx}">-->
                 </div>
+                <div class="row">
+                  <div class="col-sm">
+                    <p>리뷰 평점 : <span th:text="${item.reviewScore}" class="bg-info fw-bold rounded p-1"></span></p>
+                  </div>
+                  <div class="col-sm d-flex justify-content-end">
+                    <p th:text="|${item.reviewDate} 작성|"></p>
+                  </div>
+                </div>
+              
+              </div>
+              <div class="d-flex ms-3">
+                <div th:if="${item.reviewTag1} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">맛</button>
+                </div>
+                <div th:unless="${item.reviewTag1} == Y"></div>
+                
+                <div th:if="${item.reviewTag2} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">만족도</button>
+                </div>
+                <div th:unless="${item.reviewTag2} == Y"></div>
+                
+                <div th:if="${item.reviewTag3} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">서비스</button>
+                </div>
+                <div th:unless="${item.reviewTag3} == Y"></div>
+                
+                <div th:if="${item.reviewTag4} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">음식량</button>
+                </div>
+                <div th:unless="${item.reviewTag4} == Y"></div>
+                
+                <div th:if="${item.reviewTag5} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">대기시간</button>
+                </div>
+                <div th:unless="${item.reviewTag5} == Y"></div>
+                
+                <div th:if="${item.reviewTag6} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">청결도</button>
+                </div>
+                <div th:unless="${item.reviewTag6} == Y"></div>
+                
+                <div th:if="${item.reviewTag7} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">분위기</button>
+                </div>
+                <div th:unless="${item.reviewTag7} == Y"></div>
+                
+                <div th:if="${item.reviewTag8} == Y" class="mx-1">
+                  <button class="btn btn-outline-info">가격</button>
+                </div>
+                <div th:unless="${item.reviewTag8} == Y"></div>
+              </div>
+              <div class="m-3 border rounded-3 p-2">
+                <p th:text="${item.reviewTitle}" class="fw-semibold"></p>
+                <p th:text="${item.reviewContents}"></p>
+                <div>
+                  <img th:src="|/bmn/getImage?path=${item.reviewImg}|" alt="이미지를 불러올 수 없습니다."
+                       style="width: 300px; height: 200px;"> <!--  경로 이미지 구현 할것
+                 -->
+                </div>
+              </div>
+              <button class="btn btn-outline-primary ms-4" data-bs-toggle="collapse" data-bs-target="#commentCollapse2"
+                      th:attrappend="data-bs-target=${itemStat.index}">
+                <i class="bi bi-chat-left-dots-fill" style="font-size: 20px"></i>
+                <span>댓글 보기</span>
+              </button>
+              
+              <hr class="mt-3">
+              
+              <div class="collapse" id="commentCollapse2" th:attrappend="id=${itemStat.index}">
+                <div class="m-3 rounded-3 p-2" th:each="comment : ${commentList}"
+                     th:if="${comment.reviewIdx == item.reviewIdx}">
+                  <!--                손님 댓글-->
+                  <div th:if="${comment.customerIdx == 0}">
+                    <div class="row">
+                      <div class="col-sm d-flex align-items-center">
+                                                <span th:text="|${comment.customerNick}|"
+                                                      class="fw-bold text-primary"></span>
+                        <span th:text="|[${comment.commentDate}]|" style="font-size: 14px" class="text-primary"></span>
+                      </div>
+                      <div th:if="${not #strings.isEmpty(session.ceo)}" class="col-sm d-flex justify-content-end">
+                        <button type="button" th:if="${session.ceo.ceoIdx == ceoDto.ceoIdx}"
+                                class="btn btn-outline-secondary p-1 my-1 btn-comment-delete"
+                                th:value="${comment.commentIdx}">
+                          <i class="bi bi-x" style="font-size: 14px"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <input type="text" class="form-control comment-write" th:value="${comment.commentContents}"
+                             readonly>
+                    </div>
+                  </div>
+                  <!--                사장님 댓글-->
+                  <div th:unless="${comment.customerIdx == 0}">
+                    <div class="row">
+                      <div class="col-sm d-flex align-items-center">
+                        <span th:text="|${comment.customerNick}|" class="fw-bold"></span>
+                        <span th:text="|[${comment.commentDate}]|" style="font-size: 14px"></span>
+                      </div>
+                      <div th:if="${not #strings.isEmpty(session.customer)}" class="col-sm d-flex justify-content-end">
+                        <button type="button" th:if="${session.customer.customerIdx == comment.customerIdx}"
+                                class="btn btn-outline-secondary p-1 my-1 btn-comment-delete"
+                                th:value="${comment.commentIdx}">
+                          <i class="bi bi-x" style="font-size: 14px"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <input type="text" class="form-control comment-write" th:value="${comment.commentContents}"
+                             readonly>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <form method="post" class="row mx-3">
+                  <div class="col-sm-11 d-flex align-items-center">
+                    <input type="text" class="form-control commentContents" name="commentContents">
+                  </div>
+                  <div class="col-sm-1">
+                    <button type="button" class="btn btn-review-comment">
+                      <i class="bi bi-pencil-square" style="font-size:2rem"></i>
+                    </button>
+                  </div>
+                  <input type="hidden" class="review-idx" name="reviewIdx" th:value="${item.reviewIdx}">
+                </form>
+              </div>
             </div>
+          </div>
+          
+          <div class="border rounded-3 my-3" th:unless="${#lists.size(reviewList)} > 0">
+            <p class="pt-3 ms-3 text-center">#등록된 리뷰가 없습니다.</p>
+          </div>
+          <div class="text-center">
+            <button class="btn btn-outline-dark fs-4" data-bs-toggle="collapse" data-bs-target="#review-more"
+                    style="width: 200px; height: 70px">리뷰 더보기
+            </button>
+          </div>
         </div>
-    </div>
-
-    <!--          모달 팝업 지도창-->
-    <div class="modal" id="map-modal">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" th:text="${ceoDto.ceoStore}">지도 확대하기</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="map2"></div>
-                </div>
+        <br id="toQuestion">
+        <!--          식당 문의-->
+        <div class="my-5">
+          <div class="row">
+            <div class="col-sm">
+              <h4 class="fw-bold" id="question-focus">#식당 문의</h4>
             </div>
+            <div class="col-sm d-flex justify-content-end">
+              <div th:if="${not #strings.isEmpty(session.user)}">
+                <div th:if="${session.user == 'customer'}">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse"
+                          data-bs-target="#write-question-collapse">문의 글 작성하기
+                    <i class="bi bi-pencil-square ms-2" style="color: black"></i>
+                  </button>
+                </div>
+              </div>
+              <div th:unless="${not #strings.isEmpty(session.user)}">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse"
+                        data-bs-target="#write-question-collapse">문의 글 작성하기
+                  <i class="bi bi-pencil-square ms-2" style="color: black"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <!--              문의게시판 테이블 헤더부분-->
+          <div class="row text-center border">
+            <div class="col-sm-1">
+              <p class="fw-bold mt-3">번호</p>
+            </div>
+            <div class="col-sm-2">
+              <p class="fw-bold mt-3">답변여부</p>
+            </div>
+            <div class="col-sm-5">
+              <p class="fw-bold mt-3">제목</p>
+            </div>
+            <div class="col-sm-2">
+              <p class="fw-bold mt-3">작성자</p>
+            </div>
+            <div class="col-sm-2">
+              <p class="fw-bold mt-3">등록일자</p>
+            </div>
+          </div>
+          
+          <!--          문의게시판 테이블 바디 부분-->
+          <div id="q-list">
+            <div th:if="${#lists.size(questionList.getList())}>0" th:each="item : ${questionList.getList()}">
+              <div class="row text-center border border-top-0">
+                <div class="col-sm-1">
+                  <p class="mt-3" th:text="${item.questionIdx}"></p>
+                </div>
+                <div class="col-sm-2">
+                  <p class="mt-3" th:text="${item.questionComplete}"
+                     th:attrappend="class=${item.questionComplete == '답변완료' ? ' text-muted' : ' fw-bold'}"></p>
+                </div>
+                <div class="col-sm-5 d-flex align-items-center">
+                  <a href="#question-detail" th:attrappend="href=${itemStat.index}"
+                     class="text-decoration-none text-black" data-bs-toggle="collapse"
+                     th:text="${item.questionTitle}"></a>
+                </div>
+                <div class="col-sm-2">
+                  <p class="mt-3" th:text="${item.customerNick}"></p>
+                </div>
+                <div class="col-sm-2">
+                  <p class="mt-3" th:text="${item.questionDate}"></p>
+                </div>
+              </div>
+              <div class="collapse" id="question-detail" th:attrappend="id=${itemStat.index}">
+                <div class="row border border-top-0">
+                  <div class="col-sm-2">
+                    <p class="m-3">[문의내용]</p>
+                  </div>
+                  <div class="col-sm-10">
+                    <p class="m-3" th:text="${item.questionContents}"></p>
+                  </div>
+                </div>
+                <div class="row border border-top-0" th:if="${item.answerContents != null}">
+                  <div class="col-sm-2">
+                    <p class="m-3">[답변내용]</p>
+                  </div>
+                  <div class="col-sm-8">
+                    <p class="m-3" th:text="${item.answerContents}"></p>
+                  </div>
+                  <div class="col-sm-2">
+                    <p class="m-3" th:text="${item.answerDate}"></p>
+                  </div>
+                </div>
+                <form method="post" class="row border border-top-0" th:unless="${item.answerContents != null}">
+                  <div class="col-sm-2">
+                    <p class="m-3">[답변내용]</p>
+                  </div>
+                  <div class="col-sm-9 d-flex align-items-center">
+                    <input type="text" class="form-control answerContents" name="answerContents">
+                  </div>
+                  <div class="col-sm-1">
+                    <button type="button" class="btn">
+                      <i class="bi bi-pencil-square" style="font-size:2rem"></i>
+                    </button>
+                  </div>
+                  <input type="hidden" class="questionIdx" name="questionIdx" th:value="${item.questionIdx}">
+                  <!--                  <input type="hidden" class="method" name="_method">-->
+                </form>
+              </div>
+            </div>
+            <div th:unless="${#lists.size(questionList.getList())}>0" class="border rounded-3 my-3">
+              <p class="text-center pt-3">등록된 문의 글이 없습니다.</p>
+            </div>
+          
+          </div>
+          
+          <!--          ajax 이용한 페이지 처리 버튼-->
+          <div class="my-3">
+            <ul class="pagination d-flex justify-content-end" id="paginationAjax">
+              
+              <!--                이전 페이지 버튼-->
+              <li class="page-item disabled">
+                <a href="#" class="page-link">&laquo;</a>
+              </li>
+              
+              <!--                네비게이션 버튼-->
+              <li class="page-item">
+                <a href="#" class="page-link">1</a>
+              </li>
+              
+              <!--                다음 페이지 버튼 -->
+              <li class="page-item">
+                <a href="#" class="page-link">&raquo;</a>
+              </li>
+            </ul>
+          </div>
+          
+          <br>
+          <div id="write-question-collapse" class="collapse">
+            <form action="/bmn/insertQuestion" method="post" id="question-form">
+              <div class="my-2">
+                <h4 class="fw-bold">#문의글 작성</h4>
+                <hr>
+              </div>
+              <div class="input-group mb-1">
+                <span class="input-group-text">글제목</span>
+                <input type="text" class="form-control" id="question-title" name="questionTitle"
+                       placeholder="문의 글 제목을 입력해주세요">
+              </div>
+              <div class="input-group">
+                <span class="input-group-text">글내용</span>
+                <textarea class="form-control" rows="5" id="question-contents" name="questionContents"
+                          placeholder="문의 하실 내용을 입력해주세요"></textarea>
+              </div>
+              
+              <div class="d-flex justify-content-end my-2">
+                <button type="button" class="btn btn-outline-secondary" id="btn-question">작성하기
+                  <i class="bi bi-pencil-square ms-2" style="color: black"></i>
+                </button>
+                <!--  제목, 내용 null 시 알람 출력 + 사장님 로그인 시 문의하기칸 안보이게 + 문의 답변은 자기 가게에만 + 사장님만 문의 답변 가능  -->
+              </div>
+              <!--              히든 데이터 영역-->
+              <input type="hidden" name="ceoIdx" th:value="${ceoDto.ceoIdx}">
+              <input type="hidden" name="ceoStore" th:value="${ceoDto.ceoStore}">
+              <div th:if="${not #strings.isEmpty(session.user)}">
+                <div th:if="${session.user == 'customer'}">
+                  <input type="hidden" name="customerIdx" th:value="${session.customer.customerIdx}">
+                  <input type="hidden" name="customerNick" th:value="${session.customer.customerNick}">
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  
+  <!--  모달 로그인 팝업창-->
+  <div class="modal fade" id="modal-login">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <h2 class="modal-title text-center my-4">로그인</h2>
+          
+          <form action="/bmn/login" class="form-control" method="post" id="form">
+            <div class="my-3 p-2">
+              <label for="user-id" class="form-label">아이디</label>
+              <input type="text" class="form-control" id="user-id" name="userId">
+            </div>
+            <div class="my-3 p-2">
+              <label for="user-pw" class="form-label">비밀번호</label>
+              <input type="password" class="form-control" id="user-pw" name="userPw">
+            </div>
+            <div class="my-4 d-grid gap-3">
+              <button type="button" class="btn btn-primary" id="submit-btn">로그인</button>
+              <div class="my-2 d-flex">
+                <a href="/bmn/signUp/customer" class="btn btn-secondary flex-fill mx-1">손님 회원가입</a>
+                <a href="/bmn/signUp/ceo" class="btn btn-secondary flex-fill mx-1">사장님 회원가입</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--          모달 팝업 지도창-->
+  <div class="modal" id="map-modal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" th:text="${ceoDto.ceoStore}">지도 확대하기</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="map2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </main>
 <script>
-    const lat = $("#ceo-lat").val();
-    const lon = $("#ceo-lon").val();
-    const ceoStore = $("#ceoStore").val();
-    const ceoAddress = $("#ceo-full-address").val();
-    var mapOptions2 = {
-        center: new naver.maps.LatLng(lat, lon),
-        zoom: 15
-    };
-
-    var map2 = new naver.maps.Map('map2', mapOptions2);
-
-    var marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(lat, lon),
-        map: map2
-    });
-
-    var contentString = [
-        '<div class="iw_inner p-4">',
-        '   <h3>' + ceoStore + '</h3>',
-        '   <p>' + ceoAddress + '</p>',
-        '</div>'
-    ].join('');
-
-    var infowindow = new naver.maps.InfoWindow({
-        content: contentString
-    });
-
-    naver.maps.Event.addListener(marker, "click", function (e) {
-        if (infowindow.getMap()) {
-            infowindow.close();
-        } else {
-            infowindow.open(map2, marker);
-        }
-    });
+  const lat = $("#ceo-lat").val();
+  const lon = $("#ceo-lon").val();
+  const ceoStore = $("#ceoStore").val();
+  const ceoAddress = $("#ceo-full-address").val();
+  var mapOptions2 = {
+    center: new naver.maps.LatLng(lat, lon),
+    zoom: 15
+  };
+  
+  var map2 = new naver.maps.Map('map2', mapOptions2);
+  
+  var marker = new naver.maps.Marker({
+    position: new naver.maps.LatLng(lat, lon),
+    map: map2
+  });
+  
+  var contentString = [
+    '<div class="iw_inner p-4">',
+    '   <h3>' + ceoStore + '</h3>',
+    '   <p>' + ceoAddress + '</p>',
+    '</div>'
+  ].join('');
+  
+  var infowindow = new naver.maps.InfoWindow({
+    content: contentString
+  });
+  
+  naver.maps.Event.addListener(marker, "click", function (e) {
+    if (infowindow.getMap()) {
+      infowindow.close();
+    } else {
+      infowindow.open(map2, marker);
+    }
+  });
 </script>
-
-<footer class="border border-top border-2 bg-light mt-5 pt-5 mb-5" id="toFooter">
-    <div class="text-center">
-        <p>이곳은 footer 화면 입니다.</p>
-    </div>
-</footer>
-
 <!--세션 정보 hidden 인풋태그 구역-->
 <div th:if="${not #strings.isEmpty(session.user)}">
-    <div th:if="${session.user == 'customer'}">
-        <input type="hidden" id="customer-idx" th:value="${session.customer.customerIdx}">
-        <input type="hidden" id="customer-nick" th:value="${session.customer.customerNick}">
-        <input type="hidden" id="customer-grade" th:value="${session.customer.customerGrade}">
-    </div>
-    <div th:unless="${session.user == 'customer'}">
-        <div th:if="${session.user == 'ceo'}">
-            <input type="hidden" id="ceo-idx" th:value="${session.ceo.ceoIdx}">
-            <input type="hidden" id="ceo-store" th:value="${session.ceo.ceoStore}">
-        </div>
-    </div>
+  <div th:if="${session.user == 'customer'}">
+    <input type="hidden" id="customer-idx" th:value="${session.customer.customerIdx}">
+    <input type="hidden" id="customer-nick" th:value="${session.customer.customerNick}">
+    <input type="hidden" id="customer-grade" th:value="${session.customer.customerGrade}">
+  </div>
+  <div th:if="${session.user == 'ceo'}">
+    <input type="hidden" id="ceo-idx" th:value="${session.ceo.ceoIdx}">
+    <input type="hidden" id="ceo-store" th:value="${session.ceo.ceoStore}">
+  </div>
+  <div th:if="${session.user == 'admin'}">
+    <input type="hidden" id="admin-check" th:value="${session.user}">
+  </div>
 
 </div>
-
+<footer th:replace="~{layout/footer::footer}"></footer>
 </body>
 </html>

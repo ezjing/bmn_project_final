@@ -44,5 +44,7 @@ public interface BaeMapper {
 
   void deleteFollowNick(int ceoIdx, String customerNick) throws Exception;
 
+  CeoDTO selectCeoDetail2(int ceoIdx) throws Exception;
+
 //  List<CommentDTO> selectCommentListCeo(int ceoIdx) throws Exception;
 }
