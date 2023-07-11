@@ -8,7 +8,6 @@ import com.bitc.bmn_project.common.FileUtils;
 import com.bitc.bmn_project.service.SimService;
 import com.github.pagehelper.PageInfo;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,8 @@ public class SimController {
     }
 
     @RequestMapping(value = "/bmn/login", method = RequestMethod.GET)
-    public String doLoginView() throws Exception {  // 로그인 완료 시 이전 페이지로 이동하게끔 구현 필요(returnUrl를 어떻게 쓰는지 모르겠음)
+    public String doLoginView() throws Exception {
+        // 로그인 완료 시 이전 페이지로 이동하게끔 구현 필요(returnUrl를 어떻게 쓰는지 모르겠음)
 
         return "redirect:/bmn/bmnMain";
     }
@@ -55,7 +55,6 @@ public class SimController {
 
         // 로그인 성공 혹은 실패시 시도했던 주소로 리다이렉트 해주기 위한 값
         String returnUrl = req.getRequestURI();
-        System.out.println("userId : " + userId + ", userPw :" + userPw + ", returnUrl :" + returnUrl);
 
         // 로그인 로직을 수행하기 위한 변수
         int result = 0;
@@ -147,12 +146,11 @@ public class SimController {
 
 
         HttpSession session = req.getSession();
-        session.setAttribute("user","customer");
-        session.setAttribute("customer",customer);
+        session.setAttribute("user", "customer");
+        session.setAttribute("customer", customer);
         session.setMaxInactiveInterval(3600);
 
         simService.signUpCustomer(customer);
-
 
 
 // 나중에 메인페이지
@@ -171,8 +169,8 @@ public class SimController {
             HttpServletRequest req) throws Exception {
 
         HttpSession session = req.getSession();
-        session.setAttribute("user","ceo");
-        session.setAttribute("ceo",ceo);
+        session.setAttribute("user", "ceo");
+        session.setAttribute("ceo", ceo);
         session.setMaxInactiveInterval(3600);
 
 
@@ -280,10 +278,17 @@ public class SimController {
     }
 
     @RequestMapping(value = "/bmn/ceoStore/addStore", method = RequestMethod.POST)
-    public String doAddStore(CeoDTO store,
-                             @RequestParam("ceoMainImgFile") MultipartFile mainImage,
-                             @RequestParam("ceoThumbnailImgFile") MultipartFile thumbnail,
-                             @RequestParam(value = "files", required = false) List<MultipartFile> files
+    public String doAddStore(
+            @RequestParam(value = "ceoDetailMenu1", required = false) String ceoDetailMenu1,
+            @RequestParam(value = "ceoDetailMenu2", required = false) String ceoDetailMenu2,
+            @RequestParam(value = "ceoDetailMenu3", required = false) String ceoDetailMenu3,
+            @RequestParam(value = "ceoDetailMenu4", required = false) String ceoDetailMenu4,
+            @RequestParam(value = "ceoDetailMenu5", required = false) String ceoDetailMenu5,
+            @RequestParam(value = "ceoDetailMenu6", required = false) String ceoDetailMenu6,
+            CeoDTO store,
+            @RequestParam("ceoMainImgFile") MultipartFile mainImage,
+            @RequestParam("ceoThumbnailImgFile") MultipartFile thumbnail,
+            @RequestParam(value = "files", required = false) List<MultipartFile> files
     ) throws Exception {
 
         simService.addStore(store, mainImage, thumbnail, files);
@@ -319,7 +324,6 @@ public class SimController {
         review.setReviewImg(reviewImagePath);
 
         // 태그를 제외한 나머지 값 insert 하는 서비스
-        System.out.println(review);
         simService.reviewWrite(review);
 
         // 방금 insert한 리뷰의 idx 가져오기(가장 최신, 번호가 가장 높은 idx)
@@ -327,7 +331,6 @@ public class SimController {
         reviewTag.setReviewIdx(newReviewIdx);
 
         // 태그 값 insert 하는 서비스 (미구현)
-        System.out.println(reviewTag);
         simService.reviewWriteTag(reviewTag);
 
         // 상세뷰로 보내야함
@@ -339,8 +342,6 @@ public class SimController {
     public ResponseEntity<byte[]> returnImg(
             @RequestParam("path") String path
     ) throws Exception {
-        System.out.println(path);
-        System.out.println("리턴 이미지 실행");
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.IMAGE_JPEG);
 
@@ -382,10 +383,9 @@ public class SimController {
             @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum
     ) throws Exception {
 
-        System.out.println("컨트롤러 도착");
 
         ModelAndView mv = new ModelAndView("admin/customerManagement");
-        PageInfo<CustomerDTO> customerList = new PageInfo<>(simService.getCustomerList(pageNum),3);
+        PageInfo<CustomerDTO> customerList = new PageInfo<>(simService.getCustomerList(pageNum), 3);
         mv.addObject("customerList", customerList);
 
         return mv;
@@ -399,9 +399,6 @@ public class SimController {
     ) throws Exception {
 
         String returnUrl = req.getRequestURI();
-
-        System.out.println(targetIdx);
-        System.out.println(grade);
 
         simService.changeCustomerGrade(targetIdx, grade);
 

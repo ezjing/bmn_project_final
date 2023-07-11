@@ -14,7 +14,51 @@
     </style>
 
     <script>
+        let check1 = false;
+
         //
+        function check(check1) {
+            if (check1) {
+                $("#submit-btn").removeAttr("disabled");
+            } else {
+                $("#submit-btn").attr("disabled", 'disabled');
+            }
+        }
+
+        $(document).ready(function () {
+            const reviewTitle = $("#review-title");
+            reviewTitle.on("keyup", function () {
+                if (reviewTitle.val() === "") {
+                    $("#title-write").text("리뷰 제목을 입력해주세요.");
+                    check1 = false
+                } else {
+                    $("#title-write").text("");
+                    check1 = true;
+                }
+                check(check1);
+            });
+
+            // 평점의 초기값 설정
+            writeValue($("#review-score").val());
+
+            // 서브밋 시 스마트 에디터의 밸류 확인
+            $("#submit").on("click", function () {
+                // 체크 안된 리뷰 널처리
+                doSubmit();
+                console.log($("#reviewContents").val());
+
+                oEditors.getById["reviewContents"].exec("UPDATE_CONTENTS_FIELD", []);
+
+                // 에디터의 내용에 대한 값 검증은 이곳에서
+                // document.getElementById("reviewContents").value를 이용해서 처리한다.
+
+                try {
+                    $("#form").submit();
+                } catch (e) {
+                    console.log(e);
+                }
+            });
+        });
 
         function writeValue(value) {
             // 개선사항 > value를 소수로 형변환 해서 그냥 사용
@@ -46,37 +90,13 @@
             for (let i = 1; i < 9; i++) {
                 let targetTagName = target + i;
                 let targetTag = document.getElementById(targetTagName);
-                if (targetTag.checked !== true){
+                if (targetTag.checked !== true) {
                     targetTag.value = "N";
                     targetTag.setAttribute("checked", "checked");
                 }
             }
         }
 
-
-        $(document).ready(function () {
-            // 평점의 초기값 설정
-            writeValue($("#review-score").val());
-
-            // 서브밋 시 스마트 에디터의 밸류 확인
-            $("#submit").on("click", function () {
-                // 체크 안된 리뷰 널처리
-                doSubmit();
-
-                console.log($("#reviewContents").val());
-
-                oEditors.getById["reviewContents"].exec("UPDATE_CONTENTS_FIELD", []);
-
-                // 에디터의 내용에 대한 값 검증은 이곳에서
-                // document.getElementById("reviewContents").value를 이용해서 처리한다.
-
-                try {
-                    $("#form").submit();
-                } catch (e) {
-                    console.log(e);
-                }
-            });
-        });
 
         //
     </script>
@@ -105,6 +125,7 @@
                     <div class="form-floating my-3">
                         <input type="text" class="form-control" id="review-title" name="reviewTitle">
                         <label for="review-title">리뷰 제목</label>
+                        <p class="text-danger" id="title-write"></p>
                     </div>
                 </div>
 
@@ -121,52 +142,61 @@
                 <div class="my-2">
                     <span>리뷰 내용</span>
                     <!-- 스마트 에디터 -->
-                    <textarea name="reviewContents" id="reviewContents" rows="10" cols="100"></textarea>
+                    <textarea name="reviewContents" id="reviewContents" rows="10" cols="100">클린한 리뷰 부탁드립니다~</textarea>
                 </div>
 
                 <div class="row">
                     <div class="my-2 col-4">
                         <label for="review-img" class="mb-1">리뷰 이미지</label>
-                        <input type="file" class="form-control" id="review-img" name="reviewImgFile" accept="image/jpeg">
+                        <input type="file" class="form-control" id="review-img" name="reviewImgFile"
+                               accept="image/jpeg">
                     </div>
 
                     <!-- 리뷰 태그 -->
                     <div class="my-2 col">
                         <p class="mb-1">태그 선택</p>
 
-                        <div class="d-flex justify-content-around">
-                            <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag1" name="reviewTag1" value="Y">
+                        <div class="d-flex">
+                            <div class="form-check px-auto col">
+                                <input class="form-check-input" type="checkbox" id="review-tag1" name="reviewTag1"
+                                       value="Y">
                                 <label class="form-check-label" for="review-tag1">맛</label>
                             </div>
-                            <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag2" name="reviewTag2" value="Y">
+                            <div class="form-check px-auto col">
+                                <input class="form-check-input" type="checkbox" id="review-tag2" name="reviewTag2"
+                                       value="Y">
                                 <label class="form-check-label" for="review-tag2">만족도</label>
                             </div>
-                            <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag3" name="reviewTag3" value="Y">
+                            <div class="form-check px-auto col">
+                                <input class="form-check-input" type="checkbox" id="review-tag3" name="reviewTag3"
+                                       value="Y">
                                 <label class="form-check-label" for="review-tag3">서비스</label>
                             </div>
-                            <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag4" name="reviewTag4" value="Y">
+                            <div class="form-check px-auto col">
+                                <input class="form-check-input" type="checkbox" id="review-tag4" name="reviewTag4"
+                                       value="Y">
                                 <label class="form-check-label" for="review-tag4">음식량</label>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-around">
-                            <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag5" name="reviewTag5" value="Y">
+                        <div class="d-flex">
+                            <div class="form-check px-auto col">
+                                <input class="form-check-input" type="checkbox" id="review-tag5" name="reviewTag5"
+                                       value="Y">
                                 <label class="form-check-label" for="review-tag5">청결도</label>
                             </div>
-                            <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag6" name="reviewTag6" value="Y">
+                            <div class="form-check px-auto col">
+                                <input class="form-check-input" type="checkbox" id="review-tag6" name="reviewTag6"
+                                       value="Y">
                                 <label class="form-check-label" for="review-tag6">가격</label>
                             </div>
-                            <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag7" name="reviewTag7" value="Y">
+                            <div class="form-check px-auto col">
+                                <input class="form-check-input" type="checkbox" id="review-tag7" name="reviewTag7"
+                                       value="Y">
                                 <label class="form-check-label" for="review-tag7">메뉴</label>
                             </div>
-                            <div class="form-check px-auto">
-                                <input class="form-check-input" type="checkbox" id="review-tag8" name="reviewTag8" value="Y">
+                            <div class="form-check px-auto col">
+                                <input class="form-check-input" type="checkbox" id="review-tag8" name="reviewTag8"
+                                       value="Y">
                                 <label class="form-check-label" for="review-tag8">분위기</label>
                             </div>
                         </div>
@@ -179,7 +209,7 @@
                         <input type="hidden" th:value="${session.customer.getCustomerIdx}" name="customerIdx">
                         <input type="hidden" th:value="${session.customer.getCustomerNick}" name="customerNick">
                         <button type="button" class="btn btn-secondary" onclick="reviewCancel()">취소</button>
-                        <button type="submit" class="btn btn-primary opacity-75 ms-3" id="submit">작성</button>
+                        <button type="submit" class="btn btn-primary opacity-75 ms-3" id="submit-btn" disabled>작성</button>
                     </div>
                 </div>
             </div>
