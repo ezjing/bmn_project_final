@@ -203,6 +203,7 @@
                     <!-- th:each 을 써서 여러개 이미지 3개씩 출력 -->
                     <div class="swiper-slide imgHoverContainer" th:each="item : ${ceoDtoList}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}">
+<!--                            <img th:src="resources/static/images/2023-07-07/${item.getCeoMenuImg1()}">-->
                             <img th:src="${item.getCeoMenuImg1()}">
                             <div class="overlay">
                                 <div class="text">
