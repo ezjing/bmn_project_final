@@ -626,8 +626,8 @@
         <div class="col">
             <div class="d-flex justify-content-between">
                 <div>
-                    <p th:if="${session.ceo.ceoGrade} != 2">[미인증 맛집]</p>
-                    <p th:if="${session.ceo.ceoGrade} == 2">[인증 맛집]</p>
+                    <p th:if="${session.ceo.ceoGrade} != 3">[미인증 맛집]</p>
+                    <p th:if="${session.ceo.ceoGrade} == 3">[인증 맛집]</p>
                     <h1 th:text="${session.ceo.ceoStore}">맛나밥집</h1>
                     <p th:text="|안녕하세요. ${session.ceo.ceoName}입니다.|">안녕하세요. 이지원 입니다.</p>
                 </div>
@@ -638,7 +638,7 @@
                             style="height: 5em">
                         내 프로필 수정
                     </button>
-                    <button th:if="${session.ceo.ceoGrade} == 2" class="btn btn-success" type="button" id="storeInfo"
+                    <button th:if="${session.ceo.ceoGrade} == 3" class="btn btn-success" type="button" id="storeInfo"
                             data-bs-toggle="collapse"
                             data-bs-target="#collapseStore" aria-expanded="false" aria-controls="collapseExample"
                             style="height: 5em">
@@ -682,9 +682,9 @@
                 </div>
             </div>
 
-            <div th:if="${session.ceo.ceoGrade} != 2"><h1 class="text-center">관리자 인증이 필요한 맛집입니다.</h1></div>
+            <div th:if="${session.ceo.ceoGrade} != 3"><h1 class="text-center">관리자 인증이 필요한 맛집입니다.</h1></div>
             <div class="list-group list-group-item-action list-group-horizontal" id="list-tab" role="tablist"
-                 th:if="${session.ceo.ceoGrade} == 2">
+                 th:if="${session.ceo.ceoGrade} == 3">
                 <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center active"
                    id="list-reservation-list" data-bs-toggle="list" href="#list-reservation" role="tab"
                    aria-controls="list-reservation">예약 확인</a>
@@ -759,7 +759,7 @@
             </div>
 
             <!--  가게 정보 수정 콜렙스  -->
-            <div th:if="${session.ceo.ceoGrade == 2}">
+            <div th:if="${session.ceo.ceoGrade == 3}">
 <!--                            <div class="collapse" id="collapseStore">-->
                 <div class="container-sm my-4" id="jCollapse" style="visibility: hidden">
                     <div class="col-sm-10 mx-auto">
@@ -1069,7 +1069,7 @@
             </div>
 
             <div class="list-group list-group-item-action list-group-horizontal" id="list-tab2" role="tablist"
-                 th:if="${session.ceo.ceoGrade} == 2">
+                 th:if="${session.ceo.ceoGrade} == 3">
                 <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center"
                    id="list-reservation-list2" data-bs-toggle="list" href="#list-reservation2" role="tab"
                    aria-controls="list-reservation">예약 확인</a>

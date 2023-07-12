@@ -2,6 +2,7 @@ package com.bitc.bmn_project.controller;
 
 import com.bitc.bmn_project.DTO.*;
 import com.bitc.bmn_project.service.LeeService;
+import com.bitc.bmn_project.service.SimService;
 import com.github.pagehelper.PageInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.PrintWriter;
@@ -23,6 +25,9 @@ public class LeeController {
 
     @Autowired
     private LeeService leeService;
+
+    @Autowired
+    private SimService simService;
 
 //    @RequestMapping("/")
 //    public String index() throws Exception {
@@ -380,12 +385,24 @@ public class LeeController {
     }
 
     @RequestMapping(value = "/bmn/myPageCeo", method = RequestMethod.PUT)
-    public String myPageCeoStoreUpdate(CeoDTO ceo, HttpServletRequest req) throws Exception {
+    public String myPageCeoStoreUpdate(
+            @RequestParam(value = "ceoDetailMenu1", required = false) String ceoDetailMenu1,
+            @RequestParam(value = "ceoDetailMenu2", required = false) String ceoDetailMenu2,
+            @RequestParam(value = "ceoDetailMenu3", required = false) String ceoDetailMenu3,
+            @RequestParam(value = "ceoDetailMenu4", required = false) String ceoDetailMenu4,
+            @RequestParam(value = "ceoDetailMenu5", required = false) String ceoDetailMenu5,
+            @RequestParam(value = "ceoDetailMenu6", required = false) String ceoDetailMenu6,
+            CeoDTO store,
+            @RequestParam("ceoMainImgFile") MultipartFile mainImage,
+            @RequestParam("ceoThumbnailImgFile") MultipartFile thumbnail,
+            @RequestParam(value = "files", required = false) List<MultipartFile> files,
+            HttpServletRequest req) throws Exception {
 
-        ceo = leeService.myPageCeoStoreUpdate(ceo);
+//        store = leeService.myPageCeoStoreUpdate(store);
+        simService.addStore(store, mainImage, thumbnail, files);
 
         HttpSession session = req.getSession();
-        session.setAttribute("ceo", ceo);
+        session.setAttribute("ceo", store);
 
         return "redirect:/bmn/myPageCeo";
     }
