@@ -400,11 +400,14 @@ public class LeeController {
 
 //        store = leeService.myPageCeoStoreUpdate(store);
         simService.addStore(store, mainImage, thumbnail, files);
-
+        CeoDTO ceo = simService.getCeoInfo(store.getCeoId());
+        ceo.setCeoGrade(2);
+        System.out.println(ceo);
         HttpSession session = req.getSession();
-//        session.setAttribute("user", "ceo");
+
         session.removeAttribute("ceo");
-        session.setAttribute("ceo", store);
+        session.setAttribute("user", "ceo");
+        session.setAttribute("ceo", ceo);
 
         return "redirect:/bmn/myPageCeo";
     }

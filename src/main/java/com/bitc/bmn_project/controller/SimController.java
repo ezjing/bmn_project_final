@@ -294,10 +294,12 @@ public class SimController {
 
         simService.addStore(store, mainImage, thumbnail, files);
         CeoDTO ceo = simService.getCeoInfo(store.getCeoId());
-
+        ceo.setCeoGrade(2);
+        System.out.println(ceo);
         HttpSession session = req.getSession();
-//        session.setAttribute("user", "ceo");
+
         session.removeAttribute("ceo");
+        session.setAttribute("user", "ceo");
         session.setAttribute("ceo", ceo);
 
 
