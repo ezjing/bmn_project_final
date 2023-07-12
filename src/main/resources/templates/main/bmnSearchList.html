@@ -105,7 +105,11 @@
                     },
                     success: function (data) {
                         $('#home').empty();
+                        $('#profile').empty();
+                        $('#contact').empty();
                         let otp = '';
+                        let profileList = '';
+                        let contact1 = '';
                         for (let i = 0; i < data.length; i++) {
                             otp += '<div class="list-group">' +
                                         '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
@@ -123,6 +127,40 @@
                                     '</a>' +
                                     '</div>'
                             $("#home").append(otp)
+
+                            profileList += '<div class="list-group">' +
+                                '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
+                                '<div>' +
+                                '<div class="float-start d-grid w-75">' +
+                                '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                                '</div>'+
+                                '<div>' +
+                                '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
+                                '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                                '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
+                                '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                                '</div>'+
+                                '</div>'+
+                                '</a>' +
+                                '</div>'
+                            $("#profile").append(profileList)
+
+                            contact1 += '<div class="list-group">' +
+                                '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
+                                '<div>' +
+                                '<div class="float-start d-grid w-75">' +
+                                '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                                '</div>'+
+                                '<div>' +
+                                '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
+                                '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                                '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
+                                '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                                '</div>'+
+                                '</div>'+
+                                '</a>' +
+                                '</div>'
+                            $("#contact").append(contact1)
                         }
                     },
                     error: function(){
@@ -145,7 +183,11 @@
                 },
                 success:function(data){
                     $('#home').empty();
+                    $('#profile').empty();
+                    $('#contact').empty();
                     let otp = '';
+                    let profileList = '';
+                    let contact1 = '';
                     for (let i = 0; i < data.length; i++) {
                         otp += '<div class="list-group">' +
                                     '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
@@ -163,6 +205,41 @@
                                     '</a>' +
                                 '</div>'
                         $("#home").append(otp)
+
+                        profileList += '<div class="list-group">' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
+                            '<div>' +
+                            '<div class="float-start d-grid w-75">' +
+                            '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                            '</div>'+
+                            '<div>' +
+                            '<p  class="fw-bold fs-3 text-secondary" >'+data[i].ceoStore+'</p>' +
+                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i>><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                            '</div>'+
+                            '</div>'+
+                            '</a>' +
+                            '</div>'
+                        $("#profile").append(profileList)
+
+                        contact1 += '<div class="list-group">' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
+                            '<div>' +
+                            '<div class="float-start d-grid w-75">' +
+                            '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                            '</div>'+
+                            '<div>' +
+                            '<p  class="fw-bold fs-3 text-secondary" >'+data[i].ceoStore+'</p>' +
+                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i>><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                            '</div>'+
+                            '</div>'+
+                            '</a>' +
+                            '</div>'
+                        $("#contact").append(contact1)
+
                     }
                 },
                 error:function(){
@@ -184,7 +261,11 @@
                 },
                 success:function(data){
                     $('#home').empty();
+                    $('#profile').empty();
+                    $('#contact').empty();
                     let otp = '';
+                    let profileList = '';
+                    let contact1 = '';
                     for (let i = 0; i < data.length; i++) {
                         otp += '<div class="list-group">' +
                                     '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
@@ -203,6 +284,46 @@
                                     '</a>' +
                                 '</div>'
                         $("#home").append(otp)
+
+                        profileList += '<div class="list-group">' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
+                            '<div>' +
+                            '<div class="float-start d-grid w-75">' +
+                            '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                            '</div>'+
+                            '<div>' +
+                            '<p class="fw-bold fs-4 text-secondary">'+data[i].ceoStore+'</p>' +
+                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                            '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
+                            '</div>'+
+                            '</div>'+
+                            '</a>' +
+                            '</div>'
+                        $("#profile").append(profileList)
+
+                        contact1 += '<div class="list-group">' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
+                            '<div>' +
+                            '<div class="float-start d-grid w-75">' +
+                            '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                            '</div>'+
+                            '<div>' +
+                            '<p class="fw-bold fs-4 text-secondary">'+data[i].ceoStore+'</p>' +
+                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                            '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
+                            '</div>'+
+                            '</div>'+
+                            '</a>' +
+                            '</div>'
+                        $("#contact").append(contact1)
+
+
+
+
                     }
                 },
                 error:function(){
