@@ -128,7 +128,7 @@
                     type: "POST",
                     data: {reservationDate: reservationDate, ceoIdx: ceoIdx, reservationTime: selTime},
                     success: function (data) {  // 클릭한 버튼 val
-                        let inputList = $("#replace").find("input");
+                        let inputList = $("#replace").find("input");    // 리스트로 가져옴
 
                         for(let i = 0; i < inputList.length; i++) {
                             const tag2 = inputList[i];  // input 태그가 0번부터 출력됨....

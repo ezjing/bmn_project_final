@@ -1058,8 +1058,8 @@
                                     <input type="text" id="sggNm" name="ceoCityAddress" class="form-control"
                                            th:value="${session.ceo.ceoCityAddress}" readonly/>
 
-                                    <input type="text" id="entX" name="ceoLat" th:value="${session.ceo.ceoLat}"/><br>
-                                    <input type="text" id="entY" name="ceoLon" th:value="${session.ceo.ceoLon}"/>
+                                    <input type="hidden" id="entX" name="ceoLat" th:value="${session.ceo.ceoLat}"/><br>
+                                    <input type="hidden" id="entY" name="ceoLon" th:value="${session.ceo.ceoLon}"/>
                                 </div>
                             </div>
                             <input type="hidden" name="ceoIdx" th:value="${session.ceo.ceoIdx}">
