@@ -288,10 +288,18 @@ public class SimController {
             CeoDTO store,
             @RequestParam("ceoMainImgFile") MultipartFile mainImage,
             @RequestParam("ceoThumbnailImgFile") MultipartFile thumbnail,
-            @RequestParam(value = "files", required = false) List<MultipartFile> files
+            @RequestParam(value = "files", required = false) List<MultipartFile> files,
+            HttpServletRequest req
     ) throws Exception {
 
         simService.addStore(store, mainImage, thumbnail, files);
+        CeoDTO ceo = simService.getCeoInfo(store.getCeoId());
+
+        HttpSession session = req.getSession();
+//        session.setAttribute("user", "ceo");
+        session.removeAttribute("ceo");
+        session.setAttribute("ceo", ceo);
+
 
         return "redirect:/bmn/bmnMain";
     }

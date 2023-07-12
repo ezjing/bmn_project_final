@@ -294,7 +294,7 @@
     </script>
 </head>
 <body>
-<div id="session-check" th:if="${session.user == 'ceo'}" th:text="${session.user}"></div>
+<div id="session-check" th:if="${session.user == 'ceo'}" th:text="${session.user}" hidden="hidden"></div>
 <p id="grade-check" th:text="${session.ceo.ceoGrade}" hidden="hidden"></p>
 <div class="container-sm my-4">
     <div class="col-sm-10 mx-auto">

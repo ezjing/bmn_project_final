@@ -102,7 +102,8 @@
         ceo_thumbnail_img = #{ceoThumbnailImg},
         ceo_main_img = #{ceoMainImg},
         ceo_lat = #{ceoLat},
-        ceo_lon = #{ceoLon}
+        ceo_lon = #{ceoLon},
+        ceo_grade = 2
         WHERE ceo_idx = #{ceoIdx}
     </update>
 
