@@ -138,7 +138,7 @@ public class SimServiceImpl implements SimService {
     public void storeApprove(int targetIdx, String mode) throws Exception {
 
         if (mode.equals("approve")) {
-            simMapper.storeApprove(targetIdx, 2);
+            simMapper.storeApprove(targetIdx, 3);
         } else if (mode.equals("reject")) {
             simMapper.storeApprove(targetIdx, 0);
         }

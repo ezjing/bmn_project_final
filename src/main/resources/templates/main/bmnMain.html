@@ -31,7 +31,7 @@
         .swiper-slide img {
             display: block;
             width: 100%;
-            height: auto;
+            height: 15em;
             object-fit: cover;
         }
 
@@ -116,9 +116,11 @@
                 if (userId === "" || userId == null) {
                     // 아이디를 미입력시
                     alert('아이디를 입력해주세요');
+                    $("#user-id").focus()
                 } else if (userId !== "" && userPw === "") {
                     // 아이디만 입력시
                     alert('비밀번호를 입력해주세요');
+                    $("#user-pw").focus()
                 } else {
                     // 서브밋
                     frm.submit();
@@ -143,9 +145,10 @@
             <div class="swiper ">
                 <div class="swiper-wrapper">
                     <!-- th:each 을 써서 여러개 이미지 3개씩 출력 -->
-                    <div class="swiper-slide imgHoverContainer" th:each="item : ${scorePlacingList}">
+                    <div class="swiper-slide imgHoverContainer bg-light" th:each="item : ${scorePlacingList}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}">
-                            <img th:src="${item.getCeoMenuImg1()}">
+<!--                            <img th:src="${item.getCeoMenuImg1()}">-->
+                            <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|">
                             <div class="overlay">
                                 <div class="text">
                                     <p th:text="${item.getCeoStore()}"></p>
@@ -171,9 +174,9 @@
             <div class="swiper">
                 <div class="swiper-wrapper">
                     <!-- th:each 을 써서 여러개 이미지 3개씩 출력 -->
-                    <div class="swiper-slide imgHoverContainer" th:each="item : ${followPlacingList}">
+                    <div class="swiper-slide imgHoverContainer bg-light" th:each="item : ${followPlacingList}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}">
-                            <img th:src="${item.getCeoMenuImg1()}">
+                            <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|">
                             <div class="overlay">
                                 <div class="text">
                                     <p th:text="${item.getCeoStore()}"></p>
@@ -200,10 +203,10 @@
             <div class="swiper">
                 <div class="swiper-wrapper">
                     <!-- th:each 을 써서 여러개 이미지 3개씩 출력 -->
-                    <div class="swiper-slide imgHoverContainer" th:each="item : ${ceoDtoList}">
+                    <div class="swiper-slide imgHoverContainer bg-light" th:each="item : ${ceoDtoList}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}">
 <!--                            <img th:src="resources/static/images/2023-07-07/${item.getCeoMenuImg1()}">-->
-                            <img th:src="${item.getCeoMenuImg1()}">
+                            <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|">
                             <div class="overlay">
                                 <div class="text">
                                     <p th:text="${item.getCeoStore()}"></p>
@@ -231,9 +234,9 @@
             <div class="swiper">
                 <div class="swiper-wrapper">
                     <!-- th:each 을 써서 여러개 이미지 3개씩 출력 -->
-                    <div class="swiper-slide imgHoverContainer" th:each="item : ${selectJFood}">
+                    <div class="swiper-slide imgHoverContainer bg-light" th:each="item : ${selectJFood}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}">
-                            <img th:src="${item.getCeoMenuImg1()}">
+                            <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|">
                             <div class="overlay">
                                 <div class="text">
                                     <p th:text="${item.getCeoStore()}"></p>
@@ -260,9 +263,9 @@
             <div class="swiper">
                 <div class="swiper-wrapper">
                     <!-- th:each 을 써서 여러개 이미지 3개씩 출력 -->
-                    <div class="swiper-slide imgHoverContainer" th:each="item : ${selectCFood}">
+                    <div class="swiper-slide imgHoverContainer bg-light" th:each="item : ${selectCFood}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}">
-                            <img th:src="${item.getCeoMenuImg1()}">
+                            <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|">
                             <div class="overlay">
                                 <div class="text">
                                     <p th:text="${item.getCeoStore()}"></p>
@@ -289,9 +292,9 @@
             <div class="swiper">
                 <div class="swiper-wrapper">
                     <!-- th:each 을 써서 여러개 이미지 3개씩 출력 -->
-                    <div class="swiper-slide imgHoverContainer" th:each="item : ${selectWFood}">
+                    <div class="swiper-slide imgHoverContainer bg-light" th:each="item : ${selectWFood}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}">
-                            <img th:src="${item.getCeoMenuImg1()}">
+                            <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|">
                             <div class="overlay">
                                 <div class="text">
                                     <p th:text="${item.getCeoStore()}"></p>

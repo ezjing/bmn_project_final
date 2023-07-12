@@ -39,14 +39,6 @@ public class SimController {
         return "index";
     }
 
-    @RequestMapping(value = "/bmn/login", method = RequestMethod.GET)
-    public String doLoginView() throws Exception {
-        // 로그인 완료 시 이전 페이지로 이동하게끔 구현 필요(returnUrl를 어떻게 쓰는지 모르겠음)
-
-        return "redirect:/bmn/bmnMain";
-    }
-
-
     @RequestMapping(value = "/bmn/login", method = RequestMethod.POST)
     public String doLoginProcess(@RequestParam String userId,
                                  @RequestParam String userPw,
@@ -54,7 +46,7 @@ public class SimController {
 
 
         // 로그인 성공 혹은 실패시 시도했던 주소로 리다이렉트 해주기 위한 값
-        String returnUrl = req.getRequestURI();
+        String returnUrl = req.getHeader("Referer");
 
         // 로그인 로직을 수행하기 위한 변수
         int result = 0;
@@ -138,7 +130,7 @@ public class SimController {
         session.invalidate();
 
         // 로그아웃 후 메인으로
-        return "redirect:/bmn/login";
+        return "redirect:/bmn/bmnMain";
     }
 
     @RequestMapping("/bmn/signUp/customer")
@@ -149,10 +141,9 @@ public class SimController {
     }
 
     @RequestMapping(value = "/bmn/signUp/customer/signUp", method = RequestMethod.POST)
-    public String doSignUpCustomerProcess(
+    public String doSignUpCustomerProcess(  // 회원가입 완료시 보던곳 가려면 이전의 이전 페이지 주소 필요
             CustomerDTO customer,
             HttpServletRequest req) throws Exception {
-
 
         HttpSession session = req.getSession();
         session.setAttribute("user", "customer");
@@ -403,15 +394,11 @@ public class SimController {
     @RequestMapping(value = "/bmn/admin/customerManagement", method = RequestMethod.POST)
     public String doCustomerManagementProcess(
             @RequestParam("targetIdx") int targetIdx,
-            @RequestParam("grade") int grade,
-            HttpServletRequest req
+            @RequestParam("grade") int grade
     ) throws Exception {
 
-        String returnUrl = req.getRequestURI();
 
         simService.changeCustomerGrade(targetIdx, grade);
-
-
         return "redirect:/bmn/myPageAdm";
     }
 
@@ -420,8 +407,8 @@ public class SimController {
             @RequestParam("targetIdx") int targetIdx
     ) throws Exception {
 
-        simService.customerBan(targetIdx);
 
+        simService.customerBan(targetIdx);
         return "redirect:/bmn/myPageAdm";
     }
 

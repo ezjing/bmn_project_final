@@ -141,11 +141,11 @@
     </insert>
 
     <!-- 관리자 페이지 - 가게 리스트 출력 -->
-    <!-- 가게 등급 -> 1: 등록 요청된 가게 / 2: 승인된 가게 / 0: 승인 거부된 가게-->
+    <!-- 가게 등급 -> 1: 회원 가입만 한 가게 / 2: 승인 요청한 가게 / 3: 승인된 가게 / 0: 승인 거부된 가게-->
     <select id="getStoreList" resultType="com.bitc.bmn_project.DTO.CeoDTO">
         SELECT ceo_idx, ceo_name, ceo_store, ceo_main_menu, ceo_category
         FROM ceo_tp
-        WHERE ceo_grade = 1
+        WHERE ceo_grade = 2
     </select>
     <!-- 관리자 페이지 - 승인/거부 절차 -->
     <update id="storeApprove" parameterType="map">

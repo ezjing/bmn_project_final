@@ -32,6 +32,32 @@
             });
         }
             $(document).ready(function () {
+                const session = sessionStorage.getItem('user');
+                console.log(session);
+                let msg = document.getElementById("sessionMsg");
+                if (msg.textContent.length > 0) {
+                    alert(msg.textContent);
+                }
+
+                const btn = document.getElementById("submit-btn");
+                const frm = document.getElementById("form");
+                btn.addEventListener("click", function () {
+                    let userId = document.getElementById("user-id").value;
+                    let userPw = document.getElementById("user-pw").value;
+                    if (userId === "" || userId == null) {
+                        // 아이디를 미입력시
+                        alert('아이디를 입력해주세요');
+                        $("#user-id").focus()
+                    } else if (userId !== "" && userPw === "") {
+                        // 아이디만 입력시
+                        alert('비밀번호를 입력해주세요');
+                        $("#user-pw").focus()
+                    } else {
+                        // 서브밋
+                        frm.submit();
+                    }
+                });
+
                 $("#keyword-val").keydown(function (key) {
                     let keyWorld = $("#keyword-val").val();
                     if (key.keyCode == 13) {
@@ -55,14 +81,8 @@
 
                 const query = 'input[name="checkBoxAge"]:checked';
                 const selectedEls = document.querySelectorAll(query);
-                // 선택된 목록에서 value 찾기
-                let result = '';
-                selectedEls.forEach((el) => {
-                    result += el.value + ' ';
-                });
-                // 출력
-                document.getElementById('result').innerText
-                    = result;
+
+
 
                 // 이용자 층 필터 블록 부분
                 let checkArr = document.querySelectorAll('input[name="checkBoxAge"]:checked');
@@ -315,7 +335,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="float-start d-grid w-100">
-                                        <img th:src="${item.getCeoMenuImg1()}"
+                                        <img th:src="${item.getCeoThumbnailImg()}"
                                              class="img-thumbnail rounded-2 w-100 h-100 d-block">
                                     </div>
                                 </div>
@@ -365,26 +385,6 @@
                             </div>
                         </a>
                     </div>
-<!--                    <div class="list-group" th:if="${#lists.size(reviewCntList)} > 0" th:each="item : ${reviewCntList}">-->
-<!--                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}"-->
-<!--                           class="list-group-item list-group-item-action">-->
-<!--                            <div class="row">-->
-<!--                                <div class="col">-->
-<!--                                    <div class="float-start d-grid w-75">-->
-<!--                                        <img th:src="${item.getCeoMenuImg1()}"-->
-<!--                                             class="img-thumbnail rounded-2 w-50 h-100 d-block">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div>-->
-<!--                                    <p class="fw-bold fs-4 text-secondary" th:text="${item.getCeoStore()}"></p>-->
-<!--                                    <p class="fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>-->
-<!--                                    <p class="text-secondary"><i class="bi bi-chat-right-text me-1" style="color:saddlebrown"></i><span th:text="${item.getReviewCnt()}"></span></p>-->
-<!--                                    <p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p>-->
-<!--                                    <p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span></p>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </a>-->
-<!--                    </div>-->
                     <div class="list-group" th:if="${#lists.size(reviewCntList)} == 0">
                         <p class="mt-4 fs-5 fw-bold">#검색 결과가 없습니다.</p>
                     </div>
@@ -392,18 +392,24 @@
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                     <p class="mt-4 fs-5 fw-bold" th:if="${#lists.size(followList)} > 0">#팔로우 순</p>
                     <div class="list-group" th:if="${#lists.size(followList)} > 0" th:each="item : ${followList}">
-                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}"
-                           class="list-group-item list-group-item-action">
-                            <div>
-                                <div class="float-start d-grid w-75">
-                                    <img th:src="${item.getCeoMenuImg1()}"
-                                         class="img-thumbnail rounded-2 w-50 h-100 d-block">
+                        <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}" class="list-group-item list-group-item-action mb-5">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="float-start d-grid w-100">
+                                        <img th:src="${item.getCeoMenuImg1()}" class="img-thumbnail rounded-2 w-100 h-100 d-block">
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="fw-bold fs-4 text-secondary"  th:text="${item.getCeoStore()}"></p>
-                                    <p class="fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>
-                                    <p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p>
-                                    <p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span></p>
+                                <div class="col-1"></div>
+                                <div class="col-3">
+                                    <div class="pt-4">
+                                        <p class="mb-2 fw-bold fs-4 text-black" th:text="${item.getCeoStore()}"></p>
+                                        <p class="mb-4 fw-bold text-secondary" th:text="${item.getCeoMainMenu()}"></p>
+
+                                        <p class="mb-4 text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p> <!-- 평점 -->
+                                        <p class="mb-4 text-secondary">
+                                            <i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -416,6 +422,39 @@
         </div>
         <div class="col-sm-2"></div>
     </div>
+    <p th:text="${session.failMsg}" hidden="hidden" id="sessionMsg"></p>
+
+    <div class="modal fade" id="modal-login">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <h2 class="modal-title text-center my-4">로그인</h2>
+
+                    <form action="/bmn/login" class="form-control" method="post" id="form">
+                        <div class="my-3 p-2">
+                            <label for="user-id" class="form-label">아이디</label>
+                            <input type="text" class="form-control" id="user-id" name="userId">
+                        </div>
+                        <div class="my-3 p-2">
+                            <label for="user-pw" class="form-label">비밀번호</label>
+                            <input type="password" class="form-control" id="user-pw" name="userPw">
+                        </div>
+                        <div class="my-4 d-grid gap-3">
+                            <button type="button" class="btn btn-primary" id="submit-btn">로그인</button>
+                            <div class="my-2 d-flex">
+                                <a href="/bmn/signUp/customer" class="btn btn-secondary flex-fill mx-1">손님 회원가입</a>
+                                <a href="/bmn/signUp/ceo" class="btn btn-secondary flex-fill mx-1">사장님 회원가입</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
+<div th:replace="~{/layout/footer :: footer}"></div>
 </body>
 </html>

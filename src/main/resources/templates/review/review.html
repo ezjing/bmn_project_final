@@ -14,6 +14,39 @@
     </style>
 
     <script>
+        function foodSearch(){
+            let keyWorld = $("#keyword-val").val();
+            console.log(keyWorld);// 값이 들어오는 거 확인함
+            $.ajax({
+                url:"/bmn/bmnSearchList",
+                type: "GET",
+                success:function(){
+                    location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+                    // alert('접속 성공')
+                },
+                error:function(){
+                    alert('접속 실패')
+                }
+            });
+        }
+        $(document).ready(function () {
+            $("#keyword-val").keydown(function (key){
+                let keyWorld = $("#keyword-val").val();
+                if(key.keyCode == 13){
+                    $.ajax({
+                        type : "GET",
+                        url: "/bmn/bmnSearchList",
+                        data: {keyWorld: keyWorld},
+                        success:function(data){
+                            location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+                        },
+                        error:function(){
+                            alert('통신 실패');
+                        }
+                    });
+                }
+            });
+        });
         let check1 = false;
 
         //

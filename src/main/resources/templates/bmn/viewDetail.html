@@ -14,42 +14,43 @@
   <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=92vw1jqd4q"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
-    
+
     #headerFont {
       font-family: 'Black Han Sans', sans-serif;
       font-weight: 900;
     }
-    
+
     #map1 {
       width: 100%;
       height: 200px;
     }
-    
+
     #map2 {
       width: 1100px;
       height: 600px;
     }
-    
+
     #left-remote {
       position: fixed;
       top: 125px;
       width: 220px;
     }
-    
+
     #right-remote {
       position: fixed;
       top: 125px;
       right: 15%;
       width: 220px;
-      
+
     }
   </style>
-  
+
   <script>
+
     function pagination(pageNum) {
       const ceoIdx = $("#ceoIdx").val();
       const sessionCeoIdx = $("#ceo-idx").val();
-      
+
       $.ajax({
         url: "/bmn/questionPaging",
         type: "GET",
@@ -57,9 +58,9 @@
         success: function (data) {
           const qList = $("#q-list");
           qList.empty();
-          
+
           let html = "";
-          
+
           if (data.list.length > 0) {
             for (let i = 0; i < data.list.length; i++) {
               let questionIdx = data.list[i].questionIdx;
@@ -70,121 +71,121 @@
               let questionContents = data.list[i].questionContents;
               let answerContents = data.list[i].answerContents;
               let answerDate = data.list[i].answerDate;
-              
+
               const divRow =
                 $("<div class=\"row text-center border border-top-0\"></div>");
-              
-              const divCol11 = $("<div class=\"col-sm-1\">");
+
+              const divCol11 = $("<div class=\"col-sm-1\" hidden='hidden'>");
               const pQuestionIdx = $("<p class=\"mt-3\">" + questionIdx + "</p>");
-              
+
               const divCol21 = $("<div class=\"col-sm-2\"></div>");
               const pQuestionComplete = $("<p class=\"mt-3\">" + questionComplete + "</p>");
-              
+
               // 답변유무에 따른 차이
               if (questionComplete == "답변완료") {
                 pQuestionComplete.addClass("text-muted");
               } else {
                 pQuestionComplete.addClass("fw-bold");
               }
-              
-              const divCol5 = $("<div class=\"col-sm-5 d-flex align-items-center\"></div>");
+
+              const divCol5 = $("<div class=\"col-sm-6 d-flex align-items-center\"></div>");
               const aQuestionTitle = $("<a href=\"#question-detail" + i +
                 "\" class=\"text-decoration-none text-black question-active\" data-bs-toggle=\"collapse\">" +
                 questionTitle + "</a>");
-              
+
               const divCol22 = $("<div class=\"col-sm-2\"></div>");
               const pCustomerNick = $("<p class=\"mt-3\">" + customerNick + "</p>");
-              
+
               const divCol23 = $("<div class=\"col-sm-2\"></div>");
               const pQuestionDate = $("<p class=\"mt-3\">" + questionDate + "</p>");
-              
-              
+
+
               const divCollapse = $("<div class='collapse' id='question-detail" + i + "'></div>");
-              
+
               const divRow2 = $("<div class=\"row border border-top-0\"></div>");
               const divCol24 = $("<div class=\"col-sm-2\"></div>");
               const pQuestion = $("<p class=\"m-3\">[문의내용]</p>");
               const divCol10 = $("<div class=\"col-sm-10\"></div>");
               const pQuestionContents = $("<p class=\"m-3\">" + questionContents + "</p>");
-              
+
               // 답변 유무에 따른 if문
               // 답변 있을 때 구현될 태그
               const divRow3 = $("<div class=\"row border border-top-0\"></div>");
               const divCol25 = $("<div class=\"col-sm-2\"></div>");
               const pAnswer = $("<p class=\"m-3\">[답변내용]</p>");
-              
+
               const divCol8 = $("<div class=\"col-sm-8\"></div>");
               const pAnswerContents = $("<p class=\"m-3\">" + answerContents + "</p>");
-              
+
               const divCol26 = $("<div class=\"col-sm-2\"></div>");
               const pAnswerDate = $("<p class=\"m-3\">" + answerDate + "</p>");
-              
+
               // 답변 없을 때 + 사장 일 때 구현될 태그
               const form = $("<form method=\"post\" class=\"row border border-top-0\"></form>");
-              
+
               const divCol27 = $("<div class=\"col-sm-2\"></div>");
               const pAnswer2 = $("<p class=\"m-3\">[답변내용]</p>");
-              
+
               const divCol9 = $("<div class=\"col-sm-9 d-flex align-items-center\"></div>");
               const input = $("<input type=\"text\" class=\"form-control answerContents\" name=\"answerContents\">");
-              
+
               const divCol12 = $("<div class=\"col-sm-1\"></div>");
               const button = $("<button type=\"button\" class=\"btn btn-question-answer\"></button>");
               const icon = $("<i class=\"bi bi-pencil-square\" style=\"font-size:2rem\"></i>");
               const inputHidden = $("<input type=\"hidden\" class=\"questionIdx\" name=\"questionIdx\"" +
                 "value='" + questionIdx + "'>");
-              
+
               qList.append(divRow);
-              
+
               divRow.append(divCol11);
               divCol11.append(pQuestionIdx);
-              
+
               divRow.append(divCol21);
               divCol21.append(pQuestionComplete);
-              
+
               divRow.append(divCol5);
               divCol5.append(aQuestionTitle);
-              
+
               divRow.append(divCol22);
               divCol22.append(pCustomerNick);
-              
+
               divRow.append(divCol23);
               divCol23.append(pQuestionDate);
-              
-              
+
+
               qList.append(divCollapse);
-              
+
               divCollapse.append(divRow2);
               divRow2.append(divCol24);
               divCol24.append(pQuestion);
               divRow2.append(divCol10);
               divCol10.append(pQuestionContents);
-              
+
               if (answerContents != null) {
                 divCollapse.append(divRow3);
                 divRow3.append(divCol25);
                 divCol25.append(pAnswer);
-                
+
                 divRow3.append(divCol8);
                 divCol8.append(pAnswerContents);
-                
+
                 divRow3.append(divCol26);
                 divCol26.append(pAnswerDate);
               } else {
                 // 해당 식당 사장님계정 일때
                 if (sessionCeoIdx != null && sessionCeoIdx == ceoIdx) {
                   divCollapse.append(form);
-                  
+
                   form.append(divCol27);
                   divCol27.append(pAnswer2);
-                  
+
                   form.append(divCol9);
                   divCol9.append(input);
-                  
+
                   form.append(divCol12);
                   divCol12.append(button);
                   button.append(icon);
-                  
+
                   form.append(inputHidden);
                 }
               }
@@ -199,71 +200,103 @@
               "            </div>";
             qList.append(html);
           }
-          
-          
+
+
           // 페이징 버튼 구현
           const paginationAjax = $("#paginationAjax");
-          
+
           paginationAjax.empty();
-          
+
           const paginationPrev = $("<li class=\"page-item\"></li>");
           data.prePage == 0 ? paginationPrev.addClass("disabled") : paginationPrev.removeClass("disabled");
-          
+
           const paginationPrevLink = $("<button class=\"page-link\" onclick='pagination(" + data.prePage +
             ")'>&laquo;</button>");
           paginationPrev.append(paginationPrevLink);
           paginationAjax.append(paginationPrev);
-          
+
           for (let i = 0; i < data.navigatepageNums.length; i++) {
             const paginationBtnNum = $("<li class=\"page-item\"></li>");
-            
+
             data.pageNum == data.navigatepageNums[i] ? paginationBtnNum.addClass("active") :
               paginationBtnNum.removeClass("active");
-            
+
             const paginationBtnNumLink = $("<button class='page-link' onclick='pagination(" +
               data.navigatepageNums[i] + ")'></button>");
             paginationBtnNumLink.append(data.navigatepageNums[i]);
             paginationBtnNum.append(paginationBtnNumLink);
             paginationAjax.append(paginationBtnNum);
           }
-          
+
           const paginationNext = $("<li class=\"page-item\"></li>");
           data.nextPage == 0 ? paginationNext.addClass("disabled") : paginationNext.removeClass("disabled");
-          
+
           const paginationNextLink =
             $("<button class=\"page-link\" onclick=\"pagination(" + data.nextPage + ")\">&raquo;</button>");
           paginationNext.append(paginationNextLink);
           paginationAjax.append(paginationNext);
-          
+
         },
-        
+
         error: function (request, status, error) {
           alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
       });
     }
-    
-    
-    
+
+    function foodSearch(){
+      let keyWorld = $("#keyword-val").val();
+      console.log(keyWorld);// 값이 들어오는 거 확인함
+      $.ajax({
+        url:"/bmn/bmnSearchList",
+        type: "GET",
+        success:function(){
+          location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+          // alert('접속 성공')
+        },
+        error:function(){
+          alert('접속 실패')
+        }
+      });
+
+    }
+
     $(document).ready(function () {
       // ajax 페이징처리 함수로 페이지 로딩될때 pageNum이 1이 되도록 하는 함수 실행
       pagination(1);
-      
+
+      $("#keyword-val").keydown(function (key){
+        let keyWorld = $("#keyword-val").val();
+        if(key.keyCode == 13){
+          $.ajax({
+            type : "GET",
+            url: "/bmn/bmnSearchList",
+            data: {keyWorld: keyWorld},
+            success:function(data){
+              location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+            },
+            error:function(){
+              alert('통신 실패');
+            }
+          });
+        }
+      });
+
       const lat = $("#ceo-lat").val();
       const lon = $("#ceo-lon").val();
-      
+
       var mapOptions = {
         center: new naver.maps.LatLng(lat, lon),
         zoom: 15
       }
-      
+
       var map1 = new naver.maps.Map('map1', mapOptions);
-      
+
       var marker = new naver.maps.Marker({
         position: new naver.maps.LatLng(lat, lon),
         map: map1
       });
-      
+
       // var mapOptions2 = {
       //   center: new naver.maps.LatLng(37.3595704, 127.105399),
       //   zoom: 20
@@ -274,7 +307,7 @@
       //   position: new naver.maps.LatLng(37.3595704, 127.105399),
       //   map: map2
       // });
-      
+
       // 식당 팔로우 수 조회
       $("#btn-follow").on('click', function () {
         const ceoStore = $("#ceoStore").val();
@@ -282,8 +315,8 @@
         const customerIdx = $("#customer-idx").val();
         const sessionCeoIdx = $("#ceo-idx").val();
         const adminCheck = $("#admin-check").val();
-        
-        
+
+
         // 손님
         if (customerIdx != null) {
           $.ajax({
@@ -311,12 +344,12 @@
           }
         }
       });
-      
+
       // 우수회원 리뷰작성
       $("#customer-grade-check").on('click', function () {
         const customerGrade = $("#customer-grade").val();
         const ceoIdx = $("#ceoIdx").val();
-        
+
         if (customerGrade == 2) {
           location.href = "/bmn/review/" + ceoIdx;
         }
@@ -327,18 +360,18 @@
           alert("회원만 이용 가능한 서비스입니다.");
         }
       });
-      
+
       // 문의 글에 답변 달기(사장님만 가능)
       // id값으로 하게되면 반복되는 리스트 형태로, id가 겹치는 문제 발생하기 때문에 class타입 선택자 사용
       $(".btn-question-answer").on('click', function () {
         // $(this)로 반복되는 버튼 중에 클릭한 버튼을 가져옴
         // parent() : 부모 태그 가져옴
         // childern("클래스명") : 자식태그중 "클래스명"을 가진 태그 가져옴
-        
+
         const frm = $(this).parent().parent();
         const questionIdx = frm.children(".questionIdx").val();
         const answerContents = frm.find(".answerContents").val();
-        
+
         if (answerContents == null || answerContents == "") {
           alert("답변 내용을 입력해주세요");
         } else {
@@ -356,14 +389,14 @@
           });
         }
       });
-      
+
       // 관리자 리뷰 삭제 버튼
       $(".btn-review-delete").on('click', function () {
         if (!confirm("해당 리뷰를 정말 삭제하시겠습니까?")) {
           location.reload();
         } else {
           const reviewIdx = $(this).val();
-          
+
           $.ajax({
             url: "/bmn/reviewDelete",
             type: "DELETE",
@@ -377,7 +410,7 @@
           });
         }
       });
-      
+
       // 리뷰에 댓글 달기
       $(".btn-review-comment").on('click', function () {
         const adminCheck = $("#admin-check").val();
@@ -388,7 +421,7 @@
         const sessionCeoIdx = $("#ceo-idx").val();
         let commentContents = frm.find(".commentContents").val();
         const ceoIdx = $("#ceoIdx").val();
-        
+
         if (customerIdx != null) {
           if (commentContents == null || commentContents == "") {
             alert("댓글 내용을 입력해주세요");
@@ -444,14 +477,14 @@
           }
         }
       });
-      
+
       // 리뷰에 달린 댓글 삭제하기
       $(".btn-comment-delete").on('click', function () {
         if (!confirm("해당 댓글을 정말 삭제하시겠습니까?")) {
           location.reload();
         } else {
           const commentIdx = $(this).val();
-          
+
           $.ajax({
             url: "/bmn/commentDelete",
             type: "PUT",
@@ -464,9 +497,9 @@
             }
           })
         }
-        
+
       })
-      
+
       // 문의하기 빈칸 없애기
       $("#btn-question").on('click', function () {
         const sessionCeoIdx = $("#ceo-idx").val();
@@ -492,14 +525,14 @@
           }
         }
       });
-      
-      
+
+
       // 로그인하기
       // let msg = document.getElementById("sessionMsg");
       // if (msg.textContent.length > 0) {
       //   alert(msg.textContent);
       // }
-      
+
       const btn = document.getElementById("submit-btn");
       const frm = document.getElementById("form");
       btn.addEventListener("click", function () {
@@ -516,25 +549,25 @@
           frm.submit();
         }
       });
-      
-      
+
+
     });
-    
-    
+
+
     // ajax로 받은 html 태그의(문의게시판 리스트) 로딩 끝난 시점에서 호출되는 클릭이벤트 재생성 함수
     function questionAnswer() {
       $(".btn-question-answer").off('click'); // 기존의 클릭이벤트 제거(중복 방지 차원)
-      
+
       // 새롭게 생성하는 클릭이벤트
       $(".btn-question-answer").on('click', function () {
         // $(this)로 반복되는 버튼 중에 클릭한 버튼을 가져옴
         // parent() : 부모 태그 가져옴
         // childern("클래스명") : 자식태그중 "클래스명"을 가진 태그 가져옴
-        
+
         const frm = $(this).parent().parent();
         const questionIdx = frm.children(".questionIdx").val();
         const answerContents = frm.find(".answerContents").val();
-        
+
         if (answerContents == null || answerContents == "") {
           alert("답변 내용을 입력해주세요");
         } else {
@@ -594,7 +627,7 @@
         </div>
       </div>
     </div>
-    
+
     <!--      가게 정보-->
     <div class="row my-4">
       <div class="col-sm-8 mx-auto">
@@ -606,7 +639,7 @@
           <input type="hidden" id="ceoStore" th:value="${ceoDto.ceoStore}">
           <input type="hidden" id="ceoIdx" th:value="${ceoDto.ceoIdx}">
           <!--          <input type="hidden" id="customerIdx" th:value="${session.customerIdx}">--><br><br>
-          
+
           <!--          1,2,3,4 한일중양 표현-->
           <span th:if="${ceoDto.ceoCategory} == 01" class="rounded-5 border border-dark p-3 me-3">한식</span>
           <span th:if="${ceoDto.ceoCategory} == 02" class="rounded-5 border border-dark p-3 me-3">일식</span>
@@ -620,7 +653,7 @@
               <img th:src="|/bmn/getImage?path=${ceoDto.ceoThumbnailImg}|" class="card-img-top w-100 py-3"
                    alt="등록된 이미지가 없습니다.">
             </div>
-          
+
           </div>
         </div>
         <div class="border rounded-2 my-3 p-2">
@@ -644,97 +677,67 @@
           </div>
           <button class="btn btn-outline-dark my-3" data-bs-toggle="collapse" data-bs-target="#detail-menu">상세 메뉴 확인하기
           </button>
-          <div class="collapse" id="detail-menu">
-            <div class="row my-2">
-              <div class="col-4">
-<<<<<<< HEAD
-                <div class="card m-1">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|" alt="등록된 이미지가 없습니다." class="h-100">
-=======
-                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg1)}">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|"
-                       alt="등록된 이미지가 없습니다.">
->>>>>>> origin/swbranch2
-                  <div class="card-body">
-                    <p th:text="${ceoDto.ceoDetailMenu1 != null} ? ${ceoDto.ceoDetailMenu1} : '[등록된 정보가 없습니다.]'"
-                       style="margin-bottom: 0px">상세메뉴1 </p>
-                  </div>
+            <div class="collapse" id="detail-menu">
+                <div class="row my-2">
+                    <div class="col-4">
+                        <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg1)}">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|"
+                                 alt="등록된 이미지가 없습니다.">
+                            <div class="card-body">
+                                <p th:text="${ceoDto.ceoDetailMenu1 != null} ? ${ceoDto.ceoDetailMenu1} : '[등록된 정보가 없습니다.]'"
+                                   style="margin-bottom: 0px">상세메뉴1 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg2)}">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg2}|" alt="등록된 이미지가 없습니다.">
+                            <div class="card-body">
+                                <p th:text="${ceoDto.ceoDetailMenu2 != null} ? ${ceoDto.ceoDetailMenu2} : '[등록된 정보가 없습니다.]'"
+                                   style="margin-bottom: 0px">상세메뉴2 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg3)}">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg3}|" alt="등록된 이미지가 없습니다.">
+                            <div class="card-body">
+                                <p th:text="${ceoDto.ceoDetailMenu3 != null} ? ${ceoDto.ceoDetailMenu3} : '[등록된 정보가 없습니다.]'"
+                                   style="margin-bottom: 0px">상세메뉴3 </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-4">
-<<<<<<< HEAD
-                <div class="card m-1">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg2}|" alt="등록된 이미지가 없습니다." class="h-100">
-=======
-                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg2)}">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg2}|" alt="등록된 이미지가 없습니다.">
->>>>>>> origin/swbranch2
-                  <div class="card-body">
-                    <p th:text="${ceoDto.ceoDetailMenu2 != null} ? ${ceoDto.ceoDetailMenu2} : '[등록된 정보가 없습니다.]'"
-                       style="margin-bottom: 0px">상세메뉴2 </p>
-                  </div>
+                <div class="row my-2">
+                    <div class="col-4">
+                        <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg4)}">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg4}|" alt="등록된 이미지가 없습니다.">
+                            <div class="card-body">
+                                <p th:text="${ceoDto.ceoDetailMenu4 != null} ? ${ceoDto.ceoDetailMenu4} : '[등록된 정보가 없습니다.]'"
+                                   style="margin-bottom: 0px">상세메뉴4 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg5)}">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg5}|" alt="등록된 이미지가 없습니다.">
+                            <div class="card-body">
+                                <p th:text="${ceoDto.ceoDetailMenu5 != null} ? ${ceoDto.ceoDetailMenu5} : '[등록된 정보가 없습니다.]'"
+                                   style="margin-bottom: 0px">상세메뉴5 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg6)}">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg6}|" alt="등록된 이미지가 없습니다.">
+                            <div class="card-body">
+                                <p th:text="${ceoDto.ceoDetailMenu6 != null} ? ${ceoDto.ceoDetailMenu6} : '[등록된 정보가 없습니다.]'"
+                                   style="margin-bottom: 0px">상세메뉴6 </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="col-4">
-<<<<<<< HEAD
-                <div class="card m-1">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg3}|" alt="등록된 이미지가 없습니다." class="h-100">
-=======
-                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg3)}">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg3}|" alt="등록된 이미지가 없습니다.">
->>>>>>> origin/swbranch2
-                  <div class="card-body">
-                    <p th:text="${ceoDto.ceoDetailMenu3 != null} ? ${ceoDto.ceoDetailMenu3} : '[등록된 정보가 없습니다.]'"
-                       style="margin-bottom: 0px">상세메뉴3 </p>
-                  </div>
-                </div>
-              </div>
             </div>
-            <div class="row my-2">
-              <div class="col-4">
-<<<<<<< HEAD
-                <div class="card m-1">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg4}|" alt="등록된 이미지가 없습니다." class="h-100">
-=======
-                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg4)}">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg4}|" alt="등록된 이미지가 없습니다.">
->>>>>>> origin/swbranch2
-                  <div class="card-body">
-                    <p th:text="${ceoDto.ceoDetailMenu4 != null} ? ${ceoDto.ceoDetailMenu4} : '[등록된 정보가 없습니다.]'"
-                       style="margin-bottom: 0px">상세메뉴4 </p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-<<<<<<< HEAD
-                <div class="card m-1">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg5}|" alt="등록된 이미지가 없습니다." class="h-100">
-=======
-                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg5)}">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg5}|" alt="등록된 이미지가 없습니다.">
->>>>>>> origin/swbranch2
-                  <div class="card-body">
-                    <p th:text="${ceoDto.ceoDetailMenu5 != null} ? ${ceoDto.ceoDetailMenu5} : '[등록된 정보가 없습니다.]'"
-                       style="margin-bottom: 0px">상세메뉴5 </p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-<<<<<<< HEAD
-                <div class="card m-1">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg6}|" alt="등록된 이미지가 없습니다." class="h-100">
-=======
-                <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg6)}">
-                  <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg6}|" alt="등록된 이미지가 없습니다.">
->>>>>>> origin/swbranch2
-                  <div class="card-body">
-                    <p th:text="${ceoDto.ceoDetailMenu6 != null} ? ${ceoDto.ceoDetailMenu6} : '[등록된 정보가 없습니다.]'"
-                       style="margin-bottom: 0px">상세메뉴6 </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <p style="margin-bottom: 0px"><strong>식당 소개글</strong></p>
           <p th:utext="${ceoDto.ceoContents != null} ? ${ceoDto.ceoContents} : '[등록된 정보가 없습니다.]'"></p>
           <p style="margin-bottom: 0px"><strong>영업시간</strong></p>
@@ -749,7 +752,7 @@
           <p><strong>연락처 : </strong>
             <span th:text="${ceoDto.ceoCallNumber != null} ? ${ceoDto.ceoCallNumber} : '[등록된 정보가 없습니다.]'"></span>
           </p>
-          
+
         </div>
         <br id="toReview">
         <!--          방문자 리뷰-->
@@ -797,44 +800,44 @@
                     <p th:text="|${item.reviewDate} 작성|"></p>
                   </div>
                 </div>
-              
+
               </div>
               <div class="d-flex ms-3">
                 <div th:if="${item.reviewTag1} == Y" class="mx-1">
                   <button class="btn btn-outline-dark">맛</button>
                 </div>
                 <div th:unless="${item.reviewTag1} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag2} == Y" class="mx-1">
                   <button class="btn btn-outline-dark">만족도</button>
                 </div>
                 <div th:unless="${item.reviewTag2} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag3} == Y" class="mx-1">
                   <button class="btn btn-outline-dark">서비스</button>
                 </div>
                 <div th:unless="${item.reviewTag3} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag4} == Y" class="mx-1">
                   <button class="btn btn-outline-dark">음식량</button>
                 </div>
                 <div th:unless="${item.reviewTag4} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag5} == Y" class="mx-1">
                   <button class="btn btn-outline-dark">대기시간</button>
                 </div>
                 <div th:unless="${item.reviewTag5} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag6} == Y" class="mx-1">
                   <button class="btn btn-outline-dark">청결도</button>
                 </div>
                 <div th:unless="${item.reviewTag6} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag7} == Y" class="mx-1">
                   <button class="btn btn-outline-dark">분위기</button>
                 </div>
                 <div th:unless="${item.reviewTag7} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag8} == Y" class="mx-1">
                   <button class="btn btn-outline-dark">가격</button>
                 </div>
@@ -853,9 +856,9 @@
                 <i class="bi bi-chat-left-dots-fill" style="font-size: 20px"></i>
                 <span>댓글 보기</span>
               </button>
-              
+
               <hr class="mt-3">
-              
+
               <div class="collapse" id="commentCollapse" th:attrappend="id=${itemStat.index}">
                 <div class="m-3 rounded-3 p-2" th:each="comment : ${commentList}"
                      th:if="${comment.reviewIdx == item.reviewIdx}">
@@ -916,9 +919,9 @@
                 </form>
               </div>
             </div>
-            
+
             <!--         ------- 리뷰 2개 이상부터 배치할 곳-------- -->
-            
+
             <div class="collapse border rounded-3 my-3 p-3" id="review-more" th:unless="${itemStat.index} < 2">
               <div class="mx-3">
                 <!--              관리자 리뷰 삭제 버튼-->
@@ -944,44 +947,44 @@
                     <p th:text="|${item.reviewDate} 작성|"></p>
                   </div>
                 </div>
-              
+
               </div>
               <div class="d-flex ms-3">
                 <div th:if="${item.reviewTag1} == Y" class="mx-1">
                   <button class="btn btn-outline-info">맛</button>
                 </div>
                 <div th:unless="${item.reviewTag1} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag2} == Y" class="mx-1">
                   <button class="btn btn-outline-info">만족도</button>
                 </div>
                 <div th:unless="${item.reviewTag2} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag3} == Y" class="mx-1">
                   <button class="btn btn-outline-info">서비스</button>
                 </div>
                 <div th:unless="${item.reviewTag3} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag4} == Y" class="mx-1">
                   <button class="btn btn-outline-info">음식량</button>
                 </div>
                 <div th:unless="${item.reviewTag4} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag5} == Y" class="mx-1">
                   <button class="btn btn-outline-info">대기시간</button>
                 </div>
                 <div th:unless="${item.reviewTag5} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag6} == Y" class="mx-1">
                   <button class="btn btn-outline-info">청결도</button>
                 </div>
                 <div th:unless="${item.reviewTag6} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag7} == Y" class="mx-1">
                   <button class="btn btn-outline-info">분위기</button>
                 </div>
                 <div th:unless="${item.reviewTag7} == Y"></div>
-                
+
                 <div th:if="${item.reviewTag8} == Y" class="mx-1">
                   <button class="btn btn-outline-info">가격</button>
                 </div>
@@ -1000,9 +1003,9 @@
                 <i class="bi bi-chat-left-dots-fill" style="font-size: 20px"></i>
                 <span>댓글 보기</span>
               </button>
-              
+
               <hr class="mt-3">
-              
+
               <div class="collapse" id="commentCollapse2" th:attrappend="id=${itemStat.index}">
                 <div class="m-3 rounded-3 p-2" th:each="comment : ${commentList}"
                      th:if="${comment.reviewIdx == item.reviewIdx}">
@@ -1063,7 +1066,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="border rounded-3 my-3" th:unless="${#lists.size(reviewList)} > 0">
             <p class="pt-3 ms-3 text-center">#등록된 리뷰가 없습니다.</p>
           </div>
@@ -1100,13 +1103,13 @@
           <hr>
           <!--              문의게시판 테이블 헤더부분-->
           <div class="row text-center border">
-            <div class="col-sm-1">
+            <div class="col-sm-1" hidden="hidden">
               <p class="fw-bold mt-3">번호</p>
             </div>
             <div class="col-sm-2">
               <p class="fw-bold mt-3">답변여부</p>
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-6">
               <p class="fw-bold mt-3">제목</p>
             </div>
             <div class="col-sm-2">
@@ -1116,19 +1119,19 @@
               <p class="fw-bold mt-3">등록일자</p>
             </div>
           </div>
-          
+
           <!--          문의게시판 테이블 바디 부분-->
           <div id="q-list">
             <div th:if="${#lists.size(questionList.getList())}>0" th:each="item : ${questionList.getList()}">
               <div class="row text-center border border-top-0">
-                <div class="col-sm-1">
+                <div class="col-sm-1" hidden="hidden">
                   <p class="mt-3" th:text="${item.questionIdx}"></p>
                 </div>
                 <div class="col-sm-2">
                   <p class="mt-3" th:text="${item.questionComplete}"
                      th:attrappend="class=${item.questionComplete == '답변완료' ? ' text-muted' : ' fw-bold'}"></p>
                 </div>
-                <div class="col-sm-5 d-flex align-items-center">
+                <div class="col-sm-6 d-flex align-items-center">
                   <a href="#question-detail" th:attrappend="href=${itemStat.index}"
                      class="text-decoration-none text-black" data-bs-toggle="collapse"
                      th:text="${item.questionTitle}"></a>
@@ -1180,30 +1183,30 @@
             <div th:unless="${#lists.size(questionList.getList())}>0" class="border rounded-3 my-3">
               <p class="text-center pt-3">등록된 문의 글이 없습니다.</p>
             </div>
-          
+
           </div>
-          
+
           <!--          ajax 이용한 페이지 처리 버튼-->
-          <div class="my-3">
+          <div class="my-3" th:if="${#lists.size(questionList.getList())}>0">
             <ul class="pagination d-flex justify-content-end" id="paginationAjax">
-              
+
               <!--                이전 페이지 버튼-->
               <li class="page-item disabled">
                 <a href="#" class="page-link">&laquo;</a>
               </li>
-              
+
               <!--                네비게이션 버튼-->
               <li class="page-item">
                 <a href="#" class="page-link">1</a>
               </li>
-              
+
               <!--                다음 페이지 버튼 -->
               <li class="page-item">
                 <a href="#" class="page-link">&raquo;</a>
               </li>
             </ul>
           </div>
-          
+
           <br>
           <div id="write-question-collapse" class="collapse">
             <form action="/bmn/insertQuestion" method="post" id="question-form">
@@ -1221,7 +1224,7 @@
                 <textarea class="form-control" rows="5" id="question-contents" name="questionContents"
                           placeholder="문의 하실 내용을 입력해주세요"></textarea>
               </div>
-              
+
               <div class="d-flex justify-content-end my-2">
                 <button type="button" class="btn btn-outline-secondary" id="btn-question">작성하기
                   <i class="bi bi-pencil-square ms-2" style="color: black"></i>
@@ -1243,7 +1246,7 @@
       </div>
     </div>
   </div>
-  
+
   <!--  모달 로그인 팝업창-->
   <div class="modal fade" id="modal-login">
     <div class="modal-dialog modal-dialog-centered">
@@ -1253,7 +1256,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <h2 class="modal-title text-center my-4">로그인</h2>
-          
+
           <form action="/bmn/login" class="form-control" method="post" id="form">
             <div class="my-3 p-2">
               <label for="user-id" class="form-label">아이디</label>
@@ -1275,7 +1278,7 @@
       </div>
     </div>
   </div>
-  
+
   <!--          모달 팝업 지도창-->
   <div class="modal" id="map-modal">
     <div class="modal-dialog modal-xl">
@@ -1301,25 +1304,25 @@
     center: new naver.maps.LatLng(lat, lon),
     zoom: 15
   };
-  
+
   var map2 = new naver.maps.Map('map2', mapOptions2);
-  
+
   var marker = new naver.maps.Marker({
     position: new naver.maps.LatLng(lat, lon),
     map: map2
   });
-  
+
   var contentString = [
     '<div class="iw_inner p-4">',
     '   <h3>' + ceoStore + '</h3>',
     '   <p>' + ceoAddress + '</p>',
     '</div>'
   ].join('');
-  
+
   var infowindow = new naver.maps.InfoWindow({
     content: contentString
   });
-  
+
   naver.maps.Event.addListener(marker, "click", function (e) {
     if (infowindow.getMap()) {
       infowindow.close();

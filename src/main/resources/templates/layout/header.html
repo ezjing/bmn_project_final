@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<<<<<<< HEAD
     <meta charset="UTF-8">
     <title>Title</title>
 
@@ -17,49 +16,12 @@
     <script>
 
     </script>
-=======
-  <meta charset="UTF-8">
-  <title>Title</title>
-  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
-    
-    #no-user .btn {
-      --bs-btn-padding-x: 10px; !important;
-      --bs-btn-padding-y: 0rem; !important;
-    }
-  </style>
-  <script>
-    function foodSearch(){
-      let keyWorld = $("#keyword-val").val();
-      console.log(keyWorld);// 값이 들어오는 거 확인함
-      $.ajax({
-        url:"/bmn/bmnSearchList",
-        type: "GET",
-        success:function(){
-          location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
-          // alert('접속 성공')
-        },
-        error:function(){
-          alert('접속 실패')
-        }
-      });
-    
-    }
-  </script>
->>>>>>> origin/swbranch2
+
 
 </head>
 <body>
 
 <header th:fragment="header" class="container-fluid sticky-top">
-<<<<<<< HEAD
     <div class="row bg-light py-3">
         <div class="col-sm-3 d-flex align-content-center">
             <nav class="navbar" style="margin-left: 150px">
@@ -67,32 +29,15 @@
                     <span class="navbar-brand fs-1" id="headerFont">밥뭇나</span>
                 </a>
             </nav>
-=======
-  <div class="row bg-light py-2">
-    <div class="col-sm-3 d-flex align-content-center">
-      <nav class="navbar" style="margin-left: 150px">
-        <a href="/bmn/bmnMain" class="text-decoration-none">
-          <span class="navbar-brand fs-1" id="headerFont">밥뭇나</span>
-        </a>
-      </nav>
-    </div>
-    
-    <div class="col-sm-6 input-group py-4 w-50">
-      <input id="keyword-val" name="keyword-val" type="search" class="form-control"
-             placeholder="식당,메뉴,주소명을 입력해주세요">
-      <button type="submit" class="btn btn-dark fw-bold" onclick="foodSearch()">
-        검색
-      </button>
-    </div>
-    
-    <div class="col-sm-3" th:if="${not #strings.isEmpty(session.user)}">
-      <div class="row mt-2">
-        <div class="col-sm d-flex justify-content-center">
-          <span th:if="${session.user == 'customer'}" th:text="|${session.customer.customerNick}님 환영합니다.|" class="fw-bold"></span>
-          <span th:if="${session.user == 'ceo'}" th:text="|${session.ceo.ceoStore} 사장님 환영합니다.|" class="fw-bold"></span>
-          <span th:if="${session.user == 'admin'}" class="fw-bold">관리자님 환영합니다.</span>
->>>>>>> origin/swbranch2
         </div>
+        <!--  <div class="row bg-light py-2">-->
+        <!--    <div class="col-sm-3 d-flex align-content-center">-->
+        <!--      <nav class="navbar" style="margin-left: 150px">-->
+        <!--        <a href="/bmn/bmnMain" class="text-decoration-none">-->
+        <!--          <span class="navbar-brand fs-1" id="headerFont">밥뭇나</span>-->
+        <!--        </a>-->
+        <!--      </nav>-->
+        <!--    </div>-->
 
         <div class="col-sm-6 input-group py-4 w-50">
             <input id="keyword-val" name="keyword-val" type="search" class="form-control"
@@ -105,10 +50,8 @@
         <div class="col-sm-3" th:if="${not #strings.isEmpty(session.user)}">
             <div class="row mt-2">
                 <div class="col-sm d-flex justify-content-center">
-                    <span th:if="${session.user == 'customer'}" th:text="|${session.customer.customerNick}님 환영합니다.|"
-                          class="fw-bold"></span>
-                    <span th:if="${session.user == 'ceo'}" th:text="|${session.ceo.ceoStore} 사장님 환영합니다.|"
-                          class="fw-bold"></span>
+                    <span th:if="${session.user == 'customer'}" th:text="|${session.customer.customerNick}님 환영합니다.|" class="fw-bold"></span>
+                    <span th:if="${session.user == 'ceo'}" th:text="${session.ceo.ceoGrade == 3} ? ${session.ceo.ceoStore} + '사장님 환영합니다.' : '사장님 환영합니다.'"  class="fw-bold"></span>
                     <span th:if="${session.user == 'admin'}" class="fw-bold">관리자님 환영합니다.</span>
                 </div>
             </div>
@@ -119,13 +62,13 @@
                         <a href="/bmn/myPageCus" class="btn btn-outline-dark">마이 페이지</a>
                     </div>
                     <div th:if="${session.user == 'ceo'}">
-                        <div th:if="${session.ceo.ceoGrade} == 1">
-                            <a href="/bmn/ceoStore" class="btn btn-outline-dark">식당 등록 페이지</a>
-                            <a href="/bmn/myPageCeo" class="btn btn-outline-dark">마이 페이지</a>
-                        </div>
-                        <div th:unless="${session.ceo.ceoGrade} == 1">
+                        <div th:if="${session.ceo.ceoGrade} == 3">
                             <a href="/bmn/viewDetail/" th:attrappend="href=${session.ceo.ceoIdx}"
                                class="btn btn-outline-dark">내 가게</a>
+                            <a href="/bmn/myPageCeo" class="btn btn-outline-dark">마이 페이지</a>
+                        </div>
+                        <div th:unless="${session.ceo.ceoGrade} == 3">
+                            <a href="/bmn/ceoStore" class="btn btn-outline-dark">식당 등록 페이지</a>
                             <a href="/bmn/myPageCeo" class="btn btn-outline-dark">마이 페이지</a>
                         </div>
                     </div>
@@ -146,24 +89,18 @@
                 </div>
                 <div class="row" id="no-user">
                     <div class="col-sm d-grid px-0 me-1">
-                        <a href="/bmn/signUp/customer" class="btn btn-outline-dark py-1 px-2">회원가입<br><small>(손님)</small></a>
+                        <a href="/bmn/signUp/customer"
+                           class="btn btn-outline-dark py-1 px-2">회원가입<br><small>(손님)</small></a>
                     </div>
                     <div class="col-sm d-grid px-0">
-                        <a href="/bmn/signUp/ceo" class="btn btn-outline-dark py-1 px-2">회원가입<br><small>(사장님)</small> </a>
+                        <a href="/bmn/signUp/ceo" class="btn btn-outline-dark py-1 px-2">회원가입<br><small>(사장님)</small>
+                        </a>
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-=======
-          </div>
-          <div th:if="${session.user == 'admin'}">
-            <a href="/bmn/admin/customerManagement" class="btn btn-outline-dark">관리페이지(회원)</a>
-            <a href="/bmn/admin/ceoManagement" class="btn btn-outline-dark">관리페이지(식당)</a>
-          </div>
-          <a href="/bmn/logOut" id="logout-btn" class="btn btn-outline-dark ms-2">로그아웃</a>
->>>>>>> origin/swbranch2
         </div>
     </div>
+
 </header>
 </body>
 </html>

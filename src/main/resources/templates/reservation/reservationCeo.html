@@ -14,6 +14,64 @@
         @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
     </style>
     <script>
+        function foodSearch(){
+            let keyWorld = $("#keyword-val").val();
+            console.log(keyWorld);// 값이 들어오는 거 확인함
+            $.ajax({
+                url:"/bmn/bmnSearchList",
+                type: "GET",
+                success:function(){
+                    location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+                    // alert('접속 성공')
+                },
+                error:function(){
+                    alert('접속 실패')
+                }
+            });
+        }
+        $(document).ready(function () {
+            const session = sessionStorage.getItem('user');
+            console.log(session);
+            let msg = document.getElementById("sessionMsg");
+            if (msg.textContent.length > 0) {
+                alert(msg.textContent);
+            }
+
+            const btn = document.getElementById("submit-btn");
+            const frm = document.getElementById("form");
+            btn.addEventListener("click", function () {
+                let userId = document.getElementById("user-id").value;
+                let userPw = document.getElementById("user-pw").value;
+                if (userId === "" || userId == null) {
+                    // 아이디를 미입력시
+                    alert('아이디를 입력해주세요');
+                    $("#user-id").focus()
+                } else if (userId !== "" && userPw === "") {
+                    // 아이디만 입력시
+                    alert('비밀번호를 입력해주세요');
+                    $("#user-pw").focus()
+                } else {
+                    // 서브밋
+                    frm.submit();
+                }
+            });
+            $("#keyword-val").keydown(function (key){
+                let keyWorld = $("#keyword-val").val();
+                if(key.keyCode == 13){
+                    $.ajax({
+                        type : "GET",
+                        url: "/bmn/bmnSearchList",
+                        data: {keyWorld: keyWorld},
+                        success:function(data){
+                            location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+                        },
+                        error:function(){
+                            alert('통신 실패');
+                        }
+                    });
+                }
+            });
+        });
         let selTime = "";
 
         function events() {

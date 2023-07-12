@@ -14,14 +14,14 @@
 			ceo_idx = #{ceoIdx}
 	</select>
 	
-<!--	식당 정보 조회(ceo_grade == 2)-->
+<!--	식당 정보 조회(ceo_grade == 3)-->
 	<select id="selectCeoDetail2" parameterType="int" resultType="com.bitc.bmn_project.DTO.CeoDTO">
 		SELECT
 		*
 		FROM
 		ceo_tp
 		WHERE
-		ceo_idx = #{ceoIdx} AND ceo_grade = '2'
+		ceo_idx = #{ceoIdx} AND ceo_grade = '3'
 	</select>
 	
 	
