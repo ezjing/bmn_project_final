@@ -35,6 +35,7 @@ public class FileUtils {
 
         // *** 실제 경로 설정 ***
 //        String path = "C:/smart505/bmn_project/src/main/resources/static/images/" + current.format(format);
+<<<<<<< HEAD
 
 
         // DB에 저장할 경로
@@ -43,6 +44,9 @@ public class FileUtils {
         // 프로젝트에 포함시킬 경로
 //        String path2 = "C:/smart505/bmn_project/src/main/resources/static/images/" + current.format(format);
 
+=======
+        String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+>>>>>>> origin/swbranch2
         // 자바의 File 클래스 객체 생성, 위에서 생성한 경로로 생성
         File file = new File(path);
 
@@ -118,12 +122,17 @@ public class FileUtils {
             ZonedDateTime current = ZonedDateTime.now();
 
 
+<<<<<<< HEAD
             // DB에 저장할 경로
             String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
 
             // 프로젝트에 포함시킬 경로
             // String path2 = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
 
+=======
+//            String path = "C:/smart505/bmn_project/src/main/resources/static/images/" + current.format(format);
+            String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+>>>>>>> origin/swbranch2
             // 자바의 File 클래스 객체 생성, 위에서 생성한 경로로 생성
             File file = new File(path);
 
