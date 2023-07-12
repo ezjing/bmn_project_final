@@ -29,8 +29,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
         // 업로드 파일의 크기 설정
-        factory.setMaxRequestSize(DataSize.ofBytes(5 * 1024 * 1024));
-        factory.setMaxFileSize(DataSize.ofBytes(5 * 1024 * 1024));
+        factory.setMaxRequestSize(DataSize.ofBytes(20 * 1024 * 1024));
+        factory.setMaxFileSize(DataSize.ofBytes(20 * 1024 * 1024));
 
         return factory.createMultipartConfig();
     }
