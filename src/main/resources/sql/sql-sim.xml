@@ -152,7 +152,7 @@
     <update id="storeApprove" parameterType="map">
         UPDATE ceo_tp
         SET ceo_grade = #{mode}
-        WHERE ceo_idx = ${targetIdx}
+        WHERE ceo_idx = #{targetIdx}
     </update>
     <!-- 관리자 페이지 - 회원 리스트 출력(리뷰 작성 수, 댓글 작성 수 포함) -->
     <select id="getCustomerList" resultType="com.bitc.bmn_project.DTO.CustomerDTO">
@@ -178,13 +178,25 @@
     <!-- 관리자 페이지 - 회원 등급 변경-->
     <update id="changeCustomerGrade" parameterType="map">
         UPDATE customer_tp
-        SET customer_grade = ${grade}
-        WHERE customer_idx = ${targetIdx}
+        SET customer_grade = #{grade}
+        WHERE customer_idx = #{targetIdx}
     </update>
     <!-- 관리자 페이지 - 회원 영구 정지-->
     <update id="customerBan" parameterType="int">
         UPDATE customer_tp
         SET customer_ban = "Y"
-        WHERE customer_idx = ${targetIdx}
+        WHERE customer_idx = #{targetIdx}
+    </update>
+    <!-- 리뷰페이지 - 평균 내는 -->
+    <select id="getAverage" parameterType="int" resultType="Double">
+        SELECT AVG(review_score)
+        FROM review_tp
+        WHERE ceo_idx = #{ceoIdx} AND review_delete = "N"
+    </select>
+    <!-- 리뷰페이지 - 평균 값을 ceoDTO에 넣어주기 -->
+    <update id="updateScore" parameterType="map">
+        UPDATE ceo_tp
+        SET ceo_score = #{avg}
+        WHERE ceo_idx = #{ceoIdx}
     </update>
 </mapper>

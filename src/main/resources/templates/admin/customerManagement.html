@@ -11,7 +11,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-
+        @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+        #headerFont {
+            font-family: 'Black Han Sans', sans-serif;
+            font-weight: 900;
+        }
     </style>
 
     <script>
@@ -145,7 +149,7 @@
                     <ul class="pagination justify-content-center">
                         <!-- 이전 페이지 버튼-->
                         <li class="page-item" th:classappend="${customerList.getPrePage() == 0} ? 'disabled'">
-                            <a href="#" class="page-link" th:href="@{/bmn/myPageAdm(pageNum=${customerList.getPrePage()})}">&laquo;</a>
+                            <a href="#" class="page-link" th:href="@{/bmn/admin/customerManagement(pageNum=${customerList.getPrePage()})}">&laquo;</a>
                         </li>
                         <!-- 네비게이션 버튼-->
                         <li class="page-item"
@@ -153,11 +157,11 @@
                             th:classappend="${page == customerList.getPageNum()} ? 'active'">
                             <a href="#" class="page-link"
                                th:text="${page}"
-                               th:href="@{/bmn/myPageAdm(pageNum=${page})}">1</a>
+                               th:href="@{/bmn/admin/customerManagement(pageNum=${page})}">1</a>
                         </li>
                         <!-- 다음 페이지 버튼-->
                         <li class="page-item" th:classappend="${customerList.getNextPage() == 0} ? 'disabled'">
-                            <a href="#" class="page-link" th:href="@{/bmn/myPageAdm(pageNum=${customerList.getNextPage()})}">&raquo;</a>
+                            <a href="#" class="page-link" th:href="@{/bmn/admin/customerManagement(pageNum=${customerList.getNextPage()})}">&raquo;</a>
                         </li>
                     </ul>
                 </div>
@@ -165,6 +169,7 @@
         </div>
     </div>
 </div>
+<footer th:replace="~{layout/footer::footer}"></footer>
 
 </body>
 </html>

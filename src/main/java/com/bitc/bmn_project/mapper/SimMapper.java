@@ -56,6 +56,10 @@ public interface SimMapper {
 
     int isBanned(String userId) throws Exception;
 
+    double getAverage(int ceoIdx) throws Exception;
+
+    void updateScore(double avg, int ceoIdx) throws Exception;
+
 
 //    Page<CustomerDTO> getPageList() throws Exception;
 }

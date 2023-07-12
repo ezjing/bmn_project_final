@@ -12,6 +12,10 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+        #headerFont {
+            font-family: 'Black Han Sans', sans-serif;
+            font-weight: 900;
+        }
     </style>
     <script>
         function foodSearch(){
@@ -139,50 +143,50 @@
 
                         $("#replace").empty(); // 자손태그 삭제, 본인 남김
                         let contents = "<div class=\"row border mb-3\">\n" +
-                            "                    <h3>오전</h3>\n" +
+                            "                    <h3 class='mt-3 ps-5'>오전</h3>\n" +
                             "                    <div class=\"row mb-2\">\n" +
-                            "                        <div class=\"d-flex\">\n" +
+                            "                        <div class=\"d-flex justify-content-center\">\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"11\" value=\"11\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"11\"  style=\"width: 10em; height: 5em;\" id=\"lab11\">11:00</label>\n" +
-                            "                            <button class=\"btn btn-success opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
-                            "                            <button class=\"btn btn-success opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
-                            "                            <button class=\"btn btn-success opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"11\"  style=\"width: 10em; height: 5em;\" id=\"lab11\">11:00</label>\n" +
+                            "                            <button class=\"btn btn-dark opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                            <button class=\"btn btn-dark opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                            <button class=\"btn btn-dark opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
                             "                        </div>\n" +
                             "                    </div>\n" +
                             "\n" +
-                            "                    <h3>오후</h3>\n" +
+                            "                    <h3 class='mt-3 ps-5'>오후</h3>\n" +
                             "                    <div class=\"row mb-2\">\n" +
-                            "                        <div class=\"d-flex\">\n" +
+                            "                        <div class=\"d-flex justify-content-center\">\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"12\" value=\"12\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"12\"  style=\"width: 10em; height: 5em;\" id=\"lab12\">12:00</label>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"12\"  style=\"width: 10em; height: 5em;\" id=\"lab12\">12:00</label>\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"01\" value=\"01\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"01\"  style=\"width: 10em; height: 5em;\" id=\"lab01\">01:00</label>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"01\"  style=\"width: 10em; height: 5em;\" id=\"lab01\">01:00</label>\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"02\" value=\"02\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"02\"  style=\"width: 10em; height: 5em;\" id=\"lab02\">02:00</label>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"02\"  style=\"width: 10em; height: 5em;\" id=\"lab02\">02:00</label>\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"03\" value=\"03\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"03\"  style=\"width: 10em; height: 5em;\" id=\"lab03\">03:00</label>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"03\"  style=\"width: 10em; height: 5em;\" id=\"lab03\">03:00</label>\n" +
                             "                        </div>\n" +
                             "                    </div>\n" +
                             "                    <div class=\"row mb-2\">\n" +
-                            "                        <div class=\"d-flex\">\n" +
+                            "                        <div class=\"d-flex justify-content-center\">\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"04\" value=\"04\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"04\"  style=\"width: 10em; height: 5em;\" id=\"lab04\">04:00</label>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"04\"  style=\"width: 10em; height: 5em;\" id=\"lab04\">04:00</label>\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"05\" value=\"05\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"05\"  style=\"width: 10em; height: 5em;\" id=\"lab05\">05:00</label>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"05\"  style=\"width: 10em; height: 5em;\" id=\"lab05\">05:00</label>\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"06\" value=\"06\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"06\"  style=\"width: 10em; height: 5em;\" id=\"lab06\">06:00</label>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"06\"  style=\"width: 10em; height: 5em;\" id=\"lab06\">06:00</label>\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"07\" value=\"07\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"07\"  style=\"width: 10em; height: 5em;\" id=\"lab07\">07:00</label>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"07\"  style=\"width: 10em; height: 5em;\" id=\"lab07\">07:00</label>\n" +
                             "                        </div>\n" +
                             "                    </div>\n" +
                             "                    <div class=\"row mb-2\">\n" +
-                            "                        <div class=\"d-flex\">\n" +
+                            "                        <div class=\"d-flex justify-content-center\">\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"08\" value=\"08\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"08\"  style=\"width: 10em; height: 5em;\" id=\"lab08\">08:00</label>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"08\"  style=\"width: 10em; height: 5em;\" id=\"lab08\">08:00</label>\n" +
                             "                            <input type=\"radio\" class=\"btn-check\" name=\"reservationTime\" id=\"09\" value=\"09\">\n" +
-                            "                            <label class=\"btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"09\"  style=\"width: 10em; height: 5em;\" id=\"lab09\">09:00</label>\n" +
-                            "                            <button class=\"btn btn-success opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
-                            "                            <button class=\"btn btn-success opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                            <label class=\"btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center time-label\" for=\"09\"  style=\"width: 10em; height: 5em;\" id=\"lab09\">09:00</label>\n" +
+                            "                            <button class=\"btn btn-dark opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
+                            "                            <button class=\"btn btn-dark opacity-100 me-2\" type=\"button\" style=\"width: 10em; height: 5em; visibility: hidden;\"></button>\n" +
                             "                        </div>\n" +
                             "                    </div>\n" +
                             "                </div>";
@@ -205,27 +209,27 @@
                             const btn09 = $("#09").val();
 
                             const rad11 = "<input type='radio' class='btn-check' name='reservationTime' id='11' value='11' disabled>"
-                            const lab11 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='11'  style='width: 10em; height: 5em;'>11:00</label>"
+                            const lab11 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='11'  style='width: 10em; height: 5em;'>11:00</label>"
                             const rad12 = "<input type='radio' class='btn-check' name='reservationTime' id='12' value='12' disabled>"
-                            const lab12 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='12'  style='width: 10em; height: 5em;'>12:00</label>"
+                            const lab12 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='12'  style='width: 10em; height: 5em;'>12:00</label>"
                             const rad01 = "<input type='radio' class='btn-check' name='reservationTime' id='01' value='01' disabled>"
-                            const lab01 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='01'  style='width: 10em; height: 5em;'>01:00</label>"
+                            const lab01 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='01'  style='width: 10em; height: 5em;'>01:00</label>"
                             const rad02 = "<input type='radio' class='btn-check' name='reservationTime' id='02' value='02' disabled>"
-                            const lab02 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='02'  style='width: 10em; height: 5em;'>02:00</label>"
+                            const lab02 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='02'  style='width: 10em; height: 5em;'>02:00</label>"
                             const rad03 = "<input type='radio' class='btn-check' name='reservationTime' id='03' value='03' disabled>"
-                            const lab03 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='03'  style='width: 10em; height: 5em;'>03:00</label>"
+                            const lab03 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='03'  style='width: 10em; height: 5em;'>03:00</label>"
                             const rad04 = "<input type='radio' class='btn-check' name='reservationTime' id='04' value='04' disabled>"
-                            const lab04 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='04'  style='width: 10em; height: 5em;'>04:00</label>"
+                            const lab04 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='04'  style='width: 10em; height: 5em;'>04:00</label>"
                             const rad05 = "<input type='radio' class='btn-check' name='reservationTime' id='05' value='05' disabled>"
-                            const lab05 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='05'  style='width: 10em; height: 5em;'>05:00</label>"
+                            const lab05 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='05'  style='width: 10em; height: 5em;'>05:00</label>"
                             const rad06 = "<input type='radio' class='btn-check' name='reservationTime' id='06' value='06' disabled>"
-                            const lab06 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='06'  style='width: 10em; height: 5em;'>06:00</label>"
+                            const lab06 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='06'  style='width: 10em; height: 5em;'>06:00</label>"
                             const rad07 = "<input type='radio' class='btn-check' name='reservationTime' id='07' value='07' disabled>"
-                            const lab07 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='07'  style='width: 10em; height: 5em;'>07:00</label>"
+                            const lab07 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='07'  style='width: 10em; height: 5em;'>07:00</label>"
                             const rad08 = "<input type='radio' class='btn-check' name='reservationTime' id='08' value='08' disabled>"
-                            const lab08 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='08'  style='width: 10em; height: 5em;'>08:00</label>"
+                            const lab08 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='08'  style='width: 10em; height: 5em;'>08:00</label>"
                             const rad09 = "<input type='radio' class='btn-check' name='reservationTime' id='09' value='09' disabled>"
-                            const lab09 = "<label class='btn btn-success me-2 d-flex justify-content-center align-items-center' for='09'  style='width: 10em; height: 5em;'>09:00</label>"
+                            const lab09 = "<label class='btn btn-dark me-2 d-flex justify-content-center align-items-center' for='09'  style='width: 10em; height: 5em;'>09:00</label>"
 
 
                             if (btn11 == data[i]) { // data[i]의 값과 버튼의 value가 같으면 실행
@@ -306,59 +310,59 @@
                         <option value="5">단체 문의</option>
                     </select>
                     <label for="reservationContents" class="form-label mt-5">상세 내용</label>
-                    <input type="text" class="form-control" id="reservationContents" name="reservationContents" placeholder="상세 내용">
+                    <textarea class="form-control" id="reservationContents" name="reservationContents" placeholder="상세 내용" rows="6"></textarea>
                 </div>
             </div>
             <div class="col-10">
                 <div class="row">
                     <input type="date" name="reservationDate" id="reservationDate">
                 </div>
-                <div id="replace">
+                <div id="replace" class="d-flex justify-content-center">
                     <div class="row border mb-3">
-                        <h3>오전</h3>
+                        <h3 class="ms-5 mt-3 ps-5">오전</h3>
                         <div class="row mb-2">
-                            <div class="d-flex">
+                            <div class="d-flex justify-content-center">
                                 <input type="radio" class="btn-check" name="reservationTime" id="11" value="11">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="11"  style="width: 10em; height: 5em;" id="lab11">11:00</label>
-                                <button class="btn btn-success opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
-                                <button class="btn btn-success opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
-                                <button class="btn btn-success opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="11"  style="width: 10em; height: 5em;" id="lab11">11:00</label>
+                                <button class="btn btn-dark opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
+                                <button class="btn btn-dark opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
+                                <button class="btn btn-dark opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
                             </div>
                         </div>
 
-                        <h3>오후</h3>
+                        <h3 class="ms-5 ps-5">오후</h3>
                         <div class="row mb-2">
-                            <div class="d-flex">
+                            <div class="d-flex justify-content-center">
                                 <input type="radio" class="btn-check" name="reservationTime" id="12" value="12">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="12"  style="width: 10em; height: 5em;" id="lab12">12:00</label>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="12"  style="width: 10em; height: 5em;" id="lab12">12:00</label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="01" value="01">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="01"  style="width: 10em; height: 5em;" id="lab01">01:00</label>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="01"  style="width: 10em; height: 5em;" id="lab01">01:00</label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="02" value="02">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="02"  style="width: 10em; height: 5em;" id="lab02">02:00</label>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="02"  style="width: 10em; height: 5em;" id="lab02">02:00</label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="03" value="03">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="03"  style="width: 10em; height: 5em;" id="lab03">03:00</label>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="03"  style="width: 10em; height: 5em;" id="lab03">03:00</label>
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="d-flex">
+                            <div class="d-flex justify-content-center">
                                 <input type="radio" class="btn-check" name="reservationTime" id="04" value="04">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="04"  style="width: 10em; height: 5em;" id="lab04">04:00</label>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="04"  style="width: 10em; height: 5em;" id="lab04">04:00</label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="05" value="05">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="05"  style="width: 10em; height: 5em;" id="lab05">05:00</label>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="05"  style="width: 10em; height: 5em;" id="lab05">05:00</label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="06" value="06">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="06"  style="width: 10em; height: 5em;" id="lab06">06:00</label>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="06"  style="width: 10em; height: 5em;" id="lab06">06:00</label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="07" value="07">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="07"  style="width: 10em; height: 5em;" id="lab07">07:00</label>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="07"  style="width: 10em; height: 5em;" id="lab07">07:00</label>
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="d-flex">
+                            <div class="d-flex justify-content-center">
                                 <input type="radio" class="btn-check" name="reservationTime" id="08" value="08">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="08"  style="width: 10em; height: 5em;" id="lab08">08:00</label>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="08"  style="width: 10em; height: 5em;" id="lab08">08:00</label>
                                 <input type="radio" class="btn-check" name="reservationTime" id="09" value="09">
-                                <label class="btn btn-success opacity-100 me-2 d-flex justify-content-center align-items-center" for="09"  style="width: 10em; height: 5em;" id="lab09">09:00</label>
-                                <button class="btn btn-success opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
-                                <button class="btn btn-success opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
+                                <label class="btn btn-dark opacity-100 me-2 d-flex justify-content-center align-items-center" for="09"  style="width: 10em; height: 5em;" id="lab09">09:00</label>
+                                <button class="btn btn-dark opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
+                                <button class="btn btn-dark opacity-100 me-2" type="button" style="width: 10em; height: 5em; visibility: hidden;"></button>
                             </div>
                         </div>
                     </div>
@@ -366,8 +370,8 @@
 
                 <div class="row">
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-secondary mx-5" type="button" style="width: 6em; height: 3em;" id="cancel">취소</button>
-                        <button class="btn btn-primary mx-5" type="button" style="width: 6em; height: 3em;" id="check">확인</button>
+                        <button class="btn btn-secondary mx-5 mb-3" type="button" style="width: 6em; height: 3em;" id="cancel">취소</button>
+                        <button class="btn btn-outline-dark mx-5 mb-3" type="button" style="width: 6em; height: 3em;" id="check">확인</button>
                         <input type="hidden" id="customerIdx" name="customerIdx" value="2" th:value="${session.customer.customerIdx}">
                         <input type="hidden" id="ceoIdx" name="ceoIdx" value="2" th:value="${ceoIdx}">
                         <input type="hidden" id="ceoStore" name="ceoStore" value="테스트가게" th:value="${ceoStore}">

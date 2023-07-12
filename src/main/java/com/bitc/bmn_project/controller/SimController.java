@@ -146,11 +146,13 @@ public class SimController {
             HttpServletRequest req) throws Exception {
 
         HttpSession session = req.getSession();
-        session.setAttribute("user", "customer");
-        session.setAttribute("customer", customer);
-        session.setMaxInactiveInterval(3600);
 
         simService.signUpCustomer(customer);
+
+        CustomerDTO newCustomer = simService.getCustomerInfo(customer.getCustomerId());
+        session.setAttribute("user", "customer");
+        session.setAttribute("customer", newCustomer);
+        session.setMaxInactiveInterval(3600);
 
 
 // 나중에 메인페이지
@@ -324,6 +326,7 @@ public class SimController {
     public String doReviewWrite(
             ReviewDTO review,
             ReviewTagDTO reviewTag,
+            @RequestParam("ceoIdx") int ceoIdx,
             @RequestParam(value = "reviewImgFile", required = false) MultipartFile reviewImgFile
     ) throws Exception {
 
@@ -340,8 +343,15 @@ public class SimController {
         int newReviewIdx = simService.getReviewIdx();
         reviewTag.setReviewIdx(newReviewIdx);
 
-        // 태그 값 insert 하는 서비스 (미구현)
+        // 태그 값 insert 하는 서비스
         simService.reviewWriteTag(reviewTag);
+
+        // 평점 값을 가져와서 평균 내는 서비스
+        double avg = simService.getAverage(ceoIdx);
+        System.out.println(avg);
+        // 평균을 ceoDTO에 update 해주는 서비스
+        simService.updateScore(avg, ceoIdx);
+
 
         // 상세뷰로 보내야함
         return "redirect:/bmn/viewDetail/" + review.getCeoIdx();
@@ -371,7 +381,7 @@ public class SimController {
         List<CeoDTO> storeList = simService.getStoreList();
 
         mv.addObject("storeList", storeList);
-
+        System.out.println(storeList);
 
         return mv;
     }
@@ -385,7 +395,7 @@ public class SimController {
 
         simService.storeApprove(targetIdx, mode);
 
-        return "redirect:/bmn/myPageAdm";
+        return "redirect:/bmn/admin/ceoManagement";
     }
 
     @RequestMapping(value = "/bmn/admin/customerManagement", method = RequestMethod.GET)
@@ -409,7 +419,7 @@ public class SimController {
 
 
         simService.changeCustomerGrade(targetIdx, grade);
-        return "redirect:/bmn/myPageAdm";
+        return "redirect:/bmn/admin/customerManagement";
     }
 
     @RequestMapping("/bmn/admin/customerManagement/ban")
@@ -419,7 +429,7 @@ public class SimController {
 
 
         simService.customerBan(targetIdx);
-        return "redirect:/bmn/myPageAdm";
+        return "redirect:/bmn/admin/customerManagement";
     }
 
 

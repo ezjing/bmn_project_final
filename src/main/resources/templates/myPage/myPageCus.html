@@ -12,6 +12,10 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+        #headerFont {
+            font-family: 'Black Han Sans', sans-serif;
+            font-weight: 900;
+        }
     </style>
     <script>
         function foodSearch(){
@@ -114,8 +118,8 @@
                         $("#tbodyReservation").empty();
 
                         let thead =
-                            "<tr>\n" +
-                            "    <th>밥뭇나 맛집</th>\n" +
+                            "<tr class='text-center'>\n" +
+                            "    <th class='text-start'>밥뭇나 맛집</th>\n" +
                             "    <th>날짜</th>\n" +
                             "    <th>시간</th>\n" +
                             "    <th>예약 상태</th>\n" +
@@ -127,7 +131,7 @@
 
                         if (data.length == 0) {
                             tbody =
-                                "<tr>\n" +
+                                "<tr class='text-center'>\n" +
                                 "    <td colspan=\"4\">예약내역이 없습니다</td>\n" +
                                 "</tr>";
 
@@ -149,8 +153,8 @@
                                 }
 
                                 tbody =
-                                    "<tr>\n" +
-                                    "    <td><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-decoration-none'>" + ceoStore + "</a></td>\n" +
+                                    "<tr class='text-center'>\n" +
+                                    "    <td class='text-start'><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-black fw-bold text-decoration-none'>" + ceoStore + "</a></td>\n" +
                                     "    <td>" + reservationDate + "</td>\n" +
                                     "    <td>" + reservationTime + ":00</td>\n" +
                                     "    <td>" + reservationStat + "</td>\n" +
@@ -179,8 +183,8 @@
                         $("#tbodyFollow").empty();
 
                         let thead =
-                            "<tr>\n" +
-                            "    <th>밥뭇나 맛집</th>\n" +
+                            "<tr class='text-center'>\n" +
+                            "    <th class='text-start'>밥뭇나 맛집</th>\n" +
                             "    <th></th>\n" +
                             "    <th></th>\n" +
                             "    <th>팔로우 취소</th>\n" +
@@ -192,7 +196,7 @@
 
                         if (split.length - 1 == 0) {
                             tbody =
-                                "<tr>\n" +
+                                "<tr class='text-center'>\n" +
                                 "    <td colspan=\"4\">팔로잉이 없습니다</td>\n" +
                                 "</tr>";
 
@@ -203,8 +207,8 @@
                                 const ceoStore = split[i];
 
                                 tbody =
-                                    "<tr>\n" +
-                                    "    <td>" + ceoStore + "</td>\n" +
+                                    "<tr class='text-center'>\n" +
+                                    "    <td class='text-start'>" + ceoStore + "</td>\n" +
                                     "    <td></td>\n" +
                                     "    <td></td>\n" +
                                     "    <td>" +
@@ -234,9 +238,9 @@
                         $("#tbodyReview").empty();
 
                         let thead =
-                            "<tr>\n" +
-                            "    <th>밥뭇나 맛집</th>\n" +
-                            "    <th>리뷰제목</th>\n" +
+                            "<tr class='text-center'>\n" +
+                            "    <th class='text-start'>밥뭇나 맛집</th>\n" +
+                            "    <th class='text-start'>리뷰제목</th>\n" +
                             "    <th>평점</th>\n" +
                             "    <th>날짜</th>\n" +
                             "</tr>";
@@ -247,7 +251,7 @@
 
                         if (data.length == 0) {
                             tbody =
-                                "<tr>\n" +
+                                "<tr class='text-center'>\n" +
                                 "    <td colspan=\"4\">내가 쓴 리뷰가 없습니다</td>\n" +
                                 "</tr>";
 
@@ -262,9 +266,9 @@
                                 const reviewDate = data[i].reviewDate;
 
                                 tbody =
-                                    "<tr>\n" +
-                                    "    <td>" + ceoStore + "</td>\n" +
-                                    "    <td><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-decoration-none'>" + reviewTitle + "</a></td>\n" + // 상세페이지로 이동, 내가 쓴 리뷰까지 자동으로 이동할수 있게 태그 달수 있는지 물어보기
+                                    "<tr class='text-center'>\n" +
+                                    "    <td class='text-start'>" + ceoStore + "</td>\n" +
+                                    "    <td class='text-start text-black text-decoration-none'><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-black fw-bold text-decoration-none'>" + reviewTitle + "</a></td>\n" + // 상세페이지로 이동, 내가 쓴 리뷰까지 자동으로 이동할수 있게 태그 달수 있는지 물어보기
                                     "    <td>" + reviewScore + "</td>\n" +
                                     "    <td>" + reviewDate + "</td>\n" +
                                     "</tr>";
@@ -290,9 +294,9 @@
                         $("#tbodyQuestion").empty();
 
                         let thead =
-                            "<tr>\n" +
-                            "    <th>밥뭇나 맛집</th>\n" +
-                            "    <th>문의제목</th>\n" +
+                            "<tr class='text-center'>\n" +
+                            "    <th class='text-start'>밥뭇나 맛집</th>\n" +
+                            "    <th class='text-start'>문의제목</th>\n" +
                             "    <th>날짜</th>\n" +
                             "    <th>답변여부</th>\n" +
                             "</tr>";
@@ -303,7 +307,7 @@
 
                         if (data.length == 0) {
                             tbody =
-                                "<tr>\n" +
+                                "<tr class='text-center'>\n" +
                                 "    <td colspan=\"4\">문의사항이 없습니다</td>\n" +
                                 "</tr>";
 
@@ -318,9 +322,9 @@
                                 const questionComplete = data[i].questionComplete;
 
                                 tbody =
-                                    "<tr>\n" +
-                                    "    <td>" + ceoStore + "</td>\n" +
-                                    "    <td><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-decoration-none'>" + questionTitle + "</a></td>\n" +
+                                    "<tr class='text-center'>\n" +
+                                    "    <td class='text-start'>" + ceoStore + "</td>\n" +
+                                    "    <td class='text-start'><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-black fw-bold text-decoration-none'>" + questionTitle + "</a></td>\n" +
                                     "    <td>" + questionDate + "</td>\n" +
                                     "    <td>" + questionComplete + "</td>\n" +
                                     "</tr>";
@@ -384,7 +388,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end align-items-center">
-                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="height: 5em">
+                    <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="height: 5em">
                         내 프로필 수정
                     </button>
                 </div>
@@ -464,20 +468,20 @@
 
 
             <div class="list-group list-group-item-action list-group-horizontal" id="list-tab" role="tablist">
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center active" id="list-reservation-list" data-bs-toggle="list" href="#list-reservation" role="tab" aria-controls="list-reservation">예약내역</a>
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-follow-list" data-bs-toggle="list" href="#list-follow" role="tab" aria-controls="list-follow">팔로우</a>   <!--  사장은 팔로워  -->
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-review-list" data-bs-toggle="list" href="#list-review" role="tab" aria-controls="list-review">내가 쓴 리뷰</a>
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center" id="list-question-list" data-bs-toggle="list" href="#list-question" role="tab" aria-controls="list-question">문의사항</a>
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center active" id="list-reservation-list" data-bs-toggle="list" href="#list-reservation" role="tab" aria-controls="list-reservation">예약내역</a>
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center" id="list-follow-list" data-bs-toggle="list" href="#list-follow" role="tab" aria-controls="list-follow">팔로우</a>   <!--  사장은 팔로워  -->
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center" id="list-review-list" data-bs-toggle="list" href="#list-review" role="tab" aria-controls="list-review">내가 쓴 리뷰</a>
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center" id="list-question-list" data-bs-toggle="list" href="#list-question" role="tab" aria-controls="list-question">문의사항</a>
             </div>
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="list-reservation" role="tabpanel" aria-labelledby="list-reservation-list">
                     <table class="table table-hover">
-                        <colgroup>
-                            <col style="width: 40%"/>
-                            <col style="width: 30%"/>
-                            <col style="width: 20%"/>
-                            <col style="width: 10%"/>
-                        </colgroup>
+<!--                        <colgroup>-->
+<!--                            <col style="width: 40%"/>-->
+<!--                            <col style="width: 30%"/>-->
+<!--                            <col style="width: 20%"/>-->
+<!--                            <col style="width: 10%"/>-->
+<!--                        </colgroup>-->
                         <thead id="theadReservation">
                         </thead>
                         <tbody id="tbodyReservation">
@@ -501,8 +505,8 @@
                 <div class="tab-pane fade" id="list-review" role="tabpanel" aria-labelledby="list-review-list">
                     <table class="table table-hover">
                         <colgroup>
-                            <col style="width: 40%"/>
                             <col style="width: 30%"/>
+                            <col style="width: 40%"/>
                             <col style="width: 20%"/>
                             <col style="width: 10%"/>
                         </colgroup>
@@ -515,8 +519,8 @@
                 <div class="tab-pane fade" id="list-question" role="tabpanel" aria-labelledby="list-question-list">
                     <table class="table table-hover">
                         <colgroup>
-                            <col style="width: 40%"/>
                             <col style="width: 30%"/>
+                            <col style="width: 40%"/>
                             <col style="width: 20%"/>
                             <col style="width: 10%"/>
                         </colgroup>

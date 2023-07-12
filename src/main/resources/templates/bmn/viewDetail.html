@@ -396,11 +396,12 @@
           location.reload();
         } else {
           const reviewIdx = $(this).val();
+          const ceoIdx = $("#ceoIdx").val();
 
           $.ajax({
             url: "/bmn/reviewDelete",
             type: "DELETE",
-            data: {reviewIdx: reviewIdx},
+            data: {reviewIdx: reviewIdx, ceoIdx: ceoIdx},
             success: function (data) {
               location.reload();
             },
@@ -649,9 +650,9 @@
                 style="width: 100px"></span>
           <span th:text="|리뷰 : ${reviewCnt}개|" class="rounded-5 border border-dark p-3 ms-3"></span>
           <div class="row">
-            <div class="card mt-5" style="width: 25rem;">
-              <img th:src="|/bmn/getImage?path=${ceoDto.ceoThumbnailImg}|" class="card-img-top w-100 py-3"
-                   alt="등록된 이미지가 없습니다.">
+            <div class="card mt-5" style="width: 40rem;">
+              <img th:src="|/bmn/getImage?path=${ceoDto.ceoThumbnailImg}|" class="card-img-top py-3"
+                   alt="등록된 이미지가 없습니다." style="width: 100%;">
             </div>
 
           </div>
@@ -668,8 +669,8 @@
           </p>
           <input type="hidden" id="ceo-full-address" th:value="${ceoDto.ceoFullAddress}">
           <p style="margin-bottom: 0px"><strong>대표메뉴</strong></p>
-          <div class="card" style="width: 25rem">
-            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMainImg}|" alt="등록된 이미지가 없습니다." class="w-100">
+          <div class="card" style="width: 30em">
+            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMainImg}|" alt="등록된 이미지가 없습니다." class="w-100" >
             <div class="card-body">
               <p th:text="${ceoDto.ceoMainMenu != null} ? ${ceoDto.ceoMainMenu} : '[등록된 정보가 없습니다.]'"
                  style="margin-bottom: 0px"></p>
@@ -738,7 +739,7 @@
                     </div>
                 </div>
             </div>
-          <p style="margin-bottom: 0px"><strong>식당 소개글</strong></p>
+          <p style="margin-bottom: 0px" class="mt-3"><strong>식당 소개글</strong></p>
           <p th:utext="${ceoDto.ceoContents != null} ? ${ceoDto.ceoContents} : '[등록된 정보가 없습니다.]'"></p>
           <p style="margin-bottom: 0px"><strong>영업시간</strong></p>
           <div th:if="${ceoDto.ceoOpenTime != null}">
@@ -766,6 +767,7 @@
                                                             class="fw-semibold bg-secondary text-white rounded p-2"></span></p>
               </div>
               <div class="col-sm d-flex justify-content-end">
+
                 <button type="button" class="btn btn-dark m-3" id="customer-grade-check">#리뷰작성
                 </button>
                 <!--                <input type="hidden" id="customer-grade" th:value="${session.user.customerGrade}">-->
@@ -941,7 +943,7 @@
                 </div>
                 <div class="row">
                   <div class="col-sm">
-                    <p>리뷰 평점 : <span th:text="${item.reviewScore}" class="bg-info fw-bold rounded p-1"></span></p>
+                    <p>리뷰 평점 : <span th:text="${item.reviewScore}" class="bg-secondary fw-bold rounded p-1"></span></p>
                   </div>
                   <div class="col-sm d-flex justify-content-end">
                     <p th:text="|${item.reviewDate} 작성|"></p>
@@ -951,42 +953,42 @@
               </div>
               <div class="d-flex ms-3">
                 <div th:if="${item.reviewTag1} == Y" class="mx-1">
-                  <button class="btn btn-outline-info">맛</button>
+                  <button class="btn btn-outline-dark">맛</button>
                 </div>
                 <div th:unless="${item.reviewTag1} == Y"></div>
 
                 <div th:if="${item.reviewTag2} == Y" class="mx-1">
-                  <button class="btn btn-outline-info">만족도</button>
+                  <button class="btn btn-outline-dark">만족도</button>
                 </div>
                 <div th:unless="${item.reviewTag2} == Y"></div>
 
                 <div th:if="${item.reviewTag3} == Y" class="mx-1">
-                  <button class="btn btn-outline-info">서비스</button>
+                  <button class="btn btn-outline-dark">서비스</button>
                 </div>
                 <div th:unless="${item.reviewTag3} == Y"></div>
 
                 <div th:if="${item.reviewTag4} == Y" class="mx-1">
-                  <button class="btn btn-outline-info">음식량</button>
+                  <button class="btn btn-outline-dark">음식량</button>
                 </div>
                 <div th:unless="${item.reviewTag4} == Y"></div>
 
                 <div th:if="${item.reviewTag5} == Y" class="mx-1">
-                  <button class="btn btn-outline-info">대기시간</button>
+                  <button class="btn btn-outline-dark">대기시간</button>
                 </div>
                 <div th:unless="${item.reviewTag5} == Y"></div>
 
                 <div th:if="${item.reviewTag6} == Y" class="mx-1">
-                  <button class="btn btn-outline-info">청결도</button>
+                  <button class="btn btn-outline-dark">청결도</button>
                 </div>
                 <div th:unless="${item.reviewTag6} == Y"></div>
 
                 <div th:if="${item.reviewTag7} == Y" class="mx-1">
-                  <button class="btn btn-outline-info">분위기</button>
+                  <button class="btn btn-outline-dark">분위기</button>
                 </div>
                 <div th:unless="${item.reviewTag7} == Y"></div>
 
                 <div th:if="${item.reviewTag8} == Y" class="mx-1">
-                  <button class="btn btn-outline-info">가격</button>
+                  <button class="btn btn-outline-dark">가격</button>
                 </div>
                 <div th:unless="${item.reviewTag8} == Y"></div>
               </div>

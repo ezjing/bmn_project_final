@@ -12,9 +12,16 @@
     <style>
         /*구글 폰트를 이용한 로고 글자 */
         @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+        #headerFont {
+            font-family: 'Black Han Sans', sans-serif;
+            font-weight: 900;
+        }
     </style>
 
     <script>
+        $(document).ready(function(){
+            $("#home1").removeClass();
+        });
 
         function foodSearch() {
             let keyWorld = $("#keyword-val").val();
@@ -32,6 +39,7 @@
             });
         }
             $(document).ready(function () {
+
                 const session = sessionStorage.getItem('user');
                 console.log(session);
                 let msg = document.getElementById("sessionMsg");
@@ -79,11 +87,6 @@
             function categoryFunction() {
                 let keyWorld = $("#keyword-val").val();
 
-                const query = 'input[name="checkBoxAge"]:checked';
-                const selectedEls = document.querySelectorAll(query);
-
-
-
                 // 이용자 층 필터 블록 부분
                 let checkArr = document.querySelectorAll('input[name="checkBoxAge"]:checked');
                 let customAge = [];
@@ -93,8 +96,6 @@
                 }
 
                 console.log('chk++arrycheck::' + customAge);
-
-
 
                 $.ajax({
                     url: "/bmn/bmnFilterList",
@@ -106,12 +107,48 @@
                     success: function (data) {
                         $('#home').empty();
                         $('#profile').empty();
+                        $('#home1').addClass('bg-secondary rounded-2 fs-4 d-inline px-3 text-white');
+                        $('#home1').empty();
                         $('#contact').empty();
+
+                        let query = $('input[name=checkBoxAge]:checked').val(); // 값은 잘 들고 오는 거 확인함
+
+                        // 이제 뿌려 주지만 하면 되지만 뿌려지는건 되지만 태그 사이에 넣으면 변수로 동작을 하지 않음
+
+                        let age = '';
+
+                        switch (query){
+                            case '10':
+                                age += query
+                                $("#home1").append(age);
+                                break;
+                            case '20':
+                                age += query
+                                $("#home1").append(age);
+                                break;
+                            case '30':
+                                age += query
+                                $("#home1").append(age);
+                                break;
+                            case '40':
+                                age += query
+                                $("#home1").append(age);
+                                break;
+                            case '50' :
+                                age += query
+                                $("#home1").append(age);
+                                break;
+                            case '60' :
+                                age += query
+                                $("#home1").append(age);
+                                break;
+                        }
+
                         let otp = '';
                         let profileList = '';
                         let contact1 = '';
                         for (let i = 0; i < data.length; i++) {
-                            otp += '<div class="list-group">' +
+                            otp +=  '<div class="list-group mt-3">' +
                                         '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
                                         '<div class="row">' +
                                         '<div class="col">' +
@@ -204,26 +241,26 @@
                     let profileList = '';
                     let contact1 = '';
                     for (let i = 0; i < data.length; i++) {
-                        otp += '<div class="list-group">' +
-                                    '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                                    '<div class="row">' +
-                                    '<div class="col">' +
-                                            '<div class="float-start d-grid w-100">' +
-                                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;"/>' +
-                                            '</div>'+
-                                    '</div>' +
-                                    '<div class="col-1"></div>' +
-                                    '<div class="col-3">' +
-                                        '<div>' +
-                                            '<p  class="fw-bold fs-3 text-secondary" >'+data[i].ceoStore+'</p>' +
-                                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i>><span>'+data[i].ceoScore+'</spen></p>' +
-                                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                                        '</div>'+
-                                    '</div>' +
-                                    '</div>'+
-                                    '</a>' +
-                                '</div>'
+                        otp +=  '<div class="list-group mt-3">' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                            '<div class="row">' +
+                            '<div class="col">' +
+                            '<div class="float-start d-grid w-100">' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
+                            '</div>'+
+                            '</div>' +
+                            '<div class="col-1"></div>' +
+                            '<div class="col-3">' +
+                            '<div>' +
+                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
+                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                            '</div>'+
+                            '</div>' +
+                            '</div>'+
+                            '</a>' +
+                            '</div>'
                         $("#home").append(otp)
 
                         profileList += '<div class="list-group">' +
@@ -231,15 +268,15 @@
                             '<div class="row">' +
                             '<div class="col">' +
                             '<div class="float-start d-grid w-100">' +
-                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;"/>' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
                             '</div>'+
                             '</div>' +
                             '<div class="col-1"></div>' +
                             '<div class="col-3">' +
                             '<div>' +
-                            '<p  class="fw-bold fs-3 text-secondary" >'+data[i].ceoStore+'</p>' +
+                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
                             '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i>><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
                             '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
                             '</div>'+
                             '</div>' +
@@ -253,15 +290,15 @@
                             '<div class="row">' +
                             '<div class="col">' +
                             '<div class="float-start d-grid w-100">' +
-                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;"/>' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
                             '</div>'+
                             '</div>' +
                             '<div class="col-1"></div>' +
                             '<div class="col-3">' +
                             '<div>' +
-                            '<p  class="fw-bold fs-3 text-secondary" >'+data[i].ceoStore+'</p>' +
+                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
                             '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i>><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
                             '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
                             '</div>'+
                             '</div>' +
@@ -277,7 +314,7 @@
                 }
             });
         }
-
+        //'<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' + -->
         function storeFood(){
             let keyWorld = $("#keyword-val").val();
             let categoryFoods = $('input[name=categoryFood]:checked').val();
@@ -297,27 +334,27 @@
                     let profileList = '';
                     let contact1 = '';
                     for (let i = 0; i < data.length; i++) {
-                        otp += '<div class="list-group">' +
-                                    '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                                    '<div class="row">' +
-                                    '<div class="col">' +
-                                        '<div class="float-start d-grid w-100">' +
-                                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em"/>' +
-                                        '</div>'+
-                                    '</div>' +
-                                    '<div class="col-1"></div>' +
-                                    '<div class="col-3">' +
-                                        '<div>' +
-                                            '<p class="fw-bold fs-4 text-secondary">'+data[i].ceoStore+'</p>' +
-                                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                                            '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
-                                        '</div>'+
-                                    '</div>' +
-                                    '</div>'+
-                                    '</a>' +
-                                '</div>'
+                        otp +=  '<div class="list-group mt-3">' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                            '<div class="row">' +
+                            '<div class="col">' +
+                            '<div class="float-start d-grid w-100">' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
+                            '</div>'+
+                            '</div>' +
+                            '<div class="col-1"></div>' +
+                            '<div class="col-3">' +
+                            '<div>' +
+                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
+                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                            '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
+                            '</div>'+
+                            '</div>' +
+                            '</div>'+
+                            '</a>' +
+                            '</div>'
                         $("#home").append(otp)
 
                         profileList += '<div class="list-group">' +
@@ -325,13 +362,13 @@
                             '<div class="row">' +
                             '<div class="col">' +
                             '<div class="float-start d-grid w-100">' +
-                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em"/>' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
                             '</div>'+
                             '</div>' +
                             '<div class="col-1"></div>' +
                             '<div class="col-3">' +
                             '<div>' +
-                            '<p class="fw-bold fs-4 text-secondary">'+data[i].ceoStore+'</p>' +
+                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
                             '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
                             '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
                             '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
@@ -348,13 +385,13 @@
                             '<div class="row">' +
                             '<div class="col">' +
                             '<div class="float-start d-grid w-100">' +
-                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em"/>' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
                             '</div>'+
                             '</div>' +
                             '<div class="col-1"></div>' +
                             '<div class="col-3">' +
                             '<div>' +
-                            '<p class="fw-bold fs-4 text-secondary">'+data[i].ceoStore+'</p>' +
+                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
                             '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
                             '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
                             '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
@@ -365,10 +402,6 @@
                             '</a>' +
                             '</div>'
                         $("#contact").append(contact1)
-
-
-
-
                     }
                 },
                 error:function(){
@@ -384,6 +417,7 @@
 <div th:replace="~{/layout/header :: header}"></div>
 <main class="container mt-3">
     <div class="row">
+
         <div class="col-sm-2">
             <div class="border border-2 rounded-2 bg-secondary bg-light">
                 <div class="mt-3">
@@ -469,10 +503,8 @@
             </div>
         </div>
         <div class="col-sm-8">
-            <div id="result">
-            </div>
             <!-- 검색 List -->
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
                             type="button"
@@ -491,11 +523,11 @@
                 </li>
             </ul>
 
-
             <div class="tab-content" id="myTabContent">
+                <!-- 나이순 jqurey 화면에 띄우는 용도  -->
+                    <p id="home1" class="bg-secondary rounded-2 fs-4 d-inline px-3"></p>
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <p th:if="${#lists.size(storeList)} > 0" class="mt-4 fs-5 fw-bold">#평점 순</p>
-                    <!--                    -->
+                    <p th:if="${#lists.size(storeList)} > 0" class="mt-4 fs-5 fw-bold" >#평점 순</p>
                     <div class="list-group" th:if="${#lists.size(storeList)} > 0" th:each="item : ${storeList}">
                         <a href="/bmn/viewDetail/" + th:attrappend="href=${item.getCeoIdx()}" class="list-group-item list-group-item-action mb-5">
                             <div class="row">

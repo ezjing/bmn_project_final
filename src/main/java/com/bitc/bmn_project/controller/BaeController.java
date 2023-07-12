@@ -2,6 +2,7 @@ package com.bitc.bmn_project.controller;
 
 import com.bitc.bmn_project.DTO.*;
 import com.bitc.bmn_project.service.BaeService;
+import com.bitc.bmn_project.service.SimService;
 import com.github.pagehelper.PageInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +20,9 @@ import java.util.List;
 public class BaeController {
   @Autowired
   private BaeService baeService;
+
+  @Autowired
+  private SimService simService;
 
 
   @RequestMapping(value = "/bmn/viewDetail/{ceoIdx}", method = RequestMethod.GET)
@@ -102,6 +106,7 @@ public class BaeController {
   @RequestMapping(value = "/bmn/commentDelete", method = RequestMethod.PUT)
   public Object commentDelete(@RequestParam("commentIdx") int commentIdx) throws Exception {
     baeService.commentDelete(commentIdx);
+
     return "success";
   }
 
@@ -109,8 +114,14 @@ public class BaeController {
   // 관리자 리뷰 삭제
   @ResponseBody
   @RequestMapping(value = "/bmn/reviewDelete", method = RequestMethod.DELETE)
-  public Object reviewDelete(@RequestParam("reviewIdx") int reviewIdx) throws Exception {
+  public Object reviewDelete(@RequestParam("reviewIdx") int reviewIdx, @RequestParam("ceoIdx") int ceoIdx) throws Exception {
     baeService.reviewDelete(reviewIdx);
+
+// 평점 값을 가져와서 평균 내는 서비스
+    double avg = simService.getAverage(ceoIdx);
+    System.out.println(avg);
+    // 평균을 ceoDTO에 update 해주는 서비스
+    simService.updateScore(avg, ceoIdx);
 
     return "success";
   }

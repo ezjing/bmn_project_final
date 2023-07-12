@@ -10,6 +10,11 @@
     <script type="text/javascript" src="/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+        #headerFont {
+            font-family: 'Black Han Sans', sans-serif;
+            font-weight: 900;
+        }
 
     </style>
 
@@ -75,7 +80,7 @@
             writeValue($("#review-score").val());
 
             // 서브밋 시 스마트 에디터의 밸류 확인
-            $("#submit").on("click", function () {
+            $("#submit-btn").on("click", function () {
                 // 체크 안된 리뷰 널처리
                 doSubmit();
                 console.log($("#reviewContents").val());
@@ -123,6 +128,8 @@
             for (let i = 1; i < 9; i++) {
                 let targetTagName = target + i;
                 let targetTag = document.getElementById(targetTagName);
+                console.log(targetTag);
+                console.log(targetTag.value);
                 if (targetTag.checked !== true) {
                     targetTag.value = "N";
                     targetTag.setAttribute("checked", "checked");
@@ -182,7 +189,7 @@
                     <div class="my-2 col-4">
                         <label for="review-img" class="mb-1">리뷰 이미지</label>
                         <input type="file" class="form-control" id="review-img" name="reviewImgFile"
-                               accept="image/jpeg">
+                               accept="image/jpeg" required>
                     </div>
 
                     <!-- 리뷰 태그 -->
@@ -242,7 +249,7 @@
                         <input type="hidden" th:value="${session.customer.getCustomerIdx}" name="customerIdx">
                         <input type="hidden" th:value="${session.customer.getCustomerNick}" name="customerNick">
                         <button type="button" class="btn btn-secondary" onclick="reviewCancel()">취소</button>
-                        <button type="submit" class="btn btn-primary opacity-75 ms-3" id="submit-btn" disabled>작성</button>
+                        <button type="button" class="btn btn-primary opacity-75 ms-3" id="submit-btn" disabled>작성</button>
                     </div>
                 </div>
             </div>

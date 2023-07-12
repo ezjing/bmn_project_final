@@ -188,13 +188,13 @@
         SELECT COUNT(customer_idx) AS customer_cnt FROM customer_tp WHERE customer_grade = 1 OR 2
     </select>
     <select id="ceo1stList" resultType="int">
-        SELECT COUNT(ceo_idx) AS ceo_cnt FROM ceo_tp WHERE ceo_grade = 1
+        SELECT COUNT(ceo_idx) AS ceo_cnt FROM ceo_tp WHERE ceo_grade = 1 OR ceo_grade = 2
     </select>
     <select id="ceo2ndList" resultType="int">
-        SELECT COUNT(ceo_idx) AS ceo_cnt FROM ceo_tp WHERE ceo_grade = 2
+        SELECT COUNT(ceo_idx) AS ceo_cnt FROM ceo_tp WHERE ceo_grade = 3
     </select>
     <select id="ceoList" resultType="int">
-        SELECT COUNT(ceo_idx) AS ceo_cnt FROM ceo_tp WHERE ceo_grade = 1 OR 2
+        SELECT COUNT(ceo_idx) AS ceo_cnt FROM ceo_tp WHERE ceo_grade = 1 OR ceo_grade = 2 OR ceo_grade = 3
     </select>
 
     <!-- 관리자 페이지 - 가게 리스트 출력 -->

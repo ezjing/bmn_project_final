@@ -14,6 +14,10 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+        #headerFont {
+            font-family: 'Black Han Sans', sans-serif;
+            font-weight: 900;
+        }
     </style>
     <script>
         function foodSearch(){
@@ -101,7 +105,7 @@
                         $("#tbodyFollow, #tbodyFollow2").empty();
                         //
                         let thead =
-                            "<tr>\n" +
+                            "<tr class='text-center'>\n" +
                             "    <th>팔로워</th>\n" +
                             "    <th></th>\n" +
                             "    <th></th>\n" +
@@ -122,7 +126,7 @@
                         } else {
                             for (let i = 0; i < data.length; i++) {
                                 tbody =
-                                    "<tr>\n" +
+                                    "<tr class='text-center'>\n" +
                                     "    <td>" + data[i].customerNick + "</td>\n" +
                                     "    <td></td>\n" +
                                     "    <td></td>\n" +
@@ -182,9 +186,9 @@
                         $("#tbodyReservation, #tbodyReservation2").empty();
 
                         let thead =
-                            "<tr>\n" +
-                            "    <th>예약자</th>\n" +
-                            "    <th>예약 인원 / 상세 내용</th>\n" +
+                            "<tr class='text-center'>\n" +
+                            "    <th class='text-start'>예약자</th>\n" +
+                            "    <th class='text-start'>예약 인원 / 상세 내용</th>\n" +
                             "    <th>예약 일시</th>\n" +
                             "    <th>예약 상태</th>\n" +
                             "</tr>";
@@ -195,7 +199,7 @@
 
                         if (data.length == 0) {
                             tbody =
-                                "<tr>\n" +
+                                "<tr class='text-center'>\n" +
                                 "    <td colspan=\"4\">예약신청이 없습니다</td>\n" +
                                 "</tr>";
 
@@ -221,9 +225,9 @@
                                 }
 
                                 tbody =
-                                    "<tr>\n" +
-                                    "    <td>" + customerName + "</td>\n" +
-                                    "    <td><a href='/bmn/reservationCeo' class='text-decoration-none'>" + reservationPeople + "명 / " + reservationContents + "</a></td>\n" +
+                                    "<tr class='text-center'>\n" +
+                                    "    <td class='text-start'>" + customerName + "</td>\n" +
+                                    "    <td class='text-start'><a href='/bmn/reservationCeo' class='text-decoration-none'>" + reservationPeople + "명 / " + reservationContents + "</a></td>\n" +
                                     "    <td>" + reservationDate + " " + reservationTime + ":00" + "</td>\n" +
                                     "    <td>" + reservationStat + "</td>\n" +
                                     "</tr>";
@@ -250,7 +254,7 @@
                         $("#tbodyFollow, #tbodyFollow2").empty();
                         //
                         let thead =
-                            "<tr>\n" +
+                            "<tr class='text-center'>\n" +
                             "    <th>팔로워</th>\n" +
                             "    <th></th>\n" +
                             "    <th></th>\n" +
@@ -263,7 +267,7 @@
                         //
                         if (data.length == 0) {
                             tbody =
-                                "<tr>\n" +
+                                "<tr class='text-center'>\n" +
                                 "    <td colspan=\"4\">팔로잉이 없습니다</td>\n" +
                                 "</tr>";
 
@@ -271,7 +275,7 @@
                         } else {
                             for (let i = 0; i < data.length; i++) {
                                 tbody =
-                                    "<tr>\n" +
+                                    "<tr class='text-center'>\n" +
                                     "    <td>" + data[i].customerNick + "</td>\n" +
                                     "    <td></td>\n" +
                                     "    <td></td>\n" +
@@ -302,9 +306,9 @@
                         $("#tbodyReview, #tbodyReview2").empty();
 
                         let thead =
-                            "<tr>\n" +
-                            "    <th>닉네임</th>\n" +
-                            "    <th>리뷰제목</th>\n" +
+                            "<tr class='text-center'>\n" +
+                            "    <th class='text-start'>닉네임</th>\n" +
+                            "    <th class='text-start'>리뷰제목</th>\n" +
                             "    <th>평점</th>\n" +
                             "    <th>날짜</th>\n" +
                             "</tr>";
@@ -315,7 +319,7 @@
 
                         if (data.length == 0) {
                             tbody =
-                                "<tr>\n" +
+                                "<tr class='text-center'>\n" +
                                 "    <td colspan=\"4\">등록된 리뷰가 없습니다</td>\n" +
                                 "</tr>";
 
@@ -329,9 +333,9 @@
                                 const reviewDate = data[i].reviewDate;
 
                                 tbody =
-                                    "<tr>\n" +
-                                    "    <td>" + customerNick + "</td>\n" +
-                                    "    <td><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-decoration-none'>" + reviewTitle + "</a></td>\n" + // 상세페이지로 이동, 내가 쓴 리뷰까지 자동으로 이동할수 있게 태그 달수 있는지 물어보기
+                                    "<tr class='text-center'>\n" +
+                                    "    <td class='text-start'>" + customerNick + "</td>\n" +
+                                    "    <td class='text-start'><a href='/bmn/viewDetail/" + ceoIdx + "' class='fw-bold text-black text-decoration-none'>" + reviewTitle + "</a></td>\n" + // 상세페이지로 이동, 내가 쓴 리뷰까지 자동으로 이동할수 있게 태그 달수 있는지 물어보기
                                     "    <td>" + reviewScore + "</td>\n" +
                                     "    <td>" + reviewDate + "</td>\n" +
                                     "</tr>";
@@ -357,9 +361,9 @@
                         $("#tbodyQuestion, #tbodyQuestion2").empty();
 
                         let thead =
-                            "<tr>\n" +
-                            "    <th>닉네임</th>\n" +
-                            "    <th>문의제목</th>\n" +
+                            "<tr class='text-center'>\n" +
+                            "    <th class='text-start'>닉네임</th>\n" +
+                            "    <th class='text-start'>문의제목</th>\n" +
                             "    <th>날짜</th>\n" +
                             "    <th>답변여부</th>\n" +
                             "</tr>";
@@ -370,7 +374,7 @@
 
                         if (data.length == 0) {
                             tbody =
-                                "<tr>\n" +
+                                "<tr class='text-center'>\n" +
                                 "    <td colspan=\"4\">등록된 문의사항이 없습니다</td>\n" +
                                 "</tr>";
 
@@ -384,9 +388,9 @@
                                 const questionComplete = data[i].questionComplete;
 
                                 tbody =
-                                    "<tr>\n" +
-                                    "    <td>" + customerNick + "</td>\n" +
-                                    "    <td><a href='/bmn/viewDetail/" + ceoIdx + "' class='text-decoration-none'>" + questionTitle + "</a></td>\n" +
+                                    "<tr class='text-center'>\n" +
+                                    "    <td class='text-start'>" + customerNick + "</td>\n" +
+                                    "    <td class='text-start'><a href='/bmn/viewDetail/" + ceoIdx + "' class='fw-bold text-black text-decoration-none'>" + questionTitle + "</a></td>\n" +
                                     "    <td>" + questionDate + "</td>\n" +
                                     "    <td>" + questionComplete + "</td>\n" +
                                     "</tr>";
@@ -633,12 +637,12 @@
                 </div>
 
                 <div class="d-flex justify-content-end align-items-center">
-                    <button class="btn btn-primary" type="button" id="profile" data-bs-toggle="collapse"
+                    <button class="btn btn-dark" type="button" id="profile" data-bs-toggle="collapse"
                             data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
                             style="height: 5em">
                         내 프로필 수정
                     </button>
-                    <button th:if="${session.ceo.ceoGrade} == 3" class="btn btn-success" type="button" id="storeInfo"
+                    <button th:if="${session.ceo.ceoGrade} == 3" class="btn btn-secondary ms-3" type="button" id="storeInfo"
                             data-bs-toggle="collapse"
                             data-bs-target="#collapseStore" aria-expanded="false" aria-controls="collapseExample"
                             style="height: 5em">
@@ -671,7 +675,7 @@
                                 <p id="match-miss" class="text-danger"></p>
                             </div>
                             <div class="my-4 d-grid gap-3">
-                                <button type="button" id="submit-btn" class="btn btn-outline-primary">수정하기</button>
+                                <button type="button" id="submit-btn" class="btn btn-outline-dark">수정하기</button>
                             </div>
                             <a href="#" class="text-decoration-none text-danger opacity-75" id="out">회원탈퇴></a>
                             <input type="hidden" id="ceoIdx" name="ceoIdx" value="2" th:value="${session.ceo.ceoIdx}">
@@ -685,16 +689,16 @@
             <div th:if="${session.ceo.ceoGrade} != 3"><h1 class="text-center">관리자 인증이 필요한 맛집입니다.</h1></div>
             <div class="list-group list-group-item-action list-group-horizontal" id="list-tab" role="tablist"
                  th:if="${session.ceo.ceoGrade} == 3">
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center active"
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center active"
                    id="list-reservation-list" data-bs-toggle="list" href="#list-reservation" role="tab"
                    aria-controls="list-reservation">예약 확인</a>
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center"
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center"
                    id="list-follow-list" data-bs-toggle="list" href="#list-follow" role="tab"
                    aria-controls="list-follow">팔로워</a>   <!--  사장은 팔로워  -->
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center"
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center"
                    id="list-review-list" data-bs-toggle="list" href="#list-review" role="tab"
                    aria-controls="list-review">고객 리뷰</a>
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center"
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center"
                    id="list-question-list" data-bs-toggle="list" href="#list-question" role="tab"
                    aria-controls="list-question">문의 답변</a>
             </div>
@@ -703,8 +707,8 @@
                      aria-labelledby="list-reservation-list">
                     <table class="table table-hover">
                         <colgroup>
-                            <col style="width: 40%"/>
                             <col style="width: 30%"/>
+                            <col style="width: 40%"/>
                             <col style="width: 20%"/>
                             <col style="width: 10%"/>
                         </colgroup>
@@ -717,10 +721,10 @@
                 <div class="tab-pane fade" id="list-follow" role="tabpanel" aria-labelledby="list-follow-list">
                     <table class="table table-hover">
                         <colgroup>
-                            <col style="width: 40%"/>
+                            <col style="width: 20%"/>
+                            <col style="width: 30%"/>
                             <col style="width: 30%"/>
                             <col style="width: 20%"/>
-                            <col style="width: 10%"/>
                         </colgroup>
                         <thead id="theadFollow">
                         </thead>
@@ -731,8 +735,8 @@
                 <div class="tab-pane fade" id="list-review" role="tabpanel" aria-labelledby="list-review-list">
                     <table class="table table-hover">
                         <colgroup>
-                            <col style="width: 40%"/>
                             <col style="width: 30%"/>
+                            <col style="width: 40%"/>
                             <col style="width: 20%"/>
                             <col style="width: 10%"/>
                         </colgroup>
@@ -745,8 +749,8 @@
                 <div class="tab-pane fade" id="list-question" role="tabpanel" aria-labelledby="list-question-list">
                     <table class="table table-hover">
                         <colgroup>
-                            <col style="width: 40%"/>
                             <col style="width: 30%"/>
+                            <col style="width: 40%"/>
                             <col style="width: 20%"/>
                             <col style="width: 10%"/>
                         </colgroup>
@@ -1061,7 +1065,7 @@
                             <input type="hidden" name="ceoIdx" th:value="${session.ceo.ceoIdx}">
                             <!--  REST 방식 사용 시 form 태그의 데이터 전송 방식을 변경하기 위한 태그  -->
                             <input type="hidden" id="method2" name="_method">
-                            <button id="storeSubmit" type="button" class="btn btn-primary">확인 버튼</button>
+                            <button id="storeSubmit" type="button" class="btn btn-dark">확인 버튼</button>
                         </form>
                     </div>
                 </div>
@@ -1070,16 +1074,16 @@
 
             <div class="list-group list-group-item-action list-group-horizontal" id="list-tab2" role="tablist"
                  th:if="${session.ceo.ceoGrade} == 3">
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center"
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center"
                    id="list-reservation-list2" data-bs-toggle="list" href="#list-reservation2" role="tab"
                    aria-controls="list-reservation">예약 확인</a>
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center"
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center"
                    id="list-follow-list2" data-bs-toggle="list" href="#list-follow2" role="tab"
                    aria-controls="list-follow">팔로워</a>   <!--  사장은 팔로워  -->
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center"
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center"
                    id="list-review-list2" data-bs-toggle="list" href="#list-review2" role="tab"
                    aria-controls="list-review">고객 리뷰</a>
-                <a class="list-group-item list-group-item-action flex-fill list-group-item-primary text-center"
+                <a class="list-group-item list-group-item-action flex-fill list-group-item-dark text-center"
                    id="list-question-list2" data-bs-toggle="list" href="#list-question2" role="tab"
                    aria-controls="list-question">문의 답변</a>
             </div>
@@ -1159,7 +1163,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary" id="lastOut">승인</button>
+                    <button type="button" class="btn btn-dark" id="lastOut">승인</button>
                 </div>
             </div>
         </div>

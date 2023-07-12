@@ -99,7 +99,7 @@
     <!-- 리뷰 순 검색결과 SELECT 문 -->
     <select id="reviewCntLists" parameterType="com.bitc.bmn_project.DTO.ReviewCntDto">
         SELECT
-            A.ceo_idx, A.ceo_thumbnail_img, A.ceo_store, A.ceo_score, A.ceo_follow_cnt, A.ceo_main_menu, A.ceo_city_address, COUNT(B.ceo_idx) AS review_cnt, A.ceo_grade
+        A.ceo_idx, A.ceo_thumbnail_img, A.ceo_store, IFNULL(A.ceo_score, '0.0') AS ceo_score, A.ceo_follow_cnt, A.ceo_main_menu, A.ceo_city_address, COUNT(B.ceo_idx) AS review_cnt, A.ceo_grade
         FROM
             ceo_tp A JOIN review_tp B
         ON
@@ -113,7 +113,7 @@
     <!--  리뷰 순 검색결과 SELECT 문(outer join)  -->
     <select id="reviewCntOuterLists" parameterType="com.bitc.bmn_project.DTO.ReviewCntDto">
         SELECT
-        A.ceo_idx, A.ceo_thumbnail_img, A.ceo_store, A.ceo_score, A.ceo_follow_cnt, A.ceo_main_menu, A.ceo_city_address, A.ceo_grade
+        A.ceo_idx, A.ceo_thumbnail_img, A.ceo_store, IFNULL(A.ceo_score, '0.0') AS ceo_score, A.ceo_follow_cnt, A.ceo_main_menu, A.ceo_city_address, COUNT(B.ceo_idx) AS review_cnt, A.ceo_grade
         FROM
         ceo_tp A LEFT OUTER JOIN review_tp B
         ON
@@ -180,7 +180,7 @@
             ceo_grade = 3
         AND
         customer_gender = #{genderKey}
-        group by ceo_idx;
+        GROUP BY A.customer_age;
     </select>
 
     <!-- 음식 필터 검색 기능 -->

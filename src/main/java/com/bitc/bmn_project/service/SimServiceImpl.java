@@ -170,5 +170,17 @@ public class SimServiceImpl implements SimService {
         return simMapper.isBanned(userId);
     }
 
+    @Override
+    public double getAverage(int ceoIdx) throws Exception {
+
+        return simMapper.getAverage(ceoIdx);
+    }
+
+    @Override
+    public void updateScore(double avg, int ceoIdx) throws Exception {
+        avg = Math.round(avg * 10) / 10.0;
+        simMapper.updateScore(avg, ceoIdx);
+    }
+
 
 }
