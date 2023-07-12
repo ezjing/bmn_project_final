@@ -9,6 +9,7 @@ public class ReviewCntDto {
     private String ceoStore;
     private String ceoScore;
     private String ceoFollowCnt;
+    private String ceoThumbnailImg;
     private String ceoMainMenu;
     private String ceoCityAddress;
     private String reviewCnt;

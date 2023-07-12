@@ -84,9 +84,9 @@
                         </td>
                         <td th:text="${item.ceoMainMenu}"></td>
                         <td th:if="${item.ceoCategory == '01'}" th:text="한식"></td>
-                        <td th:if="${item.ceoCategory == '02'}" th:text="중식"></td>
-                        <td th:if="${item.ceoCategory == '03'}" th:text="양식"></td>
-                        <td th:if="${item.ceoCategory == '04'}" th:text="일식"></td>
+                        <td th:if="${item.ceoCategory == '02'}" th:text="일식"></td>
+                        <td th:if="${item.ceoCategory == '03'}" th:text="중식"></td>
+                        <td th:if="${item.ceoCategory == '04'}" th:text="양식"></td>
                         <td th:unless="${item.ceoCategory == '01' || item.ceoCategory == '02' || item.ceoCategory == '03' || item.ceoCategory == '04'}"
                             th:text="${item.ceoCategory}"></td>
                         <td>

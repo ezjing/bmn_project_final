@@ -111,7 +111,7 @@
                                         '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
                                         '<div>' +
                                             '<div class="float-start d-grid w-75">' +
-                                                '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
                                             '</div>'+
                                             '<div>' +
                                                 '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
@@ -151,7 +151,7 @@
                                     '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
                                     '<div>' +
                                         '<div class="float-start d-grid w-75">' +
-                                            '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
                                         '</div>'+
                                         '<div>' +
                                             '<p  class="fw-bold fs-3 text-secondary" >'+data[i].ceoStore+'</p>' +
@@ -190,7 +190,7 @@
                                     '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
                                         '<div>' +
                                             '<div class="float-start d-grid w-75">' +
-                                                '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 15em"/>' +
                                             '</div>'+
                                             '<div>' +
                                                 '<p class="fw-bold fs-4 text-secondary">'+data[i].ceoStore+'</p>' +
@@ -335,8 +335,8 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="float-start d-grid w-100">
-                                        <img th:src="${item.getCeoThumbnailImg()}"
-                                             class="img-thumbnail rounded-2 w-100 h-100 d-block">
+                                        <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|"
+                                              class="img-thumbnail rounded-2 w-100 h-100 d-block">
                                     </div>
                                 </div>
                                 <div class="col-1"></div>
@@ -366,7 +366,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="float-start d-grid w-100">
-                                        <img th:src="${item.getCeoMenuImg1()}"
+                                        <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|"
                                              class="img-thumbnail rounded-2 w-100 h-100 d-block">
                                     </div>
                                 </div>
@@ -396,7 +396,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="float-start d-grid w-100">
-                                        <img th:src="${item.getCeoMenuImg1()}" class="img-thumbnail rounded-2 w-100 h-100 d-block">
+                                        <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|" class="img-thumbnail rounded-2 w-100 h-100 d-block">
                                     </div>
                                 </div>
                                 <div class="col-1"></div>

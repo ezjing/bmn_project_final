@@ -63,7 +63,7 @@
     <!-- 평점 높은 순 -->
     <select id="scorePlacingLists" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
         SELECT
-            ceo_idx, ceo_thumbnail_img, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address,ceo_thumbnail_img, ceo_category, ceo_grade
+            ceo_idx, ceo_thumbnail_img, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address, ceo_category, ceo_grade
         FROM
             ceo_tp
         WHERE
@@ -75,7 +75,7 @@
     <!-- 팔로우 높은 순 -->
     <select id="followPlacingLists" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
         SELECT
-            ceo_idx, ceo_thumbnail_img, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address,ceo_thumbnail_img, ceo_category, ceo_grade
+            ceo_idx, ceo_thumbnail_img, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address, ceo_category, ceo_grade
         FROM
             ceo_tp
         WHERE
@@ -87,7 +87,7 @@
 <!--  평점 순 검색결과 SELECT 문   -->
     <select id="storeLists" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
         SELECT
-            ceo_idx, ceo_menu_img1, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address
+            ceo_idx, ceo_thumbnail_img, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address
         FROM
             ceo_tp
         WHERE
@@ -99,7 +99,7 @@
     <!-- 리뷰 순 검색결과 SELECT 문 -->
     <select id="reviewCntLists" parameterType="com.bitc.bmn_project.DTO.ReviewCntDto">
         SELECT
-            A.ceo_idx, A.ceo_menu_img1, A.ceo_store, A.ceo_score, A.ceo_follow_cnt, A.ceo_main_menu, A.ceo_city_address, COUNT(B.ceo_idx) AS review_cnt, A.ceo_thumbnail_img
+            A.ceo_idx, A.ceo_thumbnail_img, A.ceo_store, A.ceo_score, A.ceo_follow_cnt, A.ceo_main_menu, A.ceo_city_address, COUNT(B.ceo_idx) AS review_cnt
         FROM
             ceo_tp A JOIN review_tp B
         ON
@@ -111,7 +111,7 @@
     <!--  리뷰 순 검색결과 SELECT 문(outer join)  -->
     <select id="reviewCntOuterLists" parameterType="com.bitc.bmn_project.DTO.ReviewCntDto">
         SELECT
-        A.ceo_idx, A.ceo_menu_img1, A.ceo_store, A.ceo_score, A.ceo_follow_cnt, A.ceo_main_menu, A.ceo_city_address, A.ceo_thumbnail_img
+        A.ceo_idx, A.ceo_thumbnail_img, A.ceo_store, A.ceo_score, A.ceo_follow_cnt, A.ceo_main_menu, A.ceo_city_address
         FROM
         ceo_tp A LEFT OUTER JOIN review_tp B
         ON
@@ -125,7 +125,7 @@
     <!--  팔로우 수 검색결과 SELECT 문   -->
     <select id="followLists" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
         SELECT
-            ceo_idx, ceo_menu_img1, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address
+            ceo_idx, ceo_thumbnail_img, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address
             FROM
         ceo_tp
         WHERE
@@ -135,7 +135,7 @@
     </select>
     <!-- 나이 필터 검색 기능 -->
     <select id="ageFilterLists" parameterType="com.bitc.bmn_project.DTO.ceoCustomDTO">
-        SELECT B.ceo_idx, A.customer_age, A.customer_follow, B.ceo_store, B.ceo_menu_img1, B.ceo_main_menu, B.ceo_score, B.ceo_follow_cnt
+        SELECT B.ceo_idx, A.customer_age, A.customer_follow, B.ceo_store, B.ceo_thumbnail_img, B.ceo_main_menu, B.ceo_score, B.ceo_follow_cnt
             FROM
         CUSTOMER_TP A
         JOIN
@@ -155,7 +155,7 @@
 
     <!-- 성별 필터 검색 기능 -->
     <select id="genderFilterLists" parameterType="com.bitc.bmn_project.DTO.ceoCustomDTO">
-        SELECT B.ceo_idx, A.customer_age, A.customer_follow, B.ceo_store, B.ceo_menu_img1, B.ceo_main_menu, B.ceo_score, B.ceo_follow_cnt, A.customer_gender
+        SELECT B.ceo_idx, A.customer_age, A.customer_follow, B.ceo_store, B.ceo_thumbnail_img, B.ceo_main_menu, B.ceo_score, B.ceo_follow_cnt, A.customer_gender
         FROM
         CUSTOMER_TP A
         JOIN
@@ -176,7 +176,7 @@
     <!-- 음식 필터 검색 기능 -->
     <select id="categoryFoods" parameterType="com.bitc.bmn_project.DTO.ceoCustomDTO">
         SELECT
-            B.ceo_idx, A.customer_age, A.customer_follow, B.ceo_store, B.ceo_menu_img1, B.ceo_main_menu, B.ceo_score, B.ceo_follow_cnt, A.customer_gender, B.ceo_category,(
+            B.ceo_idx, A.customer_age, A.customer_follow, B.ceo_store, B.ceo_thumbnail_img, B.ceo_main_menu, B.ceo_score, B.ceo_follow_cnt, A.customer_gender, B.ceo_category,(
                 CASE
                 WHEN #{categoryFoods} = 01 THEN '한식'
                 WHEN #{categoryFoods} = 02 THEN '일식'
@@ -204,7 +204,7 @@
     <!-- 카테고리 필터 검색 기능 -->
     <select id="filterCateGoryLists" parameterType="com.bitc.bmn_project.DTO.CeoDTO">
         SELECT
-            ceo_idx, ceo_menu_img1, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address,ceo_category
+            ceo_idx, ceo_thumbnail_img, ceo_store, ceo_score, ceo_follow_cnt, ceo_main_menu, ceo_city_address,ceo_category
         FROM ceo_tp
         WHERE
             (ceo_store LIKE CONCAT('%',#{keyWorld},'%') OR ceo_main_menu LIKE CONCAT('%',#{keyWorld},'%')  OR ceo_city_address LIKE CONCAT('%',#{keyWorld},'%') )

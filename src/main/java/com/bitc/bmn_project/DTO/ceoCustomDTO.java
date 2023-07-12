@@ -9,6 +9,7 @@ public class ceoCustomDTO {
     private String customerFollow;
     private String ceoStore;
     private String ceoMenuImg1;
+    private String ceoThumbnailImg;
     private String ceoMainMenu;
     private String ceoScore;
     private String ceoFollowCnt;
