@@ -402,6 +402,8 @@ public class LeeController {
         simService.addStore(store, mainImage, thumbnail, files);
 
         HttpSession session = req.getSession();
+//        session.setAttribute("user", "ceo");
+        session.removeAttribute("ceo");
         session.setAttribute("ceo", store);
 
         return "redirect:/bmn/myPageCeo";
