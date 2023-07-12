@@ -11,7 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
     <script>
-
         // 팝업 호출
         function goPopup() {
             var pop = window.open("ceoStore/popup", "pop", "width=570,height=420, scrollbars=yes");
@@ -73,7 +72,20 @@
 
 
 
-        $(document).ready(function () {
+        $(document).ready(function (){
+        let session = $("#session-check").text();
+
+        if (session !== "ceo") {
+            alert('사장님만 열람 가능한 페이지입니다.');
+            location.href = "/bmn/bmnMain";
+        }
+
+        let grade = $("#grade-check").text();
+        if (grade == "1") {
+            alert('승인 대기중입니다.');
+            location.href = "/bmn/bmnMain";
+        }
+
 
             function check(check1, check2, check3, check4, check6, check7) {
                 if (check1 && check2 && check3 && check4 && check6 && check7) {
@@ -89,17 +101,9 @@
                 }
             }
 
-            const session = $("#session-check").text();
-
-            if (session !== "ceo") {
-                alert('사장님만 열람 가능한 페이지입니다.');
-                location.href = "bmn/bmnMain"
-            }
 
             // 페이지 로드 됐을떄 텍스트를 한번에 못 읽어 오길래 값이 비엇을 경우 리로드 시켜줌
-            if (session === "") {
-                location.reload();
-            }
+
 
             const ceoStore = $("#ceo-store");
             const ceoCategory = $("#ceo-category");
@@ -108,8 +112,6 @@
 
             let ceoMainImg = $("#ceo-main-img");
             let ceoThumbnail = $("#ceo-thumbnail-img");
-            let roadFullAddr = $("#roadFullAddr");
-
 
             let check1 = false;
             let check2 = false;
@@ -288,10 +290,12 @@
                 }
             });
         });
+
     </script>
 </head>
 <body>
-<div id="session-check" th:if="${session.user != 'ceo'}" th:text="${session.user}" hidden="hidden"></div>
+<div id="session-check" th:if="${session.user == 'ceo'}" th:text="${session.user}"></div>
+<p id="grade-check" th:text="${session.ceo.ceoGrade}" hidden="hidden"></p>
 <div class="container-sm my-4">
     <div class="col-sm-10 mx-auto">
         <form name="form" id="form" action="/bmn/ceoStore/addStore" method="post" class="form-control valida"
