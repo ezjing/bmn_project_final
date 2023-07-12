@@ -678,61 +678,61 @@
           <button class="btn btn-outline-dark my-3" data-bs-toggle="collapse" data-bs-target="#detail-menu">상세 메뉴 확인하기
           </button>
             <div class="collapse" id="detail-menu">
-                <div class="row my-2">
-                    <div class="col-4">
+                <div class="row my-3">
+                    <div class="col-4 px-2">
                         <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg1)}">
                             <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg1}|"
-                                 alt="등록된 이미지가 없습니다.">
+                                 alt="등록된 이미지가 없습니다." style="width: 100%; height: 13em;">
                             <div class="card-body">
                                 <p th:text="${ceoDto.ceoDetailMenu1 != null} ? ${ceoDto.ceoDetailMenu1} : '[등록된 정보가 없습니다.]'"
-                                   style="margin-bottom: 0px">상세메뉴1 </p>
+                                   style="margin-bottom: 0px" class="fw-bold">상세메뉴1 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-4 px-2">
                         <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg2)}">
-                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg2}|" alt="등록된 이미지가 없습니다.">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg2}|" alt="등록된 이미지가 없습니다." style="width: 100%; height: 13em;">
                             <div class="card-body">
                                 <p th:text="${ceoDto.ceoDetailMenu2 != null} ? ${ceoDto.ceoDetailMenu2} : '[등록된 정보가 없습니다.]'"
-                                   style="margin-bottom: 0px">상세메뉴2 </p>
+                                   style="margin-bottom: 0px" class="fw-bold">상세메뉴2 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-4 px-2">
                         <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg3)}">
-                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg3}|" alt="등록된 이미지가 없습니다.">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg3}|" alt="등록된 이미지가 없습니다." style="width: 100%; height: 13em;">
                             <div class="card-body">
                                 <p th:text="${ceoDto.ceoDetailMenu3 != null} ? ${ceoDto.ceoDetailMenu3} : '[등록된 정보가 없습니다.]'"
-                                   style="margin-bottom: 0px">상세메뉴3 </p>
+                                   style="margin-bottom: 0px" class="fw-bold">상세메뉴3 </p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row my-2">
-                    <div class="col-4">
+                    <div class="col-4 px-2">
                         <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg4)}">
-                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg4}|" alt="등록된 이미지가 없습니다.">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg4}|" alt="등록된 이미지가 없습니다." style="width: 100%; height: 13em;">
                             <div class="card-body">
                                 <p th:text="${ceoDto.ceoDetailMenu4 != null} ? ${ceoDto.ceoDetailMenu4} : '[등록된 정보가 없습니다.]'"
-                                   style="margin-bottom: 0px">상세메뉴4 </p>
+                                   style="margin-bottom: 0px" class="fw-bold">상세메뉴4 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-4 px-2">
                         <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg5)}">
-                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg5}|" alt="등록된 이미지가 없습니다.">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg5}|" alt="등록된 이미지가 없습니다." style="width: 100%; height: 13em;">
                             <div class="card-body">
                                 <p th:text="${ceoDto.ceoDetailMenu5 != null} ? ${ceoDto.ceoDetailMenu5} : '[등록된 정보가 없습니다.]'"
-                                   style="margin-bottom: 0px">상세메뉴5 </p>
+                                   style="margin-bottom: 0px" class="fw-bold">상세메뉴5 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-4 px-2">
                         <div class="card m-1" th:if="${not #strings.isEmpty(ceoDto.ceoMenuImg6)}">
-                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg6}|" alt="등록된 이미지가 없습니다.">
+                            <img th:src="|/bmn/getImage?path=${ceoDto.ceoMenuImg6}|" alt="등록된 이미지가 없습니다." style="width: 100%; height: 13em;">
                             <div class="card-body">
                                 <p th:text="${ceoDto.ceoDetailMenu6 != null} ? ${ceoDto.ceoDetailMenu6} : '[등록된 정보가 없습니다.]'"
-                                   style="margin-bottom: 0px">상세메뉴6 </p>
+                                   style="margin-bottom: 0px" class="fw-bold">상세메뉴6 </p>
                             </div>
                         </div>
                     </div>

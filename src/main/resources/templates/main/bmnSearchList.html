@@ -112,51 +112,66 @@
                         let contact1 = '';
                         for (let i = 0; i < data.length; i++) {
                             otp += '<div class="list-group">' +
-                                        '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
-                                        '<div>' +
-                                            '<div class="float-start d-grid w-75">' +
-                                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                                        '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                                        '<div class="row">' +
+                                        '<div class="col">' +
+                                            '<div class="float-start d-grid w-100">' +
+                                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
                                             '</div>'+
+                                        '</div>' +
+                                        '<div class="col-1"></div>' +
+                                        '<div class="col-3">' +
                                             '<div>' +
                                                 '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
                                                 '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
                                                 '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
                                                 '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
                                             '</div>'+
+                                        '</div>' +
                                         '</div>'+
                                     '</a>' +
                                     '</div>'
                             $("#home").append(otp)
 
                             profileList += '<div class="list-group">' +
-                                '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
-                                '<div>' +
-                                '<div class="float-start d-grid w-75">' +
-                                '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                                '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                                '<div class="row">' +
+                                '<div class="col">' +
+                                '<div class="float-start d-grid w-100">' +
+                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
                                 '</div>'+
+                                '</div>' +
+                                '<div class="col-1"></div>' +
+                                '<div class="col-3">' +
                                 '<div>' +
                                 '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
                                 '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
                                 '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
                                 '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
                                 '</div>'+
+                                '</div>' +
                                 '</div>'+
                                 '</a>' +
                                 '</div>'
                             $("#profile").append(profileList)
 
                             contact1 += '<div class="list-group">' +
-                                '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
-                                '<div>' +
-                                '<div class="float-start d-grid w-75">' +
-                                '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                                '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                                '<div class="row">' +
+                                '<div class="col">' +
+                                '<div class="float-start d-grid w-100">' +
+                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
                                 '</div>'+
+                                '</div>' +
+                                '<div class="col-1"></div>' +
+                                '<div class="col-3">' +
                                 '<div>' +
                                 '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
                                 '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
                                 '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
                                 '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
                                 '</div>'+
+                                '</div>' +
                                 '</div>'+
                                 '</a>' +
                                 '</div>'
@@ -190,51 +205,66 @@
                     let contact1 = '';
                     for (let i = 0; i < data.length; i++) {
                         otp += '<div class="list-group">' +
-                                    '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
-                                    '<div>' +
-                                        '<div class="float-start d-grid w-75">' +
-                                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
-                                        '</div>'+
+                                    '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                                    '<div class="row">' +
+                                    '<div class="col">' +
+                                            '<div class="float-start d-grid w-100">' +
+                                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;"/>' +
+                                            '</div>'+
+                                    '</div>' +
+                                    '<div class="col-1"></div>' +
+                                    '<div class="col-3">' +
                                         '<div>' +
                                             '<p  class="fw-bold fs-3 text-secondary" >'+data[i].ceoStore+'</p>' +
                                             '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
                                             '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i>><span>'+data[i].ceoScore+'</spen></p>' +
                                             '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
                                         '</div>'+
+                                    '</div>' +
                                     '</div>'+
                                     '</a>' +
                                 '</div>'
                         $("#home").append(otp)
 
                         profileList += '<div class="list-group">' +
-                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
-                            '<div>' +
-                            '<div class="float-start d-grid w-75">' +
-                            '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                            '<div class="row">' +
+                            '<div class="col">' +
+                            '<div class="float-start d-grid w-100">' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;"/>' +
                             '</div>'+
+                            '</div>' +
+                            '<div class="col-1"></div>' +
+                            '<div class="col-3">' +
                             '<div>' +
                             '<p  class="fw-bold fs-3 text-secondary" >'+data[i].ceoStore+'</p>' +
                             '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
                             '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i>><span>'+data[i].ceoScore+'</spen></p>' +
                             '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
                             '</div>'+
+                            '</div>' +
                             '</div>'+
                             '</a>' +
                             '</div>'
                         $("#profile").append(profileList)
 
                         contact1 += '<div class="list-group">' +
-                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
-                            '<div>' +
-                            '<div class="float-start d-grid w-75">' +
-                            '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                            '<div class="row">' +
+                            '<div class="col">' +
+                            '<div class="float-start d-grid w-100">' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;"/>' +
                             '</div>'+
+                            '</div>' +
+                            '<div class="col-1"></div>' +
+                            '<div class="col-3">' +
                             '<div>' +
                             '<p  class="fw-bold fs-3 text-secondary" >'+data[i].ceoStore+'</p>' +
                             '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
                             '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i>><span>'+data[i].ceoScore+'</spen></p>' +
                             '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
                             '</div>'+
+                            '</div>' +
                             '</div>'+
                             '</a>' +
                             '</div>'
@@ -268,29 +298,38 @@
                     let contact1 = '';
                     for (let i = 0; i < data.length; i++) {
                         otp += '<div class="list-group">' +
-                                    '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
-                                        '<div>' +
-                                            '<div class="float-start d-grid w-75">' +
-                                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 15em"/>' +
-                                            '</div>'+
-                                            '<div>' +
-                                                '<p class="fw-bold fs-4 text-secondary">'+data[i].ceoStore+'</p>' +
-                                                '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                                                '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                                                '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                                                '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
-                                            '</div>'+
+                                    '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                                    '<div class="row">' +
+                                    '<div class="col">' +
+                                        '<div class="float-start d-grid w-100">' +
+                                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em"/>' +
                                         '</div>'+
+                                    '</div>' +
+                                    '<div class="col-1"></div>' +
+                                    '<div class="col-3">' +
+                                        '<div>' +
+                                            '<p class="fw-bold fs-4 text-secondary">'+data[i].ceoStore+'</p>' +
+                                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
+                                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                                            '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
+                                        '</div>'+
+                                    '</div>' +
+                                    '</div>'+
                                     '</a>' +
                                 '</div>'
                         $("#home").append(otp)
 
                         profileList += '<div class="list-group">' +
-                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
-                            '<div>' +
-                            '<div class="float-start d-grid w-75">' +
-                            '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                            '<div class="row">' +
+                            '<div class="col">' +
+                            '<div class="float-start d-grid w-100">' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em"/>' +
                             '</div>'+
+                            '</div>' +
+                            '<div class="col-1"></div>' +
+                            '<div class="col-3">' +
                             '<div>' +
                             '<p class="fw-bold fs-4 text-secondary">'+data[i].ceoStore+'</p>' +
                             '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
@@ -298,17 +337,22 @@
                             '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
                             '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
                             '</div>'+
+                            '</div>' +
                             '</div>'+
                             '</a>' +
                             '</div>'
                         $("#profile").append(profileList)
 
                         contact1 += '<div class="list-group">' +
-                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action" >'+
-                            '<div>' +
-                            '<div class="float-start d-grid w-75">' +
-                            '<img src="'+ data[i].ceoMenuImg1 +'" class="img-thumbnail rounded-2 w-50 h-100 d-block"/>' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                            '<div class="row">' +
+                            '<div class="col">' +
+                            '<div class="float-start d-grid w-100">' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em"/>' +
                             '</div>'+
+                            '</div>' +
+                            '<div class="col-1"></div>' +
+                            '<div class="col-3">' +
                             '<div>' +
                             '<p class="fw-bold fs-4 text-secondary">'+data[i].ceoStore+'</p>' +
                             '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
@@ -316,6 +360,7 @@
                             '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
                             '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
                             '</div>'+
+                            '</div>' +
                             '</div>'+
                             '</a>' +
                             '</div>'
@@ -456,8 +501,8 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="float-start d-grid w-100">
-                                        <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|"
-                                              class="img-thumbnail rounded-2 w-100 h-100 d-block">
+                                        <img th:src="|/bmn/getImage?path=${item.getCeoThumbnailImg()}|"
+                                              class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em">
                                     </div>
                                 </div>
                                 <div class="col-1"></div>
@@ -488,7 +533,7 @@
                                 <div class="col">
                                     <div class="float-start d-grid w-100">
                                         <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|"
-                                             class="img-thumbnail rounded-2 w-100 h-100 d-block">
+                                             class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em">
                                     </div>
                                 </div>
                                 <div class="col-1"></div>
@@ -517,7 +562,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="float-start d-grid w-100">
-                                        <img th:src="|/bmn/getImage?path=${item.ceoThumbnailImg}|" class="img-thumbnail rounded-2 w-100 h-100 d-block">
+                                        <img th:src="|/bmn/getImage?path=${item.getCeoThumbnailImg()}|" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em">
                                     </div>
                                 </div>
                                 <div class="col-1"></div>
