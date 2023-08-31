@@ -108,7 +108,8 @@
             (A.ceo_store LIKE CONCAT('%',#{keyWorld},'%') OR A.ceo_main_menu LIKE CONCAT('%',#{keyWorld},'%')  OR A.ceo_city_address LIKE CONCAT('%',#{keyWorld},'%') )
         AND
             ceo_grade = 3
-        GROUP BY A.ceo_idx;
+        GROUP BY A.ceo_idx
+        ORDER BY review_cnt DESC;
     </select>
     <!--  리뷰 순 검색결과 SELECT 문(outer join)  -->
     <select id="reviewCntOuterLists" parameterType="com.bitc.bmn_project.DTO.ReviewCntDto">
@@ -137,7 +138,7 @@
         AND
             ceo_grade = 3
         ORDER BY
-            ceo_follow_cnt DESC  LIMIT 0, 9;
+            ceo_follow_cnt DESC LIMIT 0, 9;
     </select>
     <!-- 나이 필터 검색 기능 -->
     <select id="ageFilterLists" parameterType="com.bitc.bmn_project.DTO.ceoCustomDTO">

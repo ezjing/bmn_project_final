@@ -46,5 +46,13 @@ public interface BaeMapper {
 
   CeoDTO selectCeoDetail2(int ceoIdx) throws Exception;
 
+  FilterDTO getFilterInfo(int ceoIdx, String customerId) throws Exception;
+
+  int isFollowing(int ceoIdx, String customerId) throws Exception;
+
+  void deleteFollowing(int filterIdx) throws Exception;
+
+  void addFollowing(int ceoIdx, String ceoStore, String customerId) throws Exception;
+
 //  List<CommentDTO> selectCommentListCeo(int ceoIdx) throws Exception;
 }

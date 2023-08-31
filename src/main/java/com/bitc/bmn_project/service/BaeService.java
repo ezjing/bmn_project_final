@@ -3,6 +3,7 @@ package com.bitc.bmn_project.service;
 import com.bitc.bmn_project.DTO.*;
 import com.github.pagehelper.Page;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface BaeService {
@@ -42,6 +43,14 @@ public interface BaeService {
   void deleteFollowNick(int ceoIdx, String customerNick) throws Exception;
 
   CeoDTO selectCeoDetail2(int ceoIdx) throws Exception;
+
+  FilterDTO getFilterInfo(int ceoIdx, String customerId) throws Exception;
+
+  int isFollowing(int ceoIdx, String customerId) throws Exception;
+
+  void deleteFollowing(int filterIdx) throws Exception;
+
+  void addFollowing(int ceoIdx, String ceoStore, String customerId) throws Exception;
 
 //  List<CommentDTO> selectCommentListCeo(int ceoIdx) throws Exception;
 }

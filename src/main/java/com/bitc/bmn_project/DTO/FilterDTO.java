@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class FilterDTO {
+    private  int filterIdx;
     private int ceoIdx;
     private String ceoStore;
     private String customerId;

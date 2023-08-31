@@ -118,6 +118,26 @@ public class BaeServiceImpl implements BaeService {
     return ceoDTO;
   }
 
+  @Override
+  public FilterDTO getFilterInfo(int ceoIdx, String customerId) throws Exception {
+    return baeMapper.getFilterInfo(ceoIdx, customerId);
+  }
+
+  @Override
+  public int isFollowing(int ceoIdx, String customerId) throws Exception {
+    return baeMapper.isFollowing(ceoIdx, customerId);
+  }
+
+  @Override
+  public void deleteFollowing(int filterIdx) throws Exception {
+    baeMapper.deleteFollowing(filterIdx);
+  }
+
+  @Override
+  public void addFollowing(int ceoIdx, String ceoStore, String customerId) throws Exception {
+    baeMapper.addFollowing(ceoIdx, ceoStore, customerId);
+  }
+
 //  @Override
 //  public List<CommentDTO> selectCommentListCeo(int ceoIdx) throws Exception {
 //    List<CommentDTO> commentListCeo = baeMapper.selectCommentListCeo(ceoIdx);
