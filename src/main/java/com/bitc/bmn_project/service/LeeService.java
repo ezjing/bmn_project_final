@@ -2,6 +2,7 @@ package com.bitc.bmn_project.service;
 
 import com.bitc.bmn_project.DTO.*;
 import com.github.pagehelper.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -65,4 +66,6 @@ public interface LeeService {
     List<CeoDTO> getStoreList() throws Exception;
 
     Page<CustomerDTO> getCustomerList(int pageNum) throws Exception;
+
+//    void updateStore(CeoDTO store) throws Exception;
 }

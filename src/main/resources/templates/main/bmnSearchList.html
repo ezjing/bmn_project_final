@@ -24,8 +24,8 @@
         });
 
         function foodSearch() {
-            let keyWorld = $("#keyword-val").val();
-            console.log(keyWorld);// 값이 들어오는 거 확인함
+            const urlParams = new URL(location.href).searchParams;
+            const keyWorld = urlParams.get('keyWorld');
             $.ajax({
                 url: "/bmn/bmnSearchList",
                 type: "GET",
@@ -38,378 +38,52 @@
                 }
             });
         }
-            $(document).ready(function () {
+        $(document).ready(function () {
 
-                const session = sessionStorage.getItem('user');
-                console.log(session);
-                let msg = document.getElementById("sessionMsg");
-                if (msg.textContent.length > 0) {
-                    alert(msg.textContent);
+            const session = sessionStorage.getItem('user');
+            console.log(session);
+            let msg = document.getElementById("sessionMsg");
+            if (msg.textContent.length > 0) {
+                alert(msg.textContent);
+            }
+
+            const btn = document.getElementById("submit-btn");
+            const frm = document.getElementById("form");
+            btn.addEventListener("click", function () {
+                let userId = document.getElementById("user-id").value;
+                let userPw = document.getElementById("user-pw").value;
+                if (userId === "" || userId == null) {
+                    // 아이디를 미입력시
+                    alert('아이디를 입력해주세요');
+                    $("#user-id").focus()
+                } else if (userId !== "" && userPw === "") {
+                    // 아이디만 입력시
+                    alert('비밀번호를 입력해주세요');
+                    $("#user-pw").focus()
+                } else {
+                    // 서브밋
+                    frm.submit();
                 }
-
-                const btn = document.getElementById("submit-btn");
-                const frm = document.getElementById("form");
-                btn.addEventListener("click", function () {
-                    let userId = document.getElementById("user-id").value;
-                    let userPw = document.getElementById("user-pw").value;
-                    if (userId === "" || userId == null) {
-                        // 아이디를 미입력시
-                        alert('아이디를 입력해주세요');
-                        $("#user-id").focus()
-                    } else if (userId !== "" && userPw === "") {
-                        // 아이디만 입력시
-                        alert('비밀번호를 입력해주세요');
-                        $("#user-pw").focus()
-                    } else {
-                        // 서브밋
-                        frm.submit();
-                    }
-                });
-
-                $("#keyword-val").keydown(function (key) {
-                    let keyWorld = $("#keyword-val").val();
-                    if (key.keyCode == 13) {
-                        $.ajax({
-                            url: "/bmn/bmnSearchList",
-                            type: 'GET',
-                            data: {keyWorld: keyWorld},
-                            success: function (data) {
-                                location.href = "/bmn/bmnSearchList?keyWorld=" + keyWorld;
-                            },
-                            error: function () {
-                                alert('통신 실패');
-                            }
-                        });
-                    }
-                });
             });
 
-            function categoryFunction() {
-                let keyWorld = $("#keyword-val").val();
-
-                // 이용자 층 필터 블록 부분
-                let checkArr = document.querySelectorAll('input[name="checkBoxAge"]:checked');
-                let customAge = [];
-
-                for (let i = 0; i < checkArr.length; i++) {
-                    customAge.push(checkArr[i].value);
-                }
-
-                console.log('chk++arrycheck::' + customAge);
-
-                $.ajax({
-                    url: "/bmn/bmnFilterList",
-                    type: 'POST',
-                    data: {
-                        keyWorld: keyWorld,
-                        customAge: customAge
-                    },
-                    success: function (data) {
-                        $('#home').empty();
-                        $('#profile').empty();
-                        $('#home1').addClass('bg-secondary rounded-2 fs-4 d-inline px-3 text-white');
-                        $('#home1').empty();
-                        $('#contact').empty();
-
-                        let query = $('input[name=checkBoxAge]:checked').val(); // 값은 잘 들고 오는 거 확인함
-
-                        // 이제 뿌려 주지만 하면 되지만 뿌려지는건 되지만 태그 사이에 넣으면 변수로 동작을 하지 않음
-
-                        let age = '';
-
-                        switch (query){
-                            case '10':
-                                age += query
-                                $("#home1").append(age);
-                                break;
-                            case '20':
-                                age += query
-                                $("#home1").append(age);
-                                break;
-                            case '30':
-                                age += query
-                                $("#home1").append(age);
-                                break;
-                            case '40':
-                                age += query
-                                $("#home1").append(age);
-                                break;
-                            case '50' :
-                                age += query
-                                $("#home1").append(age);
-                                break;
-                            case '60' :
-                                age += query
-                                $("#home1").append(age);
-                                break;
+            $("#keyword-val").keydown(function (key) {
+                const urlParams = new URL(location.href).searchParams;
+                const keyWorld = urlParams.get('keyWorld');
+                if (key.keyCode == 13) {
+                    $.ajax({
+                        url: "/bmn/bmnSearchList",
+                        type: 'GET',
+                        data: {keyWorld: keyWorld},
+                        success: function (data) {
+                            location.href = "/bmn/bmnSearchList?keyWorld=" + keyWorld;
+                        },
+                        error: function () {
+                            alert('통신 실패');
                         }
-
-                        let otp = '';
-                        let profileList = '';
-                        let contact1 = '';
-                        for (let i = 0; i < data.length; i++) {
-                            otp +=  '<div class="list-group mt-3">' +
-                                        '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                                        '<div class="row">' +
-                                        '<div class="col">' +
-                                            '<div class="float-start d-grid w-100">' +
-                                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
-                                            '</div>'+
-                                        '</div>' +
-                                        '<div class="col-1"></div>' +
-                                        '<div class="col-3">' +
-                                            '<div>' +
-                                                '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
-                                                '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                                                '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                                                '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                                            '</div>'+
-                                        '</div>' +
-                                        '</div>'+
-                                    '</a>' +
-                                    '</div>'
-                            $("#home").append(otp)
-
-                            profileList += '<div class="list-group">' +
-                                '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                                '<div class="row">' +
-                                '<div class="col">' +
-                                '<div class="float-start d-grid w-100">' +
-                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
-                                '</div>'+
-                                '</div>' +
-                                '<div class="col-1"></div>' +
-                                '<div class="col-3">' +
-                                '<div>' +
-                                '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
-                                '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                                '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                                '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                                '</div>'+
-                                '</div>' +
-                                '</div>'+
-                                '</a>' +
-                                '</div>'
-                            $("#profile").append(profileList)
-
-                            contact1 += '<div class="list-group">' +
-                                '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                                '<div class="row">' +
-                                '<div class="col">' +
-                                '<div class="float-start d-grid w-100">' +
-                                '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
-                                '</div>'+
-                                '</div>' +
-                                '<div class="col-1"></div>' +
-                                '<div class="col-3">' +
-                                '<div>' +
-                                '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
-                                '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                                '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                                '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                                '</div>'+
-                                '</div>' +
-                                '</div>'+
-                                '</a>' +
-                                '</div>'
-                            $("#contact").append(contact1)
-                        }
-                    },
-                    error: function(){
-                        console.log('이용자 층 전송 실패')
-                    }
-                });
-        }
-
-        function genderFunction() {
-            let keyWorld = $("#keyword-val").val();
-            // 성별 별 필터 기능 블럭 //////
-            const genderKey = $('input[name="genderRadio"]:checked').val();
-            console.log('성별확인:::'+genderKey);
-            $.ajax({
-                url:'/bmn/bmnFilterGender',
-                type:'POST',
-                data:{
-                    keyWorld : keyWorld,
-                    genderKey : genderKey
-                },
-                success:function(data){
-                    $('#home').empty();
-                    $('#profile').empty();
-                    $('#contact').empty();
-                    let otp = '';
-                    let profileList = '';
-                    let contact1 = '';
-                    for (let i = 0; i < data.length; i++) {
-                        otp +=  '<div class="list-group mt-3">' +
-                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                            '<div class="row">' +
-                            '<div class="col">' +
-                            '<div class="float-start d-grid w-100">' +
-                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
-                            '</div>'+
-                            '</div>' +
-                            '<div class="col-1"></div>' +
-                            '<div class="col-3">' +
-                            '<div>' +
-                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
-                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                            '</div>'+
-                            '</div>' +
-                            '</div>'+
-                            '</a>' +
-                            '</div>'
-                        $("#home").append(otp)
-
-                        profileList += '<div class="list-group">' +
-                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                            '<div class="row">' +
-                            '<div class="col">' +
-                            '<div class="float-start d-grid w-100">' +
-                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
-                            '</div>'+
-                            '</div>' +
-                            '<div class="col-1"></div>' +
-                            '<div class="col-3">' +
-                            '<div>' +
-                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
-                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                            '</div>'+
-                            '</div>' +
-                            '</div>'+
-                            '</a>' +
-                            '</div>'
-                        $("#profile").append(profileList)
-
-                        contact1 += '<div class="list-group">' +
-                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                            '<div class="row">' +
-                            '<div class="col">' +
-                            '<div class="float-start d-grid w-100">' +
-                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
-                            '</div>'+
-                            '</div>' +
-                            '<div class="col-1"></div>' +
-                            '<div class="col-3">' +
-                            '<div>' +
-                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
-                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                            '</div>'+
-                            '</div>' +
-                            '</div>'+
-                            '</a>' +
-                            '</div>'
-                        $("#contact").append(contact1)
-
-                    }
-                },
-                error:function(){
-                    console.log("전송 실패");
+                    });
                 }
             });
-        }
-        //'<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' + -->
-        function storeFood(){
-            let keyWorld = $("#keyword-val").val();
-            let categoryFoods = $('input[name=categoryFood]:checked').val();
-            console.log(categoryFoods); // value 값 확인
-            $.ajax({
-                url:'/bmn/bmnFilterFood',
-                type:'POST',
-                data:{
-                    keyWorld : keyWorld,
-                    categoryFoods : categoryFoods
-                },
-                success:function(data){
-                    $('#home').empty();
-                    $('#profile').empty();
-                    $('#contact').empty();
-                    let otp = '';
-                    let profileList = '';
-                    let contact1 = '';
-                    for (let i = 0; i < data.length; i++) {
-                        otp +=  '<div class="list-group mt-3">' +
-                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                            '<div class="row">' +
-                            '<div class="col">' +
-                            '<div class="float-start d-grid w-100">' +
-                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
-                            '</div>'+
-                            '</div>' +
-                            '<div class="col-1"></div>' +
-                            '<div class="col-3">' +
-                            '<div>' +
-                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
-                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                            '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
-                            '</div>'+
-                            '</div>' +
-                            '</div>'+
-                            '</a>' +
-                            '</div>'
-                        $("#home").append(otp)
-
-                        profileList += '<div class="list-group">' +
-                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                            '<div class="row">' +
-                            '<div class="col">' +
-                            '<div class="float-start d-grid w-100">' +
-                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
-                            '</div>'+
-                            '</div>' +
-                            '<div class="col-1"></div>' +
-                            '<div class="col-3">' +
-                            '<div>' +
-                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
-                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                            '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
-                            '</div>'+
-                            '</div>' +
-                            '</div>'+
-                            '</a>' +
-                            '</div>'
-                        $("#profile").append(profileList)
-
-                        contact1 += '<div class="list-group">' +
-                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
-                            '<div class="row">' +
-                            '<div class="col">' +
-                            '<div class="float-start d-grid w-100">' +
-                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
-                            '</div>'+
-                            '</div>' +
-                            '<div class="col-1"></div>' +
-                            '<div class="col-3">' +
-                            '<div>' +
-                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
-                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
-                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
-                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
-                            '<p class="text-secondary"><i class=\'fas fa-hamburger\'></i>'+data[i].food+'</p>' +
-                            '</div>'+
-                            '</div>' +
-                            '</div>'+
-                            '</a>' +
-                            '</div>'
-                        $("#contact").append(contact1)
-                    }
-                },
-                error:function(){
-                    console.log("전송 실패");
-                }
-            });
-        }
-
+        });
     </script>
 
 </head>
@@ -419,41 +93,41 @@
     <div class="row">
 
         <div class="col-sm-2">
-            <div class="border border-2 rounded-2 bg-secondary bg-light">
+            <div class="border border-2 rounded-2 bg-secondary bg-light" onClick="FilterAllCheck()">
                 <div class="mt-3">
                     <span href="#" class="text-decoration-none text-dark ms-2">이용자 층</span>
                     <div class="form-check ms-4">
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
+                        <input class="form-check-input" name="checkBoxAge" type="radio"
                                value="10" id="teenagerCheck">
                         <label class="form-check-label" for="teenagerCheck">
                             10대
                         </label>
                         <br>
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
+                        <input class="form-check-input" name="checkBoxAge" type="radio"
                                value="20" id="twenitesCheck">
                         <label class="form-check-label" for="twenitesCheck">
                             20대
                         </label>
                         <br>
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
+                        <input class="form-check-input" name="checkBoxAge" type="radio"
                                value="30" id="thiritesCheck">
                         <label class="form-check-label" for="thiritesCheck">
                             30대
                         </label>
                         <br>
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
+                        <input class="form-check-input" name="checkBoxAge" type="radio"
                                value="40" id="fortiesCheck">
                         <label class="form-check-label" for="fortiesCheck">
                             40대
                         </label>
                         <br>
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
+                        <input class="form-check-input" name="checkBoxAge" type="radio"
                                value="50" id="FiftiesCheck">
                         <label class="form-check-label" for="FiftiesCheck">
                             50대
                         </label>
                         <br>
-                        <input class="form-check-input" onclick="categoryFunction()" name="checkBoxAge" type="radio"
+                        <input class="form-check-input" name="checkBoxAge" type="radio"
                                value="60" id="SixtiesCheck">
                         <label class="form-check-label" for="SixtiesCheck">
                             60대 이상
@@ -464,11 +138,11 @@
                     <span href="#" class="text-decoration-none text-dark ms-2">성별</span>
                     <div class="form-check ms-4">
                         <div class="form-check-inline">
-                            <input class="form-check-input" value="M" onclick="genderFunction()" type="radio" name="genderRadio" id="genderRadioM">
+                            <input class="form-check-input" value="M" type="radio" name="genderRadio" id="genderRadioM">
                             <label class="form-check-label" for="genderRadioM">남성</label>
                         </div>
                         <div class="form-check-inline ms-2">
-                            <input class="form-check-input" value="F" onclick="genderFunction()" type="radio" name="genderRadio" id="genderRadioW">
+                            <input class="form-check-input" value="F" type="radio" name="genderRadio" id="genderRadioW">
                             <label class="form-check-label" for="genderRadioW">
                                 여성
                             </label>
@@ -480,22 +154,22 @@
                     <div class="form-check ms-4">
                         <div class="form-check-inline">
                             <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioK"
-                                   value="01" onclick="storeFood()">
+                                   value="01">
                             <label class="form-check-label" for="categoryRadioK">한식</label>
                         </div>
                         <div class="form-check-inline ms-2">
                             <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioJ"
-                                   value="02" onclick="storeFood()">
+                                   value="02">
                             <label class="form-check-label" for="categoryRadioJ">일식</label>
                         </div>
                         <div class="form-check-inline">
                             <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioC"
-                                   value="03" onclick="storeFood()">
+                                   value="03">
                             <label class="form-check-label" for="categoryRadioC">중식</label>
                         </div>
                         <div class="form-check-inline ms-2">
                             <input class="form-check-input" type="radio" name="categoryFood" id="categoryRadioW"
-                                   value="04" onclick="storeFood()">
+                                   value="04">
                             <label class="form-check-label" for="categoryRadioW">양식</label>
                         </div>
                     </div>
@@ -525,7 +199,7 @@
 
             <div class="tab-content" id="myTabContent">
                 <!-- 나이순 jqurey 화면에 띄우는 용도  -->
-                    <p id="home1" class="bg-secondary rounded-2 fs-4 d-inline px-3"></p>
+                <p id="home1" class="bg-secondary rounded-2 fs-4 d-inline px-3"></p>
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <p th:if="${#lists.size(storeList)} > 0" class="mt-4 fs-5 fw-bold" >#평점 순</p>
                     <div class="list-group" th:if="${#lists.size(storeList)} > 0" th:each="item : ${storeList}">
@@ -534,7 +208,7 @@
                                 <div class="col">
                                     <div class="float-start d-grid w-100">
                                         <img th:src="|/bmn/getImage?path=${item.getCeoThumbnailImg()}|"
-                                              class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em">
+                                             class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em">
                                     </div>
                                 </div>
                                 <div class="col-1"></div>
@@ -545,7 +219,7 @@
                                         <p class="mb-4 text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span th:text="${item.getCeoScore()}"></span></p> <!-- 평점 -->
                                         <p class="mb-4 text-secondary">
                                             <i class="bi bi-chat-heart me-1" style="color:red"></i><span th:text="${item.getCeoFollowCnt()}"></span>
-<!--                                        <i class="bi bi-chat-right-text ms-4 me-1" style="color:saddlebrown"></i><span class="text-secondary" th:text="${item.getReviewCnt()}"></span>-->
+                                            <!--                                        <i class="bi bi-chat-right-text ms-4 me-1" style="color:saddlebrown"></i><span class="text-secondary" th:text="${item.getReviewCnt()}"></span>-->
                                         </p> <!-- 팔로우 수 -->
                                     </div>
                                 </div>
@@ -656,3 +330,136 @@
 <div th:replace="~{/layout/footer :: footer}"></div>
 </body>
 </html>
+<script>
+    function FilterAllCheck(){
+        const urlParams = new URL(location.href).searchParams;
+        const keyWorld = urlParams.get('keyWorld');
+        const customAge = $('input[name=checkBoxAge]:checked').val();
+        const genderKey = $('input[name=genderRadio]:checked').val();
+        const categoryFoods = $('input[name=categoryFood]:checked').val();
+            $.ajax({
+                url: "/bmn/bmnAllFilter",
+                type: "POST",
+                data : {
+                    keyWorld : keyWorld,
+                    customAge : customAge,
+                    genderKey : genderKey,
+                    categoryFoods : categoryFoods,
+                },
+                success:function(data){
+                    $('#home').empty();
+                    $('#profile').empty();
+                    // $('#home1').addClass('bg-secondary rounded-2 fs-4 d-inline px-3 text-white');
+                    // $('#home1').empty();
+                    $('#contact').empty();
+
+                    let query = $('input[name=checkBoxAge]:checked').val(); // 값은 잘 들고 오는 거 확인함
+
+                    // 이제 뿌려 주지만 하면 되지만 뿌려지는건 되지만 태그 사이에 넣으면 변수로 동작을 하지 않음
+
+                    let age = '';
+
+                    switch (query){
+                        case '10':
+                            age = query
+                            $("#home").append(age);
+                            break;
+                        case '20':
+                            age = query
+                            $("#home").append(age);
+                            break;
+                        case '30':
+                            age = query
+                            $("#home").append(age);
+                            break;
+                        case '40':
+                            age = query
+                            $("#home").append(age);
+                            break;
+                        case '50' :
+                            age = query
+                            $("#home").append(age);
+                            break;
+                        case '60' :
+                            age += query
+                            $("#home").append(age);
+                            break;
+                    }
+
+                    let otp = '';
+                    let profileList = '';
+                    let contact1 = '';
+                    for (let i = 0; i < data.length; i++) {
+                        otp +=  '<div class="list-group mt-3">' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                            '<div class="row">' +
+                            '<div class="col">' +
+                            '<div class="float-start d-grid w-100">' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
+                            '</div>'+
+                            '</div>' +
+                            '<div class="col-1"></div>' +
+                            '<div class="col-3">' +
+                            '<div>' +
+                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
+                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                            '</div>'+
+                            '</div>' +
+                            '</div>'+
+                            '</a>' +
+                            '</div>'
+                        $("#home").append(otp)
+
+                        profileList += '<div class="list-group">' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                            '<div class="row">' +
+                            '<div class="col">' +
+                            '<div class="float-start d-grid w-100">' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
+                            '</div>'+
+                            '</div>' +
+                            '<div class="col-1"></div>' +
+                            '<div class="col-3">' +
+                            '<div>' +
+                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
+                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                            '</div>'+
+                            '</div>' +
+                            '</div>'+
+                            '</a>' +
+                            '</div>'
+                        $("#profile").append(profileList)
+
+                        contact1 += '<div class="list-group">' +
+                            '<a href="/bmn/viewDetail/'+data[i].ceoIdx+'" class="list-group-item list-group-item-action mb-5">'+
+                            '<div class="row">' +
+                            '<div class="col">' +
+                            '<div class="float-start d-grid w-100">' +
+                            '<img src="/bmn/getImage?path='+ data[i].ceoThumbnailImg+'" class="img-thumbnail rounded-2 d-block" style="width: 100%; height: 17em;" style="width: 100%; height: 17em;"/>' +
+                            '</div>'+
+                            '</div>' +
+                            '<div class="col-1"></div>' +
+                            '<div class="col-3">' +
+                            '<div>' +
+                            '<p  class="fw-bold fs-3 text-black" >'+data[i].ceoStore+'</p>' +
+                            '<p class="text-secondary"><span>'+data[i].ceoMainMenu+'</span></p>' +
+                            '<p class="text-secondary"><i class="bi bi-star me-2" style="color:cornflowerblue"></i><span>'+data[i].ceoScore+'</spen></p>' +
+                            '<p class="text-secondary"><i class="bi bi-chat-heart me-1" style="color:red"></i><span>'+data[i].ceoFollowCnt+'</span></p>' +
+                            '</div>'+
+                            '</div>' +
+                            '</div>'+
+                            '</a>' +
+                            '</div>'
+                        $("#contact").append(contact1)
+                    }
+                },
+                error: function(){
+                    console.log('이용자 층 전송 실패')
+                }
+            });
+    }
+</script>

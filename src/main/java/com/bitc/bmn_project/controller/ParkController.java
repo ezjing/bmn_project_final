@@ -1,9 +1,6 @@
 package com.bitc.bmn_project.controller;
 
-import com.bitc.bmn_project.DTO.CeoDTO;
-import com.bitc.bmn_project.DTO.CustomerDTO;
-import com.bitc.bmn_project.DTO.ReviewCntDto;
-import com.bitc.bmn_project.DTO.ceoCustomDTO;
+import com.bitc.bmn_project.DTO.*;
 import com.bitc.bmn_project.service.MainService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -15,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -71,7 +70,7 @@ public class ParkController {
         List<CeoDTO> storeList = mainService.storeLists(keyWorld);
         // 리뷰 순 검색 리스트
         List<ReviewCntDto> reviewCntList = mainService.reviewCntLists(keyWorld);
-        List<ReviewCntDto> reviewCntOuterList = mainService.reviewCntOuterLists(keyWorld);
+//        List<ReviewCntDto> reviewCntOuterList = mainService.reviewCntOuterLists(keyWorld);
 
 //        reviewCntList.add((ReviewCntDto) reviewCntOuterList);
         // 팔로우 순위 검색 리스트
@@ -85,7 +84,7 @@ public class ParkController {
 
         mv.addObject("storeList",storeList);
         mv.addObject("reviewCntList", reviewCntList);
-        mv.addObject("reviewCntList", reviewCntOuterList);
+//        mv.addObject("reviewCntList", reviewCntOuterList);
         mv.addObject("followList",followList);
         mv.addObject("keyWorld",keyWorld);
         return mv;
@@ -101,7 +100,7 @@ public class ParkController {
     @RequestMapping(value="/bmn/bmnFilterList", method = RequestMethod.POST)
     public Object filterListPost(
             @RequestParam(value = "keyWorld", required = false) String keyWorld,
-            @RequestParam(value = "customAge[]", required = false) List<String> customAge
+            @RequestParam(value = "customAge", required = false) String customAge
     ) throws Exception{
         ModelAndView mv = new ModelAndView("main/bmnSearchList");
         System.out.println("keyWorld:::"+keyWorld);
@@ -138,6 +137,41 @@ public class ParkController {
 
 
         return categoryFood;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/bmn/bmnAllFilter", method = RequestMethod.POST)
+    public Object filterAilPost(
+            @RequestParam(value="keyWorld", required = false) String keyWorld,
+            @RequestParam(value="genderKey", required = false) String genderKey,
+            @RequestParam(value="customAge", required = false) String customAge,
+            @RequestParam(value="categoryFoods", required = false) String categoryFoods
+            ) throws Exception{
+        ModelAndView mv = new ModelAndView("main/bmnSearchList");
+
+        if(keyWorld == null) keyWorld = "";
+        if(genderKey == null) genderKey = "";
+        if(customAge == null) customAge = "";
+        if(categoryFoods == null) categoryFoods = "";
+
+        System.out.println("keyWorld"+keyWorld);
+        System.out.println("genderKey"+genderKey);
+        System.out.println("customAge"+customAge);
+        System.out.println("categoryFoods"+categoryFoods);
+
+        Map<String, Object> mapParams = new HashMap<>();
+        mapParams.put("keyWorld", keyWorld);
+        mapParams.put("genderKey", genderKey);
+        mapParams.put("customAge", customAge);
+        mapParams.put("categoryFoods", categoryFoods);
+
+        // List<FilterDTO> filterDto = mainService.filterAllSearch(keyWorld, genderKey, customAge, categoryFoods);
+        List<FilterDTO> filterDto = mainService.filterAllSearch(mapParams);
+
+        mv.addObject("filterDto",filterDto);
+
+
+        return filterDto;
     }
 
 }
