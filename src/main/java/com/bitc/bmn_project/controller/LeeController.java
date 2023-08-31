@@ -402,7 +402,6 @@ public class LeeController {
         HttpSession session = req.getSession();
 
         simService.addStore(store, mainImage, thumbnail, files);
-//        leeService.updateStore(store);
         CeoDTO ceo = simService.getCeoInfo(store.getCeoId());
         ceo.setCeoGrade(2);
         System.out.println(ceo);

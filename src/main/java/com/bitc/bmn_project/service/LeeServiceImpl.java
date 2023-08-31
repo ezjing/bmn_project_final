@@ -182,10 +182,4 @@ public class LeeServiceImpl implements LeeService{
 
         return leeMapper.getCustomerList();
     }
-
-//    @Override
-//    public void updateStore(CeoDTO store) throws Exception {
-//        return leeMapper.updateStore(store);
-//    }
-
 }

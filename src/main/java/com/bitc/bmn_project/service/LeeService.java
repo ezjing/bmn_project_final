@@ -66,6 +66,4 @@ public interface LeeService {
     List<CeoDTO> getStoreList() throws Exception;
 
     Page<CustomerDTO> getCustomerList(int pageNum) throws Exception;
-
-//    void updateStore(CeoDTO store) throws Exception;
 }
