@@ -67,7 +67,7 @@
     <script>
         function foodSearch(){
             let keyWorld = $("#keyword-val").val();
-            console.log(keyWorld);// 값이 들어오는 거 확인함
+            console.log("keyWorld"+keyWorld)
             $.ajax({
                url:"/bmn/bmnSearchList",
                 type: "GET",

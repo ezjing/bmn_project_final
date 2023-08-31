@@ -1,12 +1,14 @@
 package com.bitc.bmn_project.mapper;
 
 import com.bitc.bmn_project.DTO.CeoDTO;
+import com.bitc.bmn_project.DTO.FilterDTO;
 import com.bitc.bmn_project.DTO.ReviewCntDto;
 import com.bitc.bmn_project.DTO.ceoCustomDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MainMapper {
@@ -31,12 +33,7 @@ public interface MainMapper {
 
     List<ceoCustomDTO> ageFilterLists(
             @Param("keyWorld") String keyWorld,
-            @Param("customAge1") String customAge1,
-            @Param("customAge2") String customAge2,
-            @Param("customAge3") String customAge3,
-            @Param("customAge4") String customAge4,
-            @Param("customAge5") String customAge5,
-            @Param("customAge6") String customAge6) throws Exception;
+            @Param("customAge") String customAge) throws Exception;
 
     List<ceoCustomDTO> genderFilterLists(@Param("keyWorld") String keyWorld,@Param("genderKey") String genderKey) throws Exception;
 
@@ -44,5 +41,5 @@ public interface MainMapper {
 
     List<ReviewCntDto> reviewCntOuterLists(String keyWorld) throws Exception;
 
-    ;
+    List<FilterDTO> filterAllSearch(Map<String, Object> params) throws Exception;
 }

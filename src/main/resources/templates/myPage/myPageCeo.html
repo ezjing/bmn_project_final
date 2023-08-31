@@ -1063,6 +1063,7 @@
                                 </div>
                             </div>
                             <input type="hidden" name="ceoIdx" th:value="${session.ceo.ceoIdx}">
+                            <input type="hidden" name="ceoId" th:value="${session.ceo.ceoId}">
                             <!--  REST 방식 사용 시 form 태그의 데이터 전송 방식을 변경하기 위한 태그  -->
                             <input type="hidden" id="method2" name="_method">
                             <div class="d-flex justify-content-end">
@@ -1180,8 +1181,9 @@
         </div>
         <div th:unless="${session.user == 'customer'}">
             <div th:if="${session.user == 'ceo'}">
-                <input type="hidden" id="ceo-idx" th:value="${session.ceo.ceoIdx}">
-                <input type="hidden" id="ceo-store" th:value="${session.ceo.ceoStore}">
+                <input type="hidden" id="ceo-idx" name="ceoIdx" th:value="${session.ceo.ceoIdx}">
+                <input type="hidden" id="ceo-store" name="ceoStore" th:value="${session.ceo.ceoStore}">
+                <input type="hidden" id="ceo-id" name="ceoId" th:value="${session.ceo.ceoId}">
             </div>
         </div>
 

@@ -1,14 +1,15 @@
 package com.bitc.bmn_project.service;
 
 import com.bitc.bmn_project.DTO.CeoDTO;
+import com.bitc.bmn_project.DTO.FilterDTO;
 import com.bitc.bmn_project.DTO.ReviewCntDto;
 import com.bitc.bmn_project.DTO.ceoCustomDTO;
 import com.bitc.bmn_project.mapper.MainMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MainServiceImpl implements MainService{
@@ -60,26 +61,9 @@ public class MainServiceImpl implements MainService{
     }
 
     @Override
-    public List<ceoCustomDTO> ageFilterLists(String keyWorld, List<String> customAge) throws Exception {
+    public List<ceoCustomDTO> ageFilterLists(String keyWorld, String customAge) throws Exception {
 
-            List<String> arr1 = new ArrayList<String>();
-
-
-            for(int i=0; i<customAge.size();i++){
-                arr1.add(customAge.get(i).toString());
-            }
-
-            System.out.println(arr1.get(0).toString());
-            String CustomAge1 = arr1.get(0).toString();
-            String CustomAge2 = arr1.get(0).toString();
-            String CustomAge3 = arr1.get(0).toString();
-            String CustomAge4 = arr1.get(0).toString();
-            String CustomAge5 = arr1.get(0).toString();
-            String CustomAge6 = arr1.get(0).toString();
-
-            System.out.println("null??:::"+CustomAge1);
-            return mainMapper.ageFilterLists(keyWorld,CustomAge1,CustomAge2,CustomAge3,
-                    CustomAge4,CustomAge5,CustomAge6);
+            return mainMapper.ageFilterLists(keyWorld,customAge);
     }
 
     @Override
@@ -95,5 +79,45 @@ public class MainServiceImpl implements MainService{
     @Override
     public List<ReviewCntDto> reviewCntOuterLists(String keyWorld) throws Exception {
         return mainMapper.reviewCntOuterLists(keyWorld);
+    }
+
+    @Override
+    public List<FilterDTO> filterAllSearch(Map<String, Object> params) throws Exception {
+
+        System.out.println("keyWorld:::"+params.get("keyWorld"));
+        System.out.println("genderKey:::"+params.get("genderKey"));
+        System.out.println("customAge:::"+params.get("customAge"));
+        System.out.println("categoryFoods:::"+params.get("categoryFoods"));
+
+        try {
+            return mainMapper.filterAllSearch(params);
+//            if(keyWorld.equals(keyWorld) && genderKey.equals(genderKey)){
+//                return mainMapper.filterAllSearch(keyWorld, genderKey, null, null);
+//            }
+//            else if(keyWorld.equals(keyWorld) && genderKey.equals(genderKey) && customAge.equals(customAge)){
+//                return mainMapper.filterAllSearch(keyWorld, genderKey, customAge, null);
+//            }
+//            else if(keyWorld.equals(keyWorld) && customAge.equals(customAge)){
+//                return mainMapper.filterAllSearch(keyWorld, null, customAge, null);
+//            }
+//            else if(keyWorld.equals(keyWorld) && customAge.equals(customAge) && categoryFoods.equals(categoryFoods)){
+//                return mainMapper.filterAllSearch(keyWorld, null, customAge, categoryFoods);
+//            }
+//            else if(keyWorld.equals(keyWorld) && categoryFoods.equals(categoryFoods)){
+//                return mainMapper.filterAllSearch(keyWorld, null, null, categoryFoods);
+//            }
+//            else if(keyWorld.equals(keyWorld) && genderKey.equals(genderKey) && categoryFoods.equals(categoryFoods)){
+//                return mainMapper.filterAllSearch(keyWorld, genderKey, null, categoryFoods);
+//            }
+//            else{
+//                return mainMapper.filterAllSearch(keyWorld, genderKey, customAge, categoryFoods);
+//            }
+        }
+        catch (NullPointerException e){
+            System.out.println("errorMessage"+ e.getMessage());
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -399,11 +399,13 @@ public class LeeController {
             HttpServletRequest req) throws Exception {
 
 //        store = leeService.myPageCeoStoreUpdate(store);
+        HttpSession session = req.getSession();
+
         simService.addStore(store, mainImage, thumbnail, files);
+//        leeService.updateStore(store);
         CeoDTO ceo = simService.getCeoInfo(store.getCeoId());
         ceo.setCeoGrade(2);
         System.out.println(ceo);
-        HttpSession session = req.getSession();
 
         session.removeAttribute("ceo");
         session.setAttribute("user", "ceo");
