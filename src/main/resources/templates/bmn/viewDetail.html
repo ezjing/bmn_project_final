@@ -994,7 +994,7 @@
               </div>
               <div class="m-3 border rounded-3 p-2">
                 <p th:text="${item.reviewTitle}" class="fw-semibold"></p>
-                <p th:text="${item.reviewContents}"></p>
+                <p th:utext="${item.reviewContents}"></p>
                 <div>
                   <img th:src="|/bmn/getImage?path=${item.reviewImg}|" alt="이미지를 불러올 수 없습니다."
                        style="width: 300px; height: 200px;"> <!--  경로 이미지 구현 할것
