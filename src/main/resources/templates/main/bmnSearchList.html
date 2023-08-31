@@ -22,24 +22,26 @@
         $(document).ready(function(){
             $("#home1").removeClass();
         });
-
-        function foodSearch() {
-            const urlParams = new URL(location.href).searchParams;
-            const keyWorld = urlParams.get('keyWorld');
-            $.ajax({
-                url: "/bmn/bmnSearchList",
-                type: "GET",
-                success: function () {
-                    location.href = "/bmn/bmnSearchList?keyWorld=" + keyWorld;
-                    // alert('접속 성공')
-                },
-                error: function () {
-                    alert('접속 실패')
-                }
-            });
-        }
+        
         $(document).ready(function () {
-
+          $("#keyword-val").keydown(function (key){
+            let keyWorld = $("#keyword-val").val();
+            if(key.keyCode == 13){
+              $.ajax({
+                type : "GET",
+                url: "/bmn/bmnSearchList",
+                data: {keyWorld: keyWorld},
+                success:function(data){
+                  location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+                },
+                error:function(){
+                  alert('통신 실패');
+                }
+              });
+            }
+          });
+          
+          
             const session = sessionStorage.getItem('user');
             console.log(session);
             let msg = document.getElementById("sessionMsg");
@@ -93,7 +95,7 @@
     <div class="row">
 
         <div class="col-sm-2">
-            <div class="border border-2 rounded-2 bg-secondary bg-light" onClick="FilterAllCheck()">
+            <div class="border border-2 rounded-2 bg-secondary bg-light" onClick="FilterAllCheck()" >
                 <div class="mt-3">
                     <span href="#" class="text-decoration-none text-dark ms-2">이용자 층</span>
                     <div class="form-check ms-4">

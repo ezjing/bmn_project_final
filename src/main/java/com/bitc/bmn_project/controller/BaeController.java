@@ -2,6 +2,8 @@ package com.bitc.bmn_project.controller;
 
 import com.bitc.bmn_project.DTO.*;
 import com.bitc.bmn_project.service.BaeService;
+import com.bitc.bmn_project.service.LeeService;
+import com.bitc.bmn_project.service.MainService;
 import com.bitc.bmn_project.service.SimService;
 import com.github.pagehelper.PageInfo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +25,12 @@ public class BaeController {
 
   @Autowired
   private SimService simService;
+
+  @Autowired
+  private LeeService leeService;
+
+  @Autowired
+  private MainService mainService;
 
 
   @RequestMapping(value = "/bmn/viewDetail/{ceoIdx}", method = RequestMethod.GET)
@@ -130,7 +138,10 @@ public class BaeController {
   // 팔로우 추가/삭제
   @ResponseBody
   @RequestMapping(value = "/bmn/updateFollow", method = RequestMethod.PUT)
-  public Object updateFollow(@RequestParam("ceoStore") String ceoStore, @RequestParam("customerIdx") int customerIdx, @RequestParam("ceoIdx") int ceoIdx) throws Exception {
+  public Object updateFollow(
+    @RequestParam("ceoStore") String ceoStore,
+    @RequestParam("customerIdx") int customerIdx,
+    @RequestParam("ceoIdx") int ceoIdx) throws Exception {
     int result = 0;
 
     CustomerDTO customerDTO = baeService.selectCustomerInfo(customerIdx);
@@ -139,12 +150,27 @@ public class BaeController {
     if (customerDTO.getCustomerFollow().contains(ceoStore)) {
       baeService.deleteFollowStore(customerIdx, ceoStore);
       baeService.deleteFollowNick(ceoIdx, customerNick);
+
+
     }
     else {
       baeService.updateFollowStore(customerIdx, ceoStore);
       baeService.updateFollowNick(ceoIdx, customerNick);
-
     }
+
+
+
+    // 필터 테이블에 데이터 조회 (ceoIdx, customerId)
+    int isFollow = baeService.isFollowing(ceoIdx, customerDTO.getCustomerId());
+    if (isFollow > 0) {
+      // 팔로우 일 경우 > delete
+      FilterDTO follow = baeService.getFilterInfo(ceoIdx, customerDTO.getCustomerId());
+      baeService.deleteFollowing(follow.getFilterIdx());
+    } else {
+      // 팔로우 아닐 경우 > insert
+      baeService.addFollowing(ceoIdx, ceoStore, customerDTO.getCustomerId());
+    }
+
     result = baeService.getFollows(ceoStore);
 
     return result;

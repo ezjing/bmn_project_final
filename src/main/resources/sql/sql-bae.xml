@@ -192,4 +192,44 @@
 		WHERE
 			question_idx = #{questionIdx}
 	</update>
-</mapper>
+	
+<!-- 필터 관련 -->
+<!-- 팔로우 유무 체크 -->
+	<select id="isFollowing" parameterType="map" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		filter_tp
+		WHERE
+		ceo_idx = #{ceoIdx}
+		AND
+		customer_id = #{customerId}
+	</select>
+	
+<!-- 팔로우 정보 가져오기 -->
+	<select id="getFilterInfo" parameterType="map" resultType="com.bitc.bmn_project.DTO.FilterDTO">
+		SELECT
+				*
+		FROM
+			filter_tp
+		WHERE
+			ceo_idx = #{ceoIdx}
+		AND
+			customer_id = #{customerId}
+	</select>
+<!-- 팔로우 중인 정보 삭제 -->
+	<delete id="deleteFollowing" parameterType="int">
+		DELETE
+		FROM
+		filter_tp
+		WHERE
+		filter_idx = #{filterIdx}
+	</delete>
+<!-- 팔로우 정보 추가 -->
+	<insert id="addFollowing" parameterType="com.bitc.bmn_project.DTO.FilterDTO">
+		INSERT
+		INTO filter_tp
+		(ceo_idx, ceo_store, customer_id) VALUES(#{ceoIdx}, #{ceoStore}, #{customerId})
+	</insert>
+	
+	</mapper>
