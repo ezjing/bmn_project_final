@@ -14,7 +14,37 @@
         @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
     </style>
     <script>
+      function foodSearch(){
+        let keyWorld = $("#keyword-val").val();
+        console.log("keyWorld"+keyWorld)
+        $.ajax({
+          url:"/bmn/bmnSearchList",
+          type: "GET",
+          success:function(){
+            // location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
+            // alert('접속 성공')
+          },
+          error:function(){
+            alert('접속 실패')
+          }
+        });
+      }
 
+      function foodSearch2(){
+        let keyWorld = $("#keyword-val").val();
+        console.log("keyWorld"+keyWorld)
+        $.ajax({
+          url:"/bmn/bmnSearchList",
+          type: "GET",
+          success:function(){
+            location.reload();
+            // alert('접속 성공')
+          },
+          error:function(){
+            alert('접속 실패')
+          }
+        });
+      }
     </script>
 
 
@@ -42,6 +72,7 @@
         <div class="col-sm-6 input-group py-4 w-50">
             <input id="keyword-val" name="keyword-val" type="search" class="form-control"
                    placeholder="식당,메뉴,주소명을 입력해주세요">
+<!--          if 문적용-->
             <button type="submit" class="btn btn-dark fw-bold" onclick="foodSearch()">
                 검색
             </button>

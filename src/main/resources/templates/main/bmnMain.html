@@ -65,22 +65,7 @@
         }
     </style>
     <script>
-        function foodSearch(){
-            let keyWorld = $("#keyword-val").val();
-            console.log("keyWorld"+keyWorld)
-            $.ajax({
-               url:"/bmn/bmnSearchList",
-                type: "GET",
-                success:function(){
-                    location.href= "/bmn/bmnSearchList?keyWorld="+keyWorld;
-                    // alert('접속 성공')
-                },
-                error:function(){
-                    alert('접속 실패')
-                }
-            });
-
-        }
+      
         $(document).ready(function(){
             $("#keyword-val").keydown(function (key){
                 let keyWorld = $("#keyword-val").val();
@@ -98,8 +83,6 @@
                     });
                 }
             });
-
-
 
             const session = sessionStorage.getItem('user');
             console.log(session);
