@@ -153,7 +153,7 @@
 
 </head>
 <body>  <!--  페이지 이동없이 페이징 하는거 물어보기  -->
-<header th:replace="~{/layout/header :: header}"></header>
+<header th:replace="~{layout/header :: header}"></header>
 
 <main class="container-sm">
     <div>
@@ -193,14 +193,14 @@
 <!--        <div class="col">-->
         <div class="collapse multi-collapse" id="cusCollapse">
             <div class="card card-body">
-                <div th:replace="~{/admin/customerManagement :: cusMan}"></div>
+                <div th:replace="~{admin/customerManagement :: cusMan}"></div>
             </div>
         </div>
 <!--        </div>-->
 <!--        <div class="col">-->
             <div class="collapse multi-collapse" id="ceoCollapse">
                 <div class="card card-body">
-                    <div th:replace="~{/admin/ceoManagement :: ceoMan}"></div>
+                    <div th:replace="~{admin/ceoManagement :: ceoMan}"></div>
                 </div>
             </div>
 <!--        </div>-->

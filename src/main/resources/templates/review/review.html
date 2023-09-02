@@ -142,7 +142,7 @@
     </script>
 </head>
 <body>
-<div th:replace="~{/layout/header :: header}"></div>
+<div th:replace="~{layout/header :: header}"></div>
 <div class="container-sm my-4">
     <div class="col-sm-8 mx-auto">
         <form name="form" id="form" action="/bmn/review/write" method="post" class="form-control"
@@ -256,6 +256,7 @@
         </form>
     </div>
 </div>
+<footer th:replace="~{layout/footer :: footer}"></footer>
 <!--  스마트 에디터-->
 <script type="text/javascript">
     var oEditors = [];
