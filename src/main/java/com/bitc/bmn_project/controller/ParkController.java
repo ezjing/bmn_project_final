@@ -22,7 +22,7 @@ import java.util.Map;
 public class ParkController {
     @Autowired
     private MainService mainService;
-    @RequestMapping(value = "/bmn/bmnMain", method = RequestMethod.GET)
+    @RequestMapping(value = {"/","/bmn/bmnMain"}, method = RequestMethod.GET)
     public ModelAndView bmnMainGet(HttpServletRequest req) throws Exception{
         ModelAndView mv = new ModelAndView("main/bmnMain");
         List<CeoDTO> coeDtoList = mainService.selectKFood();

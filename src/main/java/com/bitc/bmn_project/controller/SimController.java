@@ -34,10 +34,10 @@ public class SimController {
     private FileUtils fileUtils;
 
 
-    @RequestMapping("/")
-    public String index() throws Exception {
-        return "index";
-    }
+//    @RequestMapping("/")
+//    public String index() throws Exception {
+//        return "index";
+//    }
 
     @RequestMapping(value = "/bmn/login", method = RequestMethod.POST)
     public String doLoginProcess(@RequestParam String userId,
