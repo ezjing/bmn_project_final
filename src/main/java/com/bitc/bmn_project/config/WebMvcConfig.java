@@ -97,7 +97,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         ZonedDateTime current = ZonedDateTime.now();
 
         // 경로 2개 이상 사용 방식
-        registry.addResourceHandler("/images/**").addResourceLocations("file://home/ec2-user/img", "file://home/ec2-user/img/**");
+        registry.addResourceHandler("/images/**").addResourceLocations("file://home/ec2-user/bmn_img", "file://home/ec2-user/bmn_img/**");
 
         // application.properties 파일 설정값을 사용 방식
 //        String path1 = "file:///" + imgLocation1;
