@@ -142,7 +142,7 @@
     </script>
 </head>
 <body>
-<div th:replace="~{/layout/header :: header}"></div>
+<div th:replace="~{layout/header :: header}"></div>
 <div class="container-sm my-4">
     <div class="col-sm-8 mx-auto">
         <form name="form" id="form" action="/bmn/review/write" method="post" class="form-control"
@@ -268,5 +268,6 @@
 
     });
 </script>
+<div th:replace="~{layout/footer :: footer}"></div>
 </body>
 </html>

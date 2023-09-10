@@ -37,7 +37,8 @@ public class FileUtils {
 //        String path = "C:/smart505/bmn_project/src/main/resources/static/images/" + current.format(format);
 
         // DB에 저장할 경로
-        String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+//        String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+        String path = "/home/ec2-user/bmn/images/" + current.format(format);
 
         // 프로젝트에 포함시킬 경로
 //        String path2 = "C:/smart505/bmn_project/src/main/resources/static/images/" + current.format(format);
@@ -119,7 +120,8 @@ public class FileUtils {
 
 
             // DB에 저장할 경로
-            String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+//            String path = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);
+            String path = "/home/ec2-user/bmn/images/" + current.format(format);
 
             // 프로젝트에 포함시킬 경로
             // String path2 = "C:/smart505/bmn_project_setting/src/main/resources/static/images/" + current.format(format);

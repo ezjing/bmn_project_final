@@ -50,7 +50,7 @@
 
 </head>
 <body>
-<div th:replace="~{/layout/header :: header}"></div>
+<div th:replace="~{layout/header :: header}"></div>
 
 <!-- 세션확인으로 관리자만 접속 가능-->
 <div id="session-check" th:text="${session.user}" hidden="hidden"></div>
